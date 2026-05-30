@@ -802,6 +802,27 @@ input[type="range"]::-webkit-slider-thumb:hover {
     border-radius: 10px;
 }
 
+.partido-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.partido-container iframe {
+    width: 100%;
+    max-width: 1000px;
+    height: 500px;
+    border-radius: 20px;
+    border: 3px solid #ff3366;
+    box-shadow: 0 0 30px rgba(255, 51, 102, 0.3);
+}
+
+@media (max-width: 768px) {
+    .partido-container iframe {
+        height: 300px;
+    }
+}
+
 .video-container video {
     position: absolute;
     top: 0;
