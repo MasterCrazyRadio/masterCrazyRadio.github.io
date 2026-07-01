@@ -114,6 +114,30 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // Flyer 3D Tilt Effect
+    const flyerCard = document.getElementById('flyer-card');
+    const flyerWrapper = document.querySelector('.flyer-wrapper');
+
+    if (flyerCard && flyerWrapper) {
+        flyerWrapper.addEventListener('mousemove', (e) => {
+            const rect = flyerWrapper.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+
+            const rotateX = ((y - centerY) / centerY) * -8;
+            const rotateY = ((x - centerX) / centerX) * 8;
+
+            flyerCard.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
+        });
+
+        flyerWrapper.addEventListener('mouseleave', () => {
+            flyerCard.style.transform = 'rotateX(0) rotateY(0) scale(1)';
+        });
+    }
+
     console.log("Master Crazy Radio - Custom Player with Live Metadata Loaded!");
 
     // Live TV Logic

@@ -1,0 +1,11 @@
+# Archivos temporales y de desarrollo
+.atl/
+.playwright-mcp/
+nohup.out
+
+# Capturas de pantalla de previsualización
+*_preview.png
+*_fixed.png
+mobile_preview.png
+videos_mobile_preview.png
+videos_mobile_scroll.png
