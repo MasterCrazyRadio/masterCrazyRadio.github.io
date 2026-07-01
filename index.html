@@ -1,60 +1,273 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>Master Crazy</title>
-    <link rel="stylesheet" type="text/css" href="css/styles.css" />
+<html lang="es">
 
-    <meta name="theme-color" content="#F0DB4F" />
-    <meta name="MobileOptimized" content="width" />
-    <meta name="HandheldFriendly" content="true" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta
-      name="apple-mobile-web-app-status-bar-style"
-      content="black-translucent"
-    />
-    <link rel="shortcut icon" type="image/png" href="./img/2.jpg" />
-    <link rel="apple-touch-icon" href="./img/2.jpg" />
-    <link rel="apple-touch-startup-image" href="./img/2.jpg" />
-    <link rel="manifest" href="./manifest.json" />
-  </head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Master Crazy Radio - La Radio Joven</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+</head>
 
-  <body>
-    <div class="cont">
-      <div class="contenedor">
-        <p>
-          <label>Master Crazy mas que Radio</label>
-        </p>
-      </div>
-      <div class="contenedorimagen">
-        <img src="./img/384.png" class="imagen" />
-        <a
-          href="https://m.facebook.com/mastercrazy991/?ref=bookmarks"
-          target="_blank"
-          ><img
-            src="./img/facebook.jpg"
-            class="facebook"
-            alt="Siguenos en Facebook"
-        /></a>
-      </div>
-      <div class="contenedomusica">
-        <!-- <iframe src="https://node-22.zeno.fm/qk73afap21zuv?rj-ttl=5&rj-tok=AAABcpcQr1gA6L25cO_OMWsxpA" width="500" height="240" frameborder="0" scrolling="no"></iframe> -->
-        <iframe
-          src="//www.zeno.fm/player/master-crazy-radio"
-          width="575"
-          height="240"
-          frameborder="0"
-          scrolling="no"
-        ></iframe>
-      </div>
-      <div class="contenedorenvivo">
-        <iframe width="560" height="315" src="//ok.ru/videoembed/13981676805705?nochat=1" frameborder="0" allow="autoplay" allowfullscreen></iframe>
-      </div>
+<body>
+    <div class="background-animation">
+        <div class="mesh-gradient"></div>
     </div>
+    <div class="spotlight"></div>
 
-    <footer>
-      <p>Copyright &copy; 2020 Master Crazy, todos los derechos reservados.</p>
+    <header class="main-header">
+        <div class="logo-container">
+            <h1 class="neon-text" data-text="MASTER CRAZY">MASTER CRAZY <span class="highlight">RADIO</span></h1>
+        </div>
+        <nav class="main-nav">
+            <ul>
+                <li><a href="#home" class="active">Inicio</a></li>
+                <li><a href="#tv-section">TV en Vivo</a></li>
+                <li><a href="#partido-section">Partido</a></li>
+                <li><a href="#videos-section">Videos</a></li>
+                <li><a href="#contact">Contacto</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main id="home">
+        <section class="hero-section">
+            <div class="hero-content">
+                <h2 class="animate-up">Master Crazy Radio, <span class="electric">mas que radio !!</span></h2>
+                <p class="animate-up delay-1">La mejor música las 24 horas. ¡Conéctate con nosotros!</p>
+
+                <div class="hero-layout">
+                    <div class="player-wrapper animate-up delay-2">
+                        <div class="player-container" id="tilt-card">
+                            <div class="player-glow"></div>
+
+                            <!-- Custom Player UI -->
+                            <div class="custom-player">
+                                <div class="status-indicator">
+                                    <span class="live-dot"></span> LIVE
+                                </div>
+
+                                <!-- Song Title Marquee -->
+                                <div class="song-info-container">
+                                    <div class="song-info-marquee">
+                                        <span id="song-title">Cargando título...</span>
+                                    </div>
+                                </div>
+
+                                <button id="play-btn" class="play-btn">
+                                    <i class="fas fa-play"></i>
+                                </button>
+
+                                <div class="volume-control">
+                                    <i class="fas fa-volume-up" id="volume-icon"></i>
+                                    <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="1">
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="flyer-wrapper animate-up delay-3">
+                        <div class="flyer-card" id="flyer-card">
+                            <div class="flyer-glow"></div>
+                            <div class="flyer-shine"></div>
+                            <img src="flayer.jpeg" alt="Evento Especial - Master Crazy Radio" class="flyer-image">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="visualizer-container">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Live TV Section -->
+        <section id="tv-section" class="tv-section">
+            <h2 class="section-title">Canales <span class="highlight">En Vivo</span></h2>
+            <div class="tv-grid">
+                <!-- Red+ (News/Entertainment) -->
+                <!--
+                <div class="tv-card"
+                    onclick="playChannel('redplus', 'https://inforedvos.lcdn.claro.net.co/Content/HLS_HLS_DIR/Live/channel(REDMASHDWEB)/master.m3u8')">
+                    <div class="tv-card-content">
+                        <i class="fas fa-newspaper tv-icon"></i>
+                        <h3>Red+</h3>
+                        <span class="live-badge">EN VIVO</span>
+                    </div>
+                    <div class="play-overlay"><i class="fas fa-play"></i></div>
+                </div>
+                -->
+
+                <!-- Cablenoticias (News) -->
+                <!--
+                <div class="tv-card"
+                    onclick="playChannel('cablenoticias', 'https://5ea86ddd14ce7.streamlock.net/live/cable09061970/playlist.m3u8')">
+                    <div class="tv-card-content">
+                        <i class="fas fa-broadcast-tower tv-icon"></i>
+                        <h3>Cablenoticias</h3>
+                        <span class="live-badge">EN VIVO</span>
+                    </div>
+                    <div class="play-overlay"><i class="fas fa-play"></i></div>
+                </div>
+                -->
+
+                <!-- La Kalle (Music) -->
+                <div class="tv-card"
+                    onclick="playChannel('lakalle', 'https://mdstrm.com/live-stream-playlist/58d191f07290fbb058025843.m3u8')">
+                    <div class="tv-card-content">
+                        <i class="fas fa-music tv-icon"></i>
+                        <h3>La Kalle</h3>
+                        <span class="live-badge">EN VIVO</span>
+                    </div>
+                    <div class="play-overlay"><i class="fas fa-play"></i></div>
+                </div>
+
+                <!-- MCI Televisión (Movies/General) -->
+                <!--
+                <div class="tv-card"
+                    onclick="playChannel('mci', 'https://video.ejeserver.com/live/mcitelevision.m3u8')">
+                    <div class="tv-card-content">
+                        <i class="fas fa-film tv-icon"></i>
+                        <h3>MCI Televisión</h3>
+                        <span class="live-badge">EN VIVO</span>
+                    </div>
+                    <div class="play-overlay"><i class="fas fa-play"></i></div>
+                </div>
+                -->
+
+                <!-- Canal Trece -->
+                <!--
+                <div class="tv-card"
+                    onclick="playChannel('trece', 'https://stream.logicideas.media/canaltrece-live/smil:live.smil/playlist.m3u8')">
+                    <div class="tv-card-content">
+                        <i class="fas fa-cross tv-icon"></i>
+                        <h3>Canal Trece</h3>
+                        <span class="live-badge">EN VIVO</span>
+                    </div>
+                    <div class="play-overlay"><i class="fas fa-play"></i></div>
+                </div>
+                -->
+
+                <!-- Teleantioquia -->
+                <!--
+                <div class="tv-card"
+                    onclick="playChannel('teleantioquia', 'https://liveingesta118.cdnmedia.tv/teleantioquialive/smil:live.smil/playlist.m3u8')">
+                    <div class="tv-card-content">
+                        <i class="fas fa-mountain tv-icon"></i>
+                        <h3>Teleantioquia</h3>
+                        <span class="live-badge">EN VIVO</span>
+                    </div>
+                    <div class="play-overlay"><i class="fas fa-play"></i></div>
+                </div>
+                -->
+            </div>
+        </section>
+
+        <!-- TV Modal -->
+        <div id="tv-modal" class="tv-modal">
+            <div class="modal-content">
+                <span class="close-modal" onclick="closeTvModal()">&times;</span>
+                <div class="video-container">
+                    <video id="tv-player" controls></video>
+                    <div id="tv-iframe-container" style="display:none;">
+                        <iframe id="tv-iframe" width="100%" height="100%" frameborder="0" allow="autoplay" allowfullscreen></iframe>
+                    </div>
+                </div>
+                <h3 id="channel-name">Nombre del Canal</h3>
+            </div>
+        </div>
+
+        <!-- Partido En Vivo Section -->
+        <section id="partido-section" class="tv-section">
+            <h2 class="section-title">Partido <span class="highlight">En Vivo</span></h2>
+            <div class="partido-container">
+                <iframe width="100%" height="500" src="//ok.ru/videoembed/13981676805705?nochat=1" frameborder="0" allow="autoplay" allowfullscreen style="border-radius:20px;border:3px solid #ff3366;"></iframe>
+            </div>
+        </section>
+
+        <!-- Videos Section -->
+        <section id="videos-section" class="videos-section">
+            <h2 class="section-title">Videos <span class="highlight">Destacados</span></h2>
+            <div class="videos-grid">
+                <div class="video-card">
+                    <iframe width="100%" height="500" src="https://www.youtube.com/embed/ZxMiWd0ZKfU"
+                        title="Video destacado 1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowfullscreen style="border-radius:20px;">
+                    </iframe>
+                </div>
+                <div class="video-card">
+                    <iframe width="100%" height="500" src="https://www.youtube.com/embed/9UitZ4wkDWE"
+                        title="Video destacado 2" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowfullscreen style="border-radius:20px;">
+                    </iframe>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Form Section -->
+        <section id="contact" class="contact-section">
+            <h2 class="section-title">Contáctanos</h2>
+            <div class="contact-container">
+                <form class="contact-form" id="contactForm">
+                    <div class="form-group">
+                        <label for="name">Nombre</label>
+                        <input type="text" id="name" name="name" required placeholder="Tu nombre">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required placeholder="tu@email.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Teléfono</label>
+                        <input type="tel" id="phone" name="phone" placeholder="+57 300 123 4567">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message">Mensaje</label>
+                        <textarea id="message" name="message" rows="5" required
+                            placeholder="Escribe tu mensaje aquí..."></textarea>
+                    </div>
+
+                    <button type="submit" class="submit-btn">
+                        <i class="fas fa-paper-plane"></i> Enviar Mensaje
+                    </button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <p>&copy; 2025 Master Crazy Radio. Todos los derechos reservados.</p>
+        <div class="social-links">
+            <a href="#">Facebook</a>
+            <a href="#">Instagram</a>
+            <a href="#">Twitter</a>
+        </div>
     </footer>
 
-   <!-- <script src="js/js.js"></script>-->
-  </body>
+    <a href="https://wa.me/573117307017" class="whatsapp-float" target="_blank">
+        <img src="whatsapp_logo.jpg" alt="WhatsApp" class="whatsapp-icon">
+    </a>
+
+    <script src="script.js"></script>
+</body>
+
 </html>
