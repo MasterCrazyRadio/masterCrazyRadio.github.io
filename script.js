@@ -241,57 +241,63 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Memes Section - Top 10 del Día
+    // Memes Section - Top 10 Colombianos
     const memesGrid = document.getElementById('memes-grid');
     if (memesGrid) {
-        const MEME_API = 'https://meme-api.com/gimme/10';
+        const MEME_SUBREDDITS = ['ColombiaReddit', 'Colombia', 'memesenespanol', 'LatinoPeopleTwitter'];
 
         async function loadMemes() {
             memesGrid.innerHTML = '<p class="memes-loading">Cargando memes...</p>';
-            try {
-                const response = await fetch(MEME_API);
-                if (!response.ok) throw new Error('API error');
-                const data = await response.json();
-                const memes = (data.memes || [])
-                    .filter(m => !m.nsfw && !m.spoiler)
-                    .slice(0, 10);
-
-                if (memes.length === 0) throw new Error('Sin memes');
-
-                memesGrid.innerHTML = '';
-                memes.forEach(meme => {
-                    const card = document.createElement('a');
-                    card.className = 'meme-card';
-                    card.href = meme.postLink;
-                    card.target = '_blank';
-                    card.rel = 'noopener noreferrer';
-
-                    const img = document.createElement('img');
-                    img.src = meme.url;
-                    img.alt = meme.title || 'Meme';
-                    img.loading = 'lazy';
-                    img.onerror = () => { card.remove(); };
-
-                    const info = document.createElement('div');
-                    info.className = 'meme-info';
-
-                    const title = document.createElement('h3');
-                    title.textContent = meme.title || 'Meme';
-
-                    const meta = document.createElement('div');
-                    meta.className = 'meme-meta';
-                    meta.innerHTML = '<i class="fas fa-reddit"></i> r/' + (meme.subreddit || 'memes') + ' &middot; ' + (meme.ups || 0) + ' ups';
-
-                    info.appendChild(title);
-                    info.appendChild(meta);
-                    card.appendChild(img);
-                    card.appendChild(info);
-                    memesGrid.appendChild(card);
-                });
-            } catch (error) {
-                console.error('Error cargando memes:', error);
-                memesGrid.innerHTML = '<p class="memes-error">No se pudieron cargar los memes. Intenta de nuevo más tarde.</p>';
+            for (const sub of MEME_SUBREDDITS) {
+                try {
+                    const response = await fetch('https://meme-api.com/gimme/' + sub + '/10');
+                    if (!response.ok) throw new Error('API error');
+                    const data = await response.json();
+                    const memes = (data.memes || [])
+                        .filter(m => !m.nsfw && !m.spoiler)
+                        .slice(0, 10);
+                    if (memes.length > 0) {
+                        renderMemes(memes);
+                        return;
+                    }
+                } catch (error) {
+                    console.error('Error con r/' + sub + ':', error);
+                }
             }
+            memesGrid.innerHTML = '<p class="memes-error">No se pudieron cargar los memes. Intenta de nuevo más tarde.</p>';
+        }
+
+        function renderMemes(memes) {
+            memesGrid.innerHTML = '';
+            memes.forEach(meme => {
+                const card = document.createElement('a');
+                card.className = 'meme-card';
+                card.href = meme.postLink;
+                card.target = '_blank';
+                card.rel = 'noopener noreferrer';
+
+                const img = document.createElement('img');
+                img.src = meme.url;
+                img.alt = meme.title || 'Meme';
+                img.loading = 'lazy';
+                img.onerror = () => { card.remove(); };
+
+                const info = document.createElement('div');
+                info.className = 'meme-info';
+
+                const title = document.createElement('h3');
+                title.textContent = meme.title || 'Meme';
+
+                const meta = document.createElement('div');
+                meta.className = 'meme-meta';
+                meta.innerHTML = '<i class="fas fa-reddit"></i> r/' + (meme.subreddit || 'memes') + ' &middot; ' + (meme.ups || 0) + ' ups';
+
+                info.appendChild(title);
+                info.appendChild(meta);
+                card.appendChild(img);
+                card.appendChild(info);
+                memesGrid.appendChild(card);
+            });
         }
 
         loadMemes();
