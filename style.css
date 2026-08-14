@@ -1089,15 +1089,41 @@ input[type="range"]::-webkit-slider-thumb:hover {
     }
 }
 
-/* Memes Section */
-.memes-section {
+/* Noticias Deportivas Section */
+.news-section {
     padding: 80px 20px;
     text-align: center;
     position: relative;
     z-index: 2;
 }
 
-.memes-grid {
+.news-tiktok {
+    max-width: 605px;
+    margin: 0 auto 40px;
+    padding: 25px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 24px;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+.news-tiktok-title {
+    color: #fff;
+    font-size: 1.2rem;
+    margin: 0 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.news-tiktok-title i {
+    color: var(--primary-neon);
+    font-size: 1.4rem;
+}
+
+.news-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 25px;
@@ -1106,7 +1132,7 @@ input[type="range"]::-webkit-slider-thumb:hover {
     padding: 20px;
 }
 
-.meme-card {
+.news-card {
     background: rgba(255, 255, 255, 0.05);
     border: 2px solid rgba(0, 243, 255, 0.2);
     border-radius: 20px;
@@ -1118,21 +1144,21 @@ input[type="range"]::-webkit-slider-thumb:hover {
     flex-direction: column;
 }
 
-.meme-card:hover {
+.news-card:hover {
     transform: translateY(-5px);
     border-color: var(--primary-neon);
     box-shadow: 0 15px 50px rgba(0, 243, 255, 0.2);
 }
 
-.meme-card img {
+.news-card img {
     width: 100%;
-    aspect-ratio: 1 / 1;
+    aspect-ratio: 16 / 9;
     object-fit: cover;
     display: block;
     background: #111;
 }
 
-.meme-card .meme-info {
+.news-card .news-info {
     padding: 15px;
     flex: 1;
     display: flex;
@@ -1140,19 +1166,19 @@ input[type="range"]::-webkit-slider-thumb:hover {
     gap: 8px;
 }
 
-.meme-card h3 {
+.news-card h3 {
     color: #fff;
     font-size: 1rem;
     font-weight: 500;
     margin: 0;
     line-height: 1.4;
     display: -webkit-box;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
 
-.meme-card .meme-meta {
+.news-card .news-meta {
     color: var(--secondary-neon);
     font-size: 0.85rem;
     display: flex;
@@ -1160,26 +1186,30 @@ input[type="range"]::-webkit-slider-thumb:hover {
     gap: 8px;
 }
 
-.meme-card .meme-meta i {
+.news-card .news-meta i {
     font-size: 0.9rem;
 }
 
-.memes-loading,
-.memes-error {
+.news-loading,
+.news-error {
     color: rgba(255, 255, 255, 0.7);
     font-size: 1.1rem;
     padding: 40px;
     grid-column: 1 / -1;
 }
 
-.memes-error {
+.news-error {
     color: var(--secondary-neon);
 }
 
 @media (max-width: 768px) {
-    .memes-grid {
+    .news-grid {
         grid-template-columns: 1fr;
         padding: 10px;
+    }
+
+    .news-tiktok {
+        padding: 15px;
     }
 }
 
