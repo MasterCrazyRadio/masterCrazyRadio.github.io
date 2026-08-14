@@ -306,65 +306,68 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Memes Section - Top 10 Colombianos
-    const memesGrid = document.getElementById('memes-grid');
-    if (memesGrid) {
-        const MEME_SUBREDDITS = ['ColombiaReddit', 'Colombia', 'memesenespanol', 'LatinoPeopleTwitter'];
+    // Noticias Deportivas Section
+    const newsGrid = document.getElementById('news-grid');
+    if (newsGrid) {
+        const NEWS_FEEDS = [
+            'https://www.ole.com.ar/rss/'
+        ];
 
-        async function loadMemes() {
-            memesGrid.innerHTML = '<p class="memes-loading">Cargando memes...</p>';
-            for (const sub of MEME_SUBREDDITS) {
+        async function loadNews() {
+            newsGrid.innerHTML = '<p class="news-loading">Cargando noticias deportivas...</p>';
+            for (const feed of NEWS_FEEDS) {
                 try {
-                    const response = await fetch('https://meme-api.com/gimme/' + sub + '/10');
+                    const response = await fetch('https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent(feed));
                     if (!response.ok) throw new Error('API error');
                     const data = await response.json();
-                    const memes = (data.memes || [])
-                        .filter(m => !m.nsfw && !m.spoiler)
-                        .slice(0, 10);
-                    if (memes.length > 0) {
-                        renderMemes(memes);
+                    const items = (data.items || [])
+                        .filter(item => item.title && item.link)
+                        .slice(0, 8);
+                    if (items.length > 0) {
+                        renderNews(items);
                         return;
                     }
                 } catch (error) {
-                    console.error('Error con r/' + sub + ':', error);
+                    console.error('Error con feed de noticias:', error);
                 }
             }
-            memesGrid.innerHTML = '<p class="memes-error">No se pudieron cargar los memes. Intenta de nuevo más tarde.</p>';
+            newsGrid.innerHTML = '<p class="news-error">No se pudieron cargar las noticias. Intenta de nuevo más tarde.</p>';
         }
 
-        function renderMemes(memes) {
-            memesGrid.innerHTML = '';
-            memes.forEach(meme => {
+        function renderNews(items) {
+            newsGrid.innerHTML = '';
+            items.forEach(item => {
                 const card = document.createElement('a');
-                card.className = 'meme-card';
-                card.href = meme.postLink;
+                card.className = 'news-card';
+                card.href = item.link;
                 card.target = '_blank';
                 card.rel = 'noopener noreferrer';
 
                 const img = document.createElement('img');
-                img.src = meme.url;
-                img.alt = meme.title || 'Meme';
+                img.src = item.thumbnail || 'radio_background.png';
+                img.alt = item.title || 'Noticia deportiva';
                 img.loading = 'lazy';
                 img.onerror = () => { card.remove(); };
 
                 const info = document.createElement('div');
-                info.className = 'meme-info';
+                info.className = 'news-info';
 
                 const title = document.createElement('h3');
-                title.textContent = meme.title || 'Meme';
+                title.textContent = item.title || 'Noticia deportiva';
 
                 const meta = document.createElement('div');
-                meta.className = 'meme-meta';
-                meta.innerHTML = '<i class="fas fa-reddit"></i> r/' + (meme.subreddit || 'memes') + ' &middot; ' + (meme.ups || 0) + ' ups';
+                meta.className = 'news-meta';
+                const date = item.pubDate ? new Date(item.pubDate).toLocaleDateString('es-CO', { day: 'numeric', month: 'short' }) : '';
+                meta.innerHTML = '<i class="fas fa-newspaper"></i> Deportes &middot; ' + date;
 
                 info.appendChild(title);
                 info.appendChild(meta);
                 card.appendChild(img);
                 card.appendChild(info);
-                memesGrid.appendChild(card);
+                newsGrid.appendChild(card);
             });
         }
 
-        loadMemes();
+        loadNews();
     }
 });
