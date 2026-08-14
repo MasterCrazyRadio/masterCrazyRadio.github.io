@@ -1123,6 +1123,17 @@ input[type="range"]::-webkit-slider-thumb:hover {
     font-size: 1.4rem;
 }
 
+.news-video {
+    display: block;
+    width: 100%;
+    max-width: 480px;
+    margin: 0 auto;
+    border-radius: 16px;
+    border: 2px solid rgba(0, 243, 255, 0.25);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    background: #000;
+}
+
 .news-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
