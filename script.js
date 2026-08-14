@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
         eventSource.onerror = function (err) {
             console.error("Metadata connection error:", err);
             // Fallback text if API fails
-            // songTitleElement.innerText = "MASTER CRAZY RADIO - LA RADIO JOVEN";
+            // songTitleElement.innerText = "MASTER CRAZY RADIO - LA CASA OFICIAL DE LA CUMBIA";
             eventSource.close();
             // Try to reconnect after 10 seconds
             setTimeout(initMetadata, 10000);
