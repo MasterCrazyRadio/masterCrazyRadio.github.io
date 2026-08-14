@@ -322,7 +322,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const data = await response.json();
                     const items = (data.items || [])
                         .filter(item => item.title && item.link)
-                        .slice(0, 8);
+                        .slice(0, 3);
                     if (items.length > 0) {
                         renderNews(items);
                         return;
@@ -344,7 +344,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 card.rel = 'noopener noreferrer';
 
                 const img = document.createElement('img');
-                img.src = item.thumbnail || 'radio_background.png';
+                img.src = (item.enclosure && item.enclosure.link) || item.thumbnail || 'radio_background.png';
                 img.alt = item.title || 'Noticia deportiva';
                 img.loading = 'lazy';
                 img.onerror = () => { card.remove(); };
