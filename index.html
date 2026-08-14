@@ -73,17 +73,30 @@
                     </div>
 
                     <div class="flyer-wrapper animate-up delay-3">
-                        <div class="flyer-row">
-                            <div class="flyer-card" id="flyer-card">
-                                <div class="flyer-glow"></div>
-                                <div class="flyer-shine"></div>
-                                <img src="flayer.jpeg" alt="Evento Especial - Master Crazy Radio" class="flyer-image">
+                        <div class="flyer-slider" id="flyer-slider">
+                            <div class="flyer-slider-track" id="flyer-slider-track">
+                                <div class="flyer-slide">
+                                    <div class="flyer-card flyer-slide-card active">
+                                        <div class="flyer-glow"></div>
+                                        <div class="flyer-shine"></div>
+                                        <img src="flayer.jpeg" alt="Evento Especial - Master Crazy Radio" class="flyer-image">
+                                    </div>
+                                </div>
+                                <div class="flyer-slide">
+                                    <div class="flyer-card flyer-slide-card">
+                                        <div class="flyer-glow"></div>
+                                        <div class="flyer-shine"></div>
+                                        <img src="cauca_se_toma.jpeg" alt="El Cauca se Toma" class="flyer-image">
+                                    </div>
+                                </div>
                             </div>
-                            <div class="flyer-card flyer-card-secondary">
-                                <div class="flyer-glow"></div>
-                                <div class="flyer-shine"></div>
-                                <img src="cauca_se_toma.jpeg" alt="El Cauca se Toma" class="flyer-image">
-                            </div>
+                            <button class="flyer-slider-btn flyer-slider-prev" id="flyer-slider-prev" aria-label="Flyer anterior">
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <button class="flyer-slider-btn flyer-slider-next" id="flyer-slider-next" aria-label="Flyer siguiente">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                            <div class="flyer-slider-dots" id="flyer-slider-dots"></div>
                         </div>
                     </div>
                 </div>

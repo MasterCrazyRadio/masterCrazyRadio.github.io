@@ -114,28 +114,93 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Flyer 3D Tilt Effect
-    const flyerCard = document.getElementById('flyer-card');
+    // Flyer Slider
+    const flyerSlider = document.getElementById('flyer-slider');
+    const flyerTrack = document.getElementById('flyer-slider-track');
+    const flyerSlides = flyerTrack ? flyerTrack.querySelectorAll('.flyer-slide') : [];
+    const flyerPrev = document.getElementById('flyer-slider-prev');
+    const flyerNext = document.getElementById('flyer-slider-next');
+    const flyerDotsWrap = document.getElementById('flyer-slider-dots');
+    let flyerIndex = 0;
+    let flyerTimer = null;
+    const FLYER_INTERVAL = 5000;
+
+    if (flyerTrack && flyerSlides.length > 1) {
+        // Build dots
+        flyerSlides.forEach((_, i) => {
+            const dot = document.createElement('button');
+            dot.className = 'flyer-slider-dot' + (i === 0 ? ' active' : '');
+            dot.setAttribute('aria-label', 'Ir al flyer ' + (i + 1));
+            dot.addEventListener('click', () => goToFlyer(i));
+            flyerDotsWrap.appendChild(dot);
+        });
+        const flyerDots = flyerDotsWrap.querySelectorAll('.flyer-slider-dot');
+
+        function goToFlyer(index) {
+            flyerIndex = (index + flyerSlides.length) % flyerSlides.length;
+            flyerTrack.style.transform = `translateX(-${flyerIndex * 100}%)`;
+            flyerDots.forEach((d, i) => d.classList.toggle('active', i === flyerIndex));
+            flyerSlides.forEach((s, i) => {
+                const card = s.querySelector('.flyer-slide-card');
+                if (card) card.classList.toggle('active', i === flyerIndex);
+            });
+        }
+
+        function nextFlyer() { goToFlyer(flyerIndex + 1); restartFlyerTimer(); }
+        function prevFlyer() { goToFlyer(flyerIndex - 1); restartFlyerTimer(); }
+
+        function restartFlyerTimer() {
+            clearInterval(flyerTimer);
+            flyerTimer = setInterval(() => goToFlyer(flyerIndex + 1), FLYER_INTERVAL);
+        }
+
+        flyerNext.addEventListener('click', nextFlyer);
+        flyerPrev.addEventListener('click', prevFlyer);
+        flyerSlider.addEventListener('mouseenter', () => clearInterval(flyerTimer));
+        flyerSlider.addEventListener('mouseleave', restartFlyerTimer);
+
+        // Swipe support (touch)
+        let touchStartX = 0;
+        flyerSlider.addEventListener('touchstart', (e) => {
+            touchStartX = e.touches[0].clientX;
+        }, { passive: true });
+        flyerSlider.addEventListener('touchend', (e) => {
+            const diff = e.changedTouches[0].clientX - touchStartX;
+            if (Math.abs(diff) > 50) {
+                diff < 0 ? nextFlyer() : prevFlyer();
+            }
+        }, { passive: true });
+
+        restartFlyerTimer();
+    }
+
+    // Flyer 3D Tilt Effect (applies to active slide)
     const flyerWrapper = document.querySelector('.flyer-wrapper');
 
-    if (flyerCard && flyerWrapper) {
-        flyerWrapper.addEventListener('mousemove', (e) => {
-            const rect = flyerWrapper.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
+    if (flyerWrapper) {
+        const tiltable = flyerWrapper.querySelector('.flyer-slide-card');
+        if (tiltable) {
+            flyerWrapper.addEventListener('mousemove', (e) => {
+                const activeCard = flyerWrapper.querySelector('.flyer-slide-card.active');
+                if (!activeCard) return;
+                const rect = flyerWrapper.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
 
-            const centerX = rect.width / 2;
-            const centerY = rect.height / 2;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
 
-            const rotateX = ((y - centerY) / centerY) * -8;
-            const rotateY = ((x - centerX) / centerX) * 8;
+                const rotateX = ((y - centerY) / centerY) * -8;
+                const rotateY = ((x - centerX) / centerX) * 8;
 
-            flyerCard.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
-        });
+                activeCard.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
+            });
 
-        flyerWrapper.addEventListener('mouseleave', () => {
-            flyerCard.style.transform = 'rotateX(0) rotateY(0) scale(1)';
-        });
+            flyerWrapper.addEventListener('mouseleave', () => {
+                const activeCard = flyerWrapper.querySelector('.flyer-slide-card.active');
+                if (activeCard) activeCard.style.transform = 'rotateX(0) rotateY(0) scale(1)';
+            });
+        }
     }
 
     console.log("Master Crazy Radio - Custom Player with Live Metadata Loaded!");
