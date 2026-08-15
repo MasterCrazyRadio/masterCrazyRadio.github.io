@@ -1044,48 +1044,118 @@ input[type="range"]::-webkit-slider-thumb:hover {
     height: 100%;
 }
 
-/* Videos Section */
-.videos-section {
+/* Top 5 Canciones Section */
+.top5-section {
     padding: 80px 20px;
     text-align: center;
     position: relative;
     z-index: 2;
 }
 
-.videos-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 30px;
-    max-width: 1200px;
+.top5-container {
+    max-width: 800px;
     margin: 0 auto;
     padding: 20px;
 }
 
-.video-card {
-    position: relative;
-    border-radius: 20px;
-    overflow: hidden;
-    border: 2px solid rgba(0, 243, 255, 0.2);
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+.top5-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.top5-item {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    padding: 18px 24px;
     transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    text-align: left;
 }
 
-.video-card:hover {
-    transform: translateY(-5px);
+.top5-item:hover {
+    transform: translateY(-4px) scale(1.02);
     border-color: var(--primary-neon);
-    box-shadow: 0 15px 50px rgba(0, 243, 255, 0.2);
+    box-shadow: 0 10px 40px rgba(0, 243, 255, 0.2);
 }
 
-.video-card iframe {
-    aspect-ratio: 9 / 16;
-    height: auto;
-    display: block;
+.top5-rank {
+    font-size: 2.6rem;
+    font-weight: 800;
+    min-width: 64px;
+    text-align: center;
+    color: var(--primary-neon);
+    text-shadow: 0 0 20px rgba(0, 243, 255, 0.6);
+    font-style: italic;
+}
+
+.top5-item:nth-child(1) .top5-rank {
+    color: #ffd700;
+    text-shadow: 0 0 20px rgba(255, 215, 0, 0.7);
+}
+
+.top5-item:nth-child(2) .top5-rank {
+    color: #c0c0c0;
+    text-shadow: 0 0 20px rgba(192, 192, 192, 0.6);
+}
+
+.top5-item:nth-child(3) .top5-rank {
+    color: #cd7f32;
+    text-shadow: 0 0 20px rgba(205, 127, 50, 0.6);
+}
+
+.top5-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.top5-song {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.top5-artist {
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.65);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.top5-duration {
+    font-size: 0.95rem;
+    color: var(--secondary-neon);
+    font-weight: 600;
+    white-space: nowrap;
 }
 
 @media (max-width: 768px) {
-    .videos-grid {
-        grid-template-columns: 1fr;
+    .top5-container {
         padding: 10px;
+    }
+    .top5-item {
+        padding: 14px 16px;
+        gap: 14px;
+    }
+    .top5-rank {
+        font-size: 2rem;
+        min-width: 48px;
+    }
+    .top5-song {
+        font-size: 1.05rem;
+    }
+    .top5-duration {
+        font-size: 0.85rem;
     }
 }
 
