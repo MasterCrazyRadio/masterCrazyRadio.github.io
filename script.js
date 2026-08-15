@@ -310,9 +310,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const newsGrid = document.getElementById('news-grid');
     if (newsGrid) {
         const NEWS_FEEDS = [
-            { name: 'Real Madrid', url: 'https://e00-marca.uecdn.es/rss/futbol/real-madrid.xml' },
-            { name: 'Barcelona', url: 'https://www.mundodeportivo.com/rss/futbol/fc-barcelona.xml' },
-            { name: 'Real Madrid', url: 'https://www.mundodeportivo.com/rss/futbol/real-madrid.xml' }
+            { name: 'Fichajes Barça', url: 'https://e00-marca.uecdn.es/rss/futbol/mercado-fichajes.xml', keywords: ['barça', 'barcelona', 'azulgrana', 'blaugrana', 'ferran torres', 'rodri'] },
+            { name: 'Fichajes Real Madrid', url: 'https://e00-marca.uecdn.es/rss/futbol/real-madrid.xml', keywords: ['ficha', 'fichaje', 'mercado', 'traspaso', 'cesión', 'cesion', 'refuerzo', 'firma', 'oferta'] },
+            { name: 'Fichajes', url: 'https://www.mundodeportivo.com/rss/futbol/fichajes.xml', keywords: ['barça', 'barcelona', 'real madrid', 'merengue', 'blancos'] }
         ];
 
         function getItemImage(item) {
@@ -327,10 +327,17 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (!response.ok) throw new Error('API error');
                     const data = await response.json();
                     if (data.status !== 'ok') return [];
-                    return (data.items || [])
-                        .filter(item => item.title && item.link && getItemImage(item))
+                    // Rumores de fichajes de Barça y Real Madrid, con miniatura real
+                    let items = (data.items || [])
+                        .filter(item => item.title && item.link && getItemImage(item));
+                    const filtered = items.filter(item =>
+                        feed.keywords.length === 0 ||
+                        feed.keywords.some(k => item.title.toLowerCase().includes(k))
+                    );
+                    items = (filtered.length > 0 ? filtered : items)
                         .slice(0, 3)
                         .map(item => ({ ...item, source: feed.name }));
+                    return items;
                 } catch (error) {
                     console.error('Error con feed de noticias:', feed.name, error);
                     return [];
@@ -338,10 +345,14 @@ document.addEventListener('DOMContentLoaded', () => {
             }));
             // Intercalar feeds (round-robin) para mezclar Real Madrid y Barcelona
             const mixed = [];
+            const seen = new Set();
             const maxLen = Math.max(...results.map(r => r.length), 0);
             for (let i = 0; i < maxLen; i++) {
                 for (const list of results) {
-                    if (list[i]) mixed.push(list[i]);
+                    if (list[i] && !seen.has(list[i].link)) {
+                        seen.add(list[i].link);
+                        mixed.push(list[i]);
+                    }
                 }
             }
             const items = mixed.slice(0, 3);
