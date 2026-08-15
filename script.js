@@ -399,4 +399,61 @@ document.addEventListener('DOMContentLoaded', () => {
 
         loadNews();
     }
+
+    // Top 5 Canciones - Reproductor
+    const top5List = document.querySelector('.top5-list');
+    if (top5List) {
+        const audio = new Audio();
+        let currentItem = null;
+
+        function resetPlayIcons() {
+            document.querySelectorAll('.top5-item').forEach(item => {
+                item.classList.remove('playing');
+                const icon = item.querySelector('.top5-play i');
+                if (icon) icon.className = 'fas fa-play';
+            });
+        }
+
+        function playItem(item) {
+            const src = item.dataset.audio;
+            if (!src) return;
+            if (currentItem === item && !audio.paused) {
+                audio.pause();
+                item.classList.remove('playing');
+                const icon = item.querySelector('.top5-play i');
+                if (icon) icon.className = 'fas fa-play';
+                currentItem = null;
+                return;
+            }
+            resetPlayIcons();
+            audio.src = src;
+            audio.play().catch(err => console.error('Error al reproducir audio:', err));
+            currentItem = item;
+            item.classList.add('playing');
+            const icon = item.querySelector('.top5-play i');
+            if (icon) icon.className = 'fas fa-pause';
+        }
+
+        top5List.addEventListener('click', (e) => {
+            const item = e.target.closest('.top5-item');
+            if (item) playItem(item);
+        });
+
+        audio.addEventListener('ended', () => {
+            if (currentItem) {
+                currentItem.classList.remove('playing');
+                const icon = currentItem.querySelector('.top5-play i');
+                if (icon) icon.className = 'fas fa-play';
+                currentItem = null;
+            }
+        });
+
+        audio.addEventListener('pause', () => {
+            if (currentItem) {
+                currentItem.classList.remove('playing');
+                const icon = currentItem.querySelector('.top5-play i');
+                if (icon) icon.className = 'fas fa-play';
+            }
+        });
+    }
 });
