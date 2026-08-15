@@ -235,9 +235,7 @@ body {
     position: relative;
     border-radius: 20px;
     overflow: hidden;
-    background:
-        linear-gradient(rgba(5, 5, 16, 0.35), rgba(5, 5, 16, 0.35)),
-        url('player_fondo.jpg') center/cover no-repeat;
+    background: rgba(255, 255, 255, 0.03);
     backdrop-filter: blur(20px);
     border: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow:
