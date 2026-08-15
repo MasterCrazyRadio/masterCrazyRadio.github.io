@@ -310,28 +310,46 @@ document.addEventListener('DOMContentLoaded', () => {
     const newsGrid = document.getElementById('news-grid');
     if (newsGrid) {
         const NEWS_FEEDS = [
-            'https://www.ole.com.ar/rss/'
+            { name: 'Real Madrid', url: 'https://e00-marca.uecdn.es/rss/futbol/real-madrid.xml' },
+            { name: 'Barcelona', url: 'https://www.mundodeportivo.com/rss/futbol/fc-barcelona.xml' },
+            { name: 'Real Madrid', url: 'https://www.mundodeportivo.com/rss/futbol/real-madrid.xml' }
         ];
+
+        function getItemImage(item) {
+            return (item.enclosure && item.enclosure.link) || item.thumbnail || '';
+        }
 
         async function loadNews() {
             newsGrid.innerHTML = '<p class="news-loading">Cargando noticias deportivas...</p>';
-            for (const feed of NEWS_FEEDS) {
+            const results = await Promise.all(NEWS_FEEDS.map(async (feed) => {
                 try {
-                    const response = await fetch('https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent(feed));
+                    const response = await fetch('https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent(feed.url));
                     if (!response.ok) throw new Error('API error');
                     const data = await response.json();
-                    const items = (data.items || [])
-                        .filter(item => item.title && item.link)
-                        .slice(0, 3);
-                    if (items.length > 0) {
-                        renderNews(items);
-                        return;
-                    }
+                    if (data.status !== 'ok') return [];
+                    return (data.items || [])
+                        .filter(item => item.title && item.link && getItemImage(item))
+                        .slice(0, 3)
+                        .map(item => ({ ...item, source: feed.name }));
                 } catch (error) {
-                    console.error('Error con feed de noticias:', error);
+                    console.error('Error con feed de noticias:', feed.name, error);
+                    return [];
+                }
+            }));
+            // Intercalar feeds (round-robin) para mezclar Real Madrid y Barcelona
+            const mixed = [];
+            const maxLen = Math.max(...results.map(r => r.length), 0);
+            for (let i = 0; i < maxLen; i++) {
+                for (const list of results) {
+                    if (list[i]) mixed.push(list[i]);
                 }
             }
-            newsGrid.innerHTML = '<p class="news-error">No se pudieron cargar las noticias. Intenta de nuevo más tarde.</p>';
+            const items = mixed.slice(0, 3);
+            if (items.length > 0) {
+                renderNews(items);
+            } else {
+                newsGrid.innerHTML = '<p class="news-error">No se pudieron cargar las noticias. Intenta de nuevo más tarde.</p>';
+            }
         }
 
         function renderNews(items) {
@@ -344,10 +362,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 card.rel = 'noopener noreferrer';
 
                 const img = document.createElement('img');
-                img.src = (item.enclosure && item.enclosure.link) || item.thumbnail || 'radio_background.png';
+                img.src = getItemImage(item);
                 img.alt = item.title || 'Noticia deportiva';
                 img.loading = 'lazy';
-                img.onerror = () => { card.remove(); };
+                img.onerror = () => { img.src = 'radio_background.png'; };
 
                 const info = document.createElement('div');
                 info.className = 'news-info';
@@ -358,7 +376,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const meta = document.createElement('div');
                 meta.className = 'news-meta';
                 const date = item.pubDate ? new Date(item.pubDate).toLocaleDateString('es-CO', { day: 'numeric', month: 'short' }) : '';
-                meta.innerHTML = '<i class="fas fa-newspaper"></i> Deportes &middot; ' + date;
+                meta.innerHTML = '<i class="fas fa-newspaper"></i> ' + (item.source || 'Deportes') + ' &middot; ' + date;
 
                 info.appendChild(title);
                 info.appendChild(meta);
