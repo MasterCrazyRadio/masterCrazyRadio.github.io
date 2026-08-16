@@ -175,10 +175,12 @@ body {
 /* Hero Section */
 .hero-brand {
     display: flex;
-    align-items: center;
-    justify-content: center;
+    align-items: flex-start;
+    justify-content: flex-start;
     gap: 30px;
+    margin-top: -25px;
     margin-bottom: 30px;
+    padding-left: 30px;
     text-align: left;
 }
 
@@ -188,6 +190,7 @@ body {
     border-radius: 50%;
     object-fit: cover;
     flex-shrink: 0;
+    margin-top: -8px;
     border: 3px solid var(--primary-neon);
     box-shadow: 0 0 30px rgba(0, 243, 255, 0.4), 0 10px 30px rgba(0, 0, 0, 0.5);
 }
@@ -756,7 +759,11 @@ input[type="range"]::-webkit-slider-thumb:hover {
     .hero-brand {
         flex-direction: column;
         text-align: center;
+        align-items: center;
+        justify-content: center;
         gap: 20px;
+        padding-left: 0;
+        margin-top: 0;
     }
 
     .hero-brand-text h2 {
