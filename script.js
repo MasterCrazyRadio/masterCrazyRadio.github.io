@@ -481,6 +481,32 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (e) { }
     };
 
+    // Botón "Maximizar en vertical" (esquina inferior de la transmisión):
+    // pantalla completa nativa en orientación vertical (retrato), aplica a
+    // todos los canales (la Kalle, Caracol TV, Master Crazy TV, etc).
+    window.maximizeTvVertical = function () {
+        const modal = document.getElementById('tv-modal');
+        if (!modal || modal.style.display !== 'flex') return;
+        // Salir del modo horizontal si estaba activo
+        modal.classList.remove('is-landscape');
+        // Forzar orientación vertical (retrato) si el navegador lo permite
+        try {
+            if (screen.orientation && screen.orientation.lock) {
+                screen.orientation.lock('portrait').catch(function () { });
+            }
+        } catch (e) { }
+        // Entrar en fullscreen nativo (oculta la barra del navegador)
+        try {
+            if (modal.requestFullscreen) {
+                modal.requestFullscreen().catch(function () { });
+            } else if (modal.webkitRequestFullscreen) {
+                modal.webkitRequestFullscreen();
+            } else if (modal.msRequestFullscreen) {
+                modal.msRequestFullscreen();
+            }
+        } catch (e) { }
+    };
+
     window.addEventListener('orientationchange', function () {
         setTimeout(updateTvOrientationClass, 350);
     });
