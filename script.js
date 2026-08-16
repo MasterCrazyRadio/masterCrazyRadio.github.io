@@ -83,6 +83,8 @@ document.addEventListener('DOMContentLoaded', () => {
         reconnectTimer = null;
         if (!isPlaying) return;
         showReconnectStatus(true);
+        // Si el ecualizador está en uso, reactivar el AudioContext al reconectar
+        if (eqCtx) resumeEqCtx();
         try {
             audio.load();
             const p = audio.play();
@@ -102,6 +104,8 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             isPlaying = true;
             clearReconnect();
+            // Si el ecualizador está en uso, reactivar el AudioContext (gesto)
+            if (eqCtx) resumeEqCtx();
             audio.play().catch(error => {
                 console.error("Playback failed:", error);
                 // Prioridad: reconectarse automáticamente en vez de solo alertar
@@ -215,37 +219,63 @@ document.addEventListener('DOMContentLoaded', () => {
         eqTrebleVal.textContent = (parseInt(eqTreble.value, 10) > 0 ? '+' : '') + eqTreble.value;
     }
 
+    // Reanudar el AudioContext SIEMPRE con gesto del usuario: sin esto, el audio
+    // se queda mudo al activar/desactivar el EQ (contexto suspendido).
+    function resumeEqCtx() {
+        if (eqCtx && eqCtx.state === 'suspended') {
+            eqCtx.resume().catch(function () { });
+        }
+    }
+
+    // Inicializa el grafo de audio UNA sola vez (source -> filtros -> destino).
+    // Se llama desde el play y desde el toggle EQ (gestos de usuario).
     function initEqualizer() {
         if (eqCtx || !audio) return;
         const AC = window.AudioContext || window.webkitAudioContext;
         if (!AC) return;
-        eqCtx = new AC();
-        eqSource = eqCtx.createMediaElementSource(audio);
-        eqFilters = [
-            eqCtx.createBiquadFilter(), // graves
-            eqCtx.createBiquadFilter(), // medios
-            eqCtx.createBiquadFilter()  // agudos
-        ];
-        eqFilters[0].type = 'lowshelf';
-        eqFilters[0].frequency.value = 200;
-        eqFilters[1].type = 'peaking';
-        eqFilters[1].frequency.value = 1000;
-        eqFilters[1].Q.value = 0.8;
-        eqFilters[2].type = 'highshelf';
-        eqFilters[2].frequency.value = 3200;
-        eqSource.connect(eqFilters[0]);
-        eqFilters[0].connect(eqFilters[1]);
-        eqFilters[1].connect(eqFilters[2]);
-        eqFilters[2].connect(eqCtx.destination);
-        applyEq();
+        try {
+            eqCtx = new AC();
+            eqSource = eqCtx.createMediaElementSource(audio);
+            eqFilters = [
+                eqCtx.createBiquadFilter(), // graves
+                eqCtx.createBiquadFilter(), // medios
+                eqCtx.createBiquadFilter()  // agudos
+            ];
+            eqFilters[0].type = 'lowshelf';
+            eqFilters[0].frequency.value = 200;
+            eqFilters[1].type = 'peaking';
+            eqFilters[1].frequency.value = 1000;
+            eqFilters[1].Q.value = 0.8;
+            eqFilters[2].type = 'highshelf';
+            eqFilters[2].frequency.value = 3200;
+            // Conexión inicial: OFF = bypass directo (audio sin tocar)
+            eqSource.connect(eqCtx.destination);
+            applyEq();
+            resumeEqCtx();
+        } catch (e) {
+            console.error('Error iniciando ecualizador:', e);
+        }
     }
 
+    // Aplica el estado del EQ: ON = cadena de filtros, OFF = bypass directo.
     function applyEq() {
-        if (!eqFilters) return;
-        // EQ apagado = ganancia 0 en todos los filtros (sin efecto)
-        eqFilters[0].gain.value = eqEnabled ? parseInt(eqBass.value, 10) : 0;
-        eqFilters[1].gain.value = eqEnabled ? parseInt(eqMid.value, 10) : 0;
-        eqFilters[2].gain.value = eqEnabled ? parseInt(eqTreble.value, 10) : 0;
+        if (!eqSource || !eqFilters || !eqCtx) return;
+        try {
+            eqSource.disconnect();
+            if (eqEnabled) {
+                // EQ ON: source -> filtros -> destino
+                eqSource.connect(eqFilters[0]);
+                eqFilters[0].connect(eqFilters[1]);
+                eqFilters[1].connect(eqFilters[2]);
+                eqFilters[2].connect(eqCtx.destination);
+                eqFilters[0].gain.value = parseInt(eqBass.value, 10);
+                eqFilters[1].gain.value = parseInt(eqMid.value, 10);
+                eqFilters[2].gain.value = parseInt(eqTreble.value, 10);
+            } else {
+                // EQ OFF: bypass total, el audio sale directo sin filtros
+                eqSource.connect(eqCtx.destination);
+            }
+        } catch (e) { }
     }
 
     if (eqToggleBtn) {
@@ -253,10 +283,7 @@ document.addEventListener('DOMContentLoaded', () => {
         updateEqUI();
         eqToggleBtn.addEventListener('click', function () {
             initEqualizer();
-            // En iOS el AudioContext arranca suspendido: se reanuda con el gesto
-            if (eqCtx && eqCtx.state === 'suspended') {
-                eqCtx.resume().catch(function () { });
-            }
+            resumeEqCtx();
             eqEnabled = !eqEnabled;
             updateEqUI();
             applyEq();
