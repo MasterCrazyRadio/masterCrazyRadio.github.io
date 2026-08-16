@@ -645,11 +645,27 @@ document.addEventListener('DOMContentLoaded', () => {
         ];
 
         function getItemImage(item) {
-            return (item.enclosure && item.enclosure.link) || item.thumbnail || '';
+            return (item.enclosure && item.enclosure.link) || item.thumbnail || item.image || '';
         }
 
+        // Cargar noticias desde news.json (generado por el vigilante diario de
+        // noticias: Real Madrid y Barcelona) y, si no existe, desde los feeds RSS.
         async function loadNews() {
             newsGrid.innerHTML = '<p class="news-loading">Cargando noticias deportivas...</p>';
+            try {
+                const res = await fetch('news.json?ts=' + Date.now(), { cache: 'no-store' });
+                if (res.ok) {
+                    const data = await res.json();
+                    if (Array.isArray(data) && data.length > 0) {
+                        renderNews(data.map(item => ({ ...item, source: item.source || 'Deportes' })));
+                        return;
+                    }
+                }
+            } catch (e) {
+                console.error('news.json no disponible, usando feeds RSS:', e);
+            }
+
+            // Fallback: feeds RSS en vivo
             const results = await Promise.all(NEWS_FEEDS.map(async (feed) => {
                 try {
                     const response = await fetch('https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent(feed.url));
