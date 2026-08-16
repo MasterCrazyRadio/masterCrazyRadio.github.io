@@ -163,6 +163,123 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // === Ecualizador de audio (activable/desactivable) ===
+    // Equivalente web del Equalizer APO: filtra graves, medios y agudos con la
+    // Web Audio API. Al activarlo se conecta el audio a una cadena de filtros.
+    const eqToggleBtn = document.getElementById('eq-toggle-btn');
+    const eqPanel = document.getElementById('eq-panel');
+    const eqState = document.getElementById('eq-state');
+    const eqBass = document.getElementById('eq-bass');
+    const eqMid = document.getElementById('eq-mid');
+    const eqTreble = document.getElementById('eq-treble');
+    const eqBassVal = document.getElementById('eq-bass-val');
+    const eqMidVal = document.getElementById('eq-mid-val');
+    const eqTrebleVal = document.getElementById('eq-treble-val');
+
+    let eqCtx = null;
+    let eqSource = null;
+    let eqFilters = null;
+    let eqEnabled = false;
+
+    function loadEqPrefs() {
+        try {
+            const raw = localStorage.getItem('mcr-eq');
+            if (raw) {
+                const p = JSON.parse(raw);
+                eqEnabled = !!p.enabled;
+                if (typeof p.bass === 'number') eqBass.value = p.bass;
+                if (typeof p.mid === 'number') eqMid.value = p.mid;
+                if (typeof p.treble === 'number') eqTreble.value = p.treble;
+            }
+        } catch (e) { }
+    }
+
+    function saveEqPrefs() {
+        try {
+            localStorage.setItem('mcr-eq', JSON.stringify({
+                enabled: eqEnabled,
+                bass: parseInt(eqBass.value, 10),
+                mid: parseInt(eqMid.value, 10),
+                treble: parseInt(eqTreble.value, 10)
+            }));
+        } catch (e) { }
+    }
+
+    function updateEqUI() {
+        eqState.textContent = eqEnabled ? 'EQ ON' : 'EQ OFF';
+        eqState.classList.toggle('on', eqEnabled);
+        eqToggleBtn.classList.toggle('active', eqEnabled);
+        eqPanel.style.display = eqEnabled ? 'flex' : 'none';
+        eqBassVal.textContent = (parseInt(eqBass.value, 10) > 0 ? '+' : '') + eqBass.value;
+        eqMidVal.textContent = (parseInt(eqMid.value, 10) > 0 ? '+' : '') + eqMid.value;
+        eqTrebleVal.textContent = (parseInt(eqTreble.value, 10) > 0 ? '+' : '') + eqTreble.value;
+    }
+
+    function initEqualizer() {
+        if (eqCtx || !audio) return;
+        const AC = window.AudioContext || window.webkitAudioContext;
+        if (!AC) return;
+        eqCtx = new AC();
+        eqSource = eqCtx.createMediaElementSource(audio);
+        eqFilters = [
+            eqCtx.createBiquadFilter(), // graves
+            eqCtx.createBiquadFilter(), // medios
+            eqCtx.createBiquadFilter()  // agudos
+        ];
+        eqFilters[0].type = 'lowshelf';
+        eqFilters[0].frequency.value = 200;
+        eqFilters[1].type = 'peaking';
+        eqFilters[1].frequency.value = 1000;
+        eqFilters[1].Q.value = 0.8;
+        eqFilters[2].type = 'highshelf';
+        eqFilters[2].frequency.value = 3200;
+        eqSource.connect(eqFilters[0]);
+        eqFilters[0].connect(eqFilters[1]);
+        eqFilters[1].connect(eqFilters[2]);
+        eqFilters[2].connect(eqCtx.destination);
+        applyEq();
+    }
+
+    function applyEq() {
+        if (!eqFilters) return;
+        // EQ apagado = ganancia 0 en todos los filtros (sin efecto)
+        eqFilters[0].gain.value = eqEnabled ? parseInt(eqBass.value, 10) : 0;
+        eqFilters[1].gain.value = eqEnabled ? parseInt(eqMid.value, 10) : 0;
+        eqFilters[2].gain.value = eqEnabled ? parseInt(eqTreble.value, 10) : 0;
+    }
+
+    if (eqToggleBtn) {
+        loadEqPrefs();
+        updateEqUI();
+        eqToggleBtn.addEventListener('click', function () {
+            initEqualizer();
+            // En iOS el AudioContext arranca suspendido: se reanuda con el gesto
+            if (eqCtx && eqCtx.state === 'suspended') {
+                eqCtx.resume().catch(function () { });
+            }
+            eqEnabled = !eqEnabled;
+            updateEqUI();
+            applyEq();
+            saveEqPrefs();
+        });
+        eqBass.addEventListener('input', function () {
+            eqBassVal.textContent = (parseInt(eqBass.value, 10) > 0 ? '+' : '') + eqBass.value;
+            applyEq();
+            saveEqPrefs();
+        });
+        eqMid.addEventListener('input', function () {
+            eqMidVal.textContent = (parseInt(eqMid.value, 10) > 0 ? '+' : '') + eqMid.value;
+            applyEq();
+            saveEqPrefs();
+        });
+        eqTreble.addEventListener('input', function () {
+            eqTrebleVal.textContent = (parseInt(eqTreble.value, 10) > 0 ? '+' : '') + eqTreble.value;
+            applyEq();
+            saveEqPrefs();
+        });
+    }
+
+
     // Metadata Fetching using Zeno API (SSE)
     function initMetadata() {
         const mountKey = 'zadzh811p48uv'; // Extracted from stream URL
