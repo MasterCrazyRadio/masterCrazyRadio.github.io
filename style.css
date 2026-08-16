@@ -106,6 +106,12 @@ body {
     flex-shrink: 0;
     box-shadow: 0 0 14px rgba(168, 112, 224, 0.18);
     transition: all 0.3s ease;
+    /* Sin cuadro al tocar: redondeado y sin resaltado de tap */
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-user-drag: none;
+    user-select: none;
+    -webkit-user-select: none;
 }
 
 .header-play-btn:hover {
@@ -113,6 +119,17 @@ body {
     color: #000;
     box-shadow: 0 0 24px rgba(168, 112, 224, 0.18);
     transform: scale(1.1);
+}
+
+.header-play-btn:focus {
+    outline: none;
+}
+
+/* Efecto push: al presionar se hunde como botón físico */
+.header-play-btn:active {
+    transform: scale(0.85);
+    box-shadow: 0 0 10px rgba(168, 112, 224, 0.25);
+    transition: transform 0.08s ease-in, box-shadow 0.08s ease-in;
 }
 
 .main-header {
@@ -605,6 +622,12 @@ body {
     transform-style: preserve-3d;
     will-change: transform;
     animation: play3D 5s ease-in-out infinite;
+    /* Sin cuadro al tocar: redondeado y sin resaltado de tap */
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-user-drag: none;
+    user-select: none;
+    -webkit-user-select: none;
 }
 
 .play-btn:hover {
@@ -613,6 +636,18 @@ body {
     color: #000;
     box-shadow: 0 0 40px rgba(168, 112, 224, 0.28);
     transform: scale(1.15);
+}
+
+.play-btn:focus {
+    outline: none;
+}
+
+/* Efecto push: al presionar se hunde como botón físico */
+.play-btn:active {
+    animation-play-state: paused;
+    transform: scale(0.85);
+    box-shadow: 0 0 12px rgba(168, 112, 224, 0.25);
+    transition: transform 0.08s ease-in, box-shadow 0.08s ease-in;
 }
 
 @keyframes play3D {
@@ -1246,6 +1281,12 @@ input[type="range"]::-webkit-slider-thumb:hover {
     overflow: hidden;
     transition: all 0.3s ease;
     backdrop-filter: blur(10px);
+    /* Sin cuadro al tocar: sin resaltado de tap ni arrastre */
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-user-drag: none;
+    user-select: none;
+    -webkit-user-select: none;
 }
 
 .tv-card:hover {
@@ -1253,6 +1294,16 @@ input[type="range"]::-webkit-slider-thumb:hover {
     background: rgba(168, 112, 224, 0.04);
     box-shadow: 0 10px 30px rgba(168, 112, 224, 0.05);
     border-color: var(--primary-neon);
+}
+
+.tv-card:focus {
+    outline: none;
+}
+
+/* Efecto push: al presionar la tarjeta se hunde como botón físico */
+.tv-card:active {
+    transform: translateY(-2px) scale(0.96);
+    transition: transform 0.08s ease-in, box-shadow 0.08s ease-in;
 }
 
 .tv-card-content {
@@ -1639,12 +1690,28 @@ input[type="range"]::-webkit-slider-thumb:hover {
     transition: all 0.3s ease;
     backdrop-filter: blur(10px);
     text-align: left;
+    /* Sin cuadro al tocar: sin resaltado de tap ni arrastre */
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-user-drag: none;
+    user-select: none;
+    -webkit-user-select: none;
 }
 
 .top5-item:hover {
     transform: translateY(-4px) scale(1.02);
     border-color: var(--primary-neon);
     box-shadow: 0 10px 40px rgba(168, 112, 224, 0.05);
+}
+
+.top5-item:focus {
+    outline: none;
+}
+
+/* Efecto push: al presionar la fila se hunde como botón físico */
+.top5-item:active {
+    transform: translateY(-1px) scale(0.97);
+    transition: transform 0.08s ease-in, box-shadow 0.08s ease-in;
 }
 
 .top5-rank {
@@ -1702,11 +1769,28 @@ input[type="range"]::-webkit-slider-thumb:hover {
     flex-shrink: 0;
     transition: all 0.3s ease;
     box-shadow: 0 0 15px rgba(168, 112, 224, 0.05);
+    /* Sin cuadro al tocar: redondeado y sin resaltado de tap */
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-user-drag: none;
+    user-select: none;
+    -webkit-user-select: none;
 }
 
 .top5-play:hover {
     transform: scale(1.1);
     box-shadow: 0 0 25px rgba(168, 112, 224, 0.18);
+}
+
+.top5-play:focus {
+    outline: none;
+}
+
+/* Efecto push: al presionar se hunde como botón físico */
+.top5-play:active {
+    transform: scale(0.85);
+    box-shadow: 0 0 8px rgba(168, 112, 224, 0.2);
+    transition: transform 0.08s ease-in, box-shadow 0.08s ease-in;
 }
 
 /* Estado reproduciendo */
