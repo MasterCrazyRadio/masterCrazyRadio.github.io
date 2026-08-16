@@ -7,23 +7,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const volumeIcon = document.getElementById('volume-icon');
     const icon = playBtn.querySelector('i');
     const songTitleElement = document.getElementById('song-title');
-    const floatingPlayer = document.getElementById('floating-player');
-    const floatingPlayBtn = document.getElementById('floating-play-btn');
-    const floatingIcon = floatingPlayBtn ? floatingPlayBtn.querySelector('i') : null;
-    const floatingSongTitle = document.getElementById('floating-song-title');
     let isPlaying = false;
 
     function syncPlayState() {
         if (icon) {
             icon.classList.remove('fa-pause', 'fa-play');
             icon.classList.add(isPlaying ? 'fa-pause' : 'fa-play');
-        }
-        if (floatingIcon) {
-            floatingIcon.classList.remove('fa-pause', 'fa-play');
-            floatingIcon.classList.add(isPlaying ? 'fa-pause' : 'fa-play');
-        }
-        if (floatingPlayer) {
-            floatingPlayer.classList.toggle('playing', isPlaying);
         }
     }
 
@@ -41,22 +30,8 @@ document.addEventListener('DOMContentLoaded', () => {
         syncPlayState();
     }
 
-    // Play/Pause (botón principal y flotante sincronizados)
+    // Play/Pause
     playBtn.addEventListener('click', togglePlay);
-    if (floatingPlayBtn) {
-        floatingPlayBtn.addEventListener('click', togglePlay);
-    }
-
-    // Mostrar reproductor flotante: siempre visible al hacer scroll
-    function updateFloatingPlayer() {
-        if (!floatingPlayer) return;
-        // Una vez visible, permanece visible para que siempre esté disponible
-        if (window.scrollY > 100 || floatingPlayer.classList.contains('visible')) {
-            floatingPlayer.classList.add('visible');
-        }
-    }
-    window.addEventListener('scroll', updateFloatingPlayer, { passive: true });
-    updateFloatingPlayer();
 
     // Volume Control
     volumeSlider.addEventListener('input', (e) => {
@@ -91,7 +66,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 if (titleText) {
                     songTitleElement.innerText = titleText;
-                    if (floatingSongTitle) floatingSongTitle.innerText = titleText;
                 }
             } catch (e) {
                 console.error("Error parsing metadata:", e);
