@@ -409,9 +409,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Pantalla completa nativa + orientación vertical (teléfonos)
-    // Al tocar la tarjeta, el modal entra en fullscreen real (oculta la barra
-    // del navegador) y se bloquea la orientación vertical en Android.
+    // Pantalla completa nativa (teléfonos). Al tocar la tarjeta, el modal
+    // entra en fullscreen real (oculta la barra del navegador). La orientación
+    // queda LIBRE: si el usuario voltea el teléfono, la transmisión ocupa toda
+    // la pantalla en horizontal (ver listeners de orientación abajo).
     function requestFullscreenVertical(el) {
         try {
             if (el.requestFullscreen) {
@@ -422,13 +423,57 @@ document.addEventListener('DOMContentLoaded', () => {
                 el.msRequestFullscreen();
             }
         } catch (e) { }
-        // Bloquear orientación vertical (solo funciona en fullscreen, Android/Chrome)
+        // No bloquear la orientación: permite girar el teléfono (giroscopio)
+        // para que el video llene toda la pantalla en horizontal.
         try {
-            if (screen.orientation && screen.orientation.lock) {
-                screen.orientation.lock('portrait').catch(function () { });
-            }
+            if (screen.orientation && screen.orientation.unlock) screen.orientation.unlock();
         } catch (e) { }
     }
+
+    // Giro del teléfono: al voltear a horizontal (landscape) mientras se ve un
+    // canal de TV, la transmisión se expande a toda la pantalla.
+    function updateTvOrientationClass() {
+        const modal = document.getElementById('tv-modal');
+        if (!modal || modal.style.display !== 'flex') return;
+        const landscape = window.innerWidth > window.innerHeight;
+        modal.classList.toggle('is-landscape', landscape);
+        // Si aún no está en fullscreen nativo, pedirlo (para llenar la pantalla)
+        if (landscape && !document.fullscreenElement && !document.webkitFullscreenElement) {
+            requestFullscreenVertical(modal);
+        }
+    }
+
+    window.addEventListener('orientationchange', function () {
+        setTimeout(updateTvOrientationClass, 350);
+    });
+    window.addEventListener('resize', function () {
+        setTimeout(updateTvOrientationClass, 250);
+    });
+
+    // Giroscopio (deviceorientation) con permiso en iOS: refuerzo de la detección
+    function enableGyroOrientation() {
+        try {
+            window.addEventListener('deviceorientation', function () {
+                updateTvOrientationClass();
+            });
+        } catch (e) { }
+    }
+    try {
+        if (typeof DeviceOrientationEvent !== 'undefined' &&
+            typeof DeviceOrientationEvent.requestPermission === 'function') {
+            // iOS pide permiso con un gesto del usuario
+            document.addEventListener('click', function once() {
+                DeviceOrientationEvent.requestPermission()
+                    .then(function (state) {
+                        if (state === 'granted') enableGyroOrientation();
+                    })
+                    .catch(function () { });
+                document.removeEventListener('click', once);
+            });
+        } else {
+            enableGyroOrientation();
+        }
+    } catch (e) { }
 
     function exitFullscreen() {
         try {

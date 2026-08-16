@@ -1523,6 +1523,45 @@ input[type="range"]::-webkit-slider-thumb:hover {
     padding: 6px 0 2px !important;
 }
 
+/* MODO HORIZONTAL (giroscopio): al voltear el teléfono mientras se ve un
+   canal de TV, la transmisión ocupa TODA la pantalla. */
+.is-mobile .tv-modal.is-landscape .modal-content,
+.tv-modal:fullscreen.is-landscape .modal-content {
+    flex-direction: row;
+    padding: 0 !important;
+}
+
+.is-mobile .tv-modal.is-landscape .video-container,
+.tv-modal:fullscreen.is-landscape .video-container {
+    aspect-ratio: auto !important;
+    flex: 1 1 100% !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    border-radius: 0 !important;
+}
+
+.is-mobile .tv-modal.is-landscape .video-container iframe,
+.is-mobile .tv-modal.is-landscape .video-container video,
+.tv-modal:fullscreen.is-landscape .video-container iframe,
+.tv-modal:fullscreen.is-landscape .video-container video {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important;
+}
+
+.is-mobile .tv-modal.is-landscape #channel-name,
+.tv-modal:fullscreen.is-landscape #channel-name {
+    display: none;
+}
+
+.is-mobile .tv-modal.is-landscape .close-modal,
+.tv-modal:fullscreen.is-landscape .close-modal {
+    top: 10px;
+    right: 12px;
+    font-size: 1.9rem;
+}
+
 /* Top 5 Canciones Section */
 .top5-section {
     padding: 80px 20px;
