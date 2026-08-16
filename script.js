@@ -634,20 +634,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Master Crazy TV (transmisión de Telegram)
-    // Al tocar la tarjeta se abre Telegram directamente (la app de cada usuario)
-    // con el livestream del canal, ya que Telegram no permite embeber el video.
-    window.playTelegramTV = function () {
-        const playBtn = document.getElementById('play-btn');
-        const icon = playBtn.querySelector('i');
-        // Pausar la radio si está sonando
-        if (icon.classList.contains('fa-pause')) {
-            playBtn.click();
-        }
-        // Abrir la transmisión en vivo en Telegram (app o web, según el dispositivo)
-        window.open('https://t.me/mastercrazytv?livestream', '_blank', 'noopener');
-    };
-
     window.closeTvModal = function () {
         const modal = document.getElementById('tv-modal');
         const video = document.getElementById('tv-player');
