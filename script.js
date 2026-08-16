@@ -104,7 +104,10 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             isPlaying = true;
             clearReconnect();
-            // Si el ecualizador está en uso, reactivar el AudioContext (gesto)
+            // Inicializar el EQ en el MISMO gesto del play (antes de que suene):
+            // así el audio siempre viaja por la cadena desde el inicio y tocar el
+            // EQ después NUNCA corta el sonido (solo cambia ganancias).
+            initEqualizer();
             if (eqCtx) resumeEqCtx();
             audio.play().catch(error => {
                 console.error("Playback failed:", error);
