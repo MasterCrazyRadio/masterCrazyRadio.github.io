@@ -20,13 +20,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const audio = new Audio(streamUrl);
     const playBtn = document.getElementById('play-btn');
     const headerPlayBtn = document.getElementById('header-play-btn');
-    const logoPlayBtn = document.getElementById('logo-play-btn');
     const heroLogo = document.getElementById('hero-logo');
     const volumeSlider = document.getElementById('volume-slider');
     const volumeIcon = document.getElementById('volume-icon');
     const icon = playBtn.querySelector('i');
     const headerIcon = headerPlayBtn ? headerPlayBtn.querySelector('i') : null;
-    const logoIcon = logoPlayBtn ? logoPlayBtn.querySelector('i') : null;
     const songTitleElement = document.getElementById('song-title');
     let isPlaying = false;
     let reconnectAttempts = 0;
@@ -43,10 +41,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (headerIcon) {
             headerIcon.classList.remove('fa-pause', 'fa-play');
             headerIcon.classList.add(isPlaying ? 'fa-pause' : 'fa-play');
-        }
-        if (logoIcon) {
-            logoIcon.classList.remove('fa-pause', 'fa-play');
-            logoIcon.classList.add(isPlaying ? 'fa-pause' : 'fa-play');
         }
     }
 
@@ -130,10 +124,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (headerPlayBtn) {
         headerPlayBtn.addEventListener('click', togglePlay);
     }
-    // Al tocar el logo o el botón debajo del logo, la radio comienza a sonar
-    if (logoPlayBtn) {
-        logoPlayBtn.addEventListener('click', togglePlay);
-    }
+    // Al tocar el logo de la radio, la radio comienza a sonar
     if (heroLogo) {
         heroLogo.addEventListener('click', togglePlay);
     }
