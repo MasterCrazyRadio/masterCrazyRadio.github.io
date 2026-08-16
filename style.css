@@ -1131,6 +1131,26 @@ input[type="range"]::-webkit-slider-thumb:hover {
     animation: pulse 2s infinite;
 }
 
+/* Estado del Partido En Vivo: cuando OK.ru está en pausa/caído */
+.live-badge.offline {
+    background: #ff5252;
+    color: #fff;
+    animation: none;
+}
+
+.partido-status {
+    display: block;
+    margin-top: 8px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #ffb84d;
+    background: rgba(255, 82, 82, 0.12);
+    border: 1px solid rgba(255, 82, 82, 0.45);
+    border-radius: 6px;
+    padding: 5px 10px;
+    text-align: center;
+}
+
 .play-overlay {
     position: absolute;
     top: 0;
