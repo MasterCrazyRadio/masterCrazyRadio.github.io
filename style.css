@@ -1405,6 +1405,42 @@ input[type="range"]::-webkit-slider-thumb:hover {
     transform: scale(1.1);
 }
 
+/* Botón "Maximizar en vertical": esquina inferior de la transmisión.
+   Pantalla completa nativa en orientación vertical (retrato). */
+.maximize-v-btn {
+    position: absolute;
+    bottom: 14px;
+    right: 14px;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    border: 2px solid rgba(125, 249, 255, 0.9);
+    background: rgba(0, 0, 0, 0.55);
+    color: #7DF9FF;
+    font-size: 1.1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 20;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 14px rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+
+.maximize-v-btn:hover {
+    background: linear-gradient(135deg, #A8F000, #A870E0);
+    color: #000;
+    border-color: transparent;
+    box-shadow: 0 0 20px rgba(168, 240, 0, 0.45);
+    transform: scale(1.08);
+}
+
+.maximize-v-btn:active {
+    transform: scale(0.95);
+}
+
 /* Contenedor vertical (9:16) para el reproductor */
 .video-container {
     position: relative;
@@ -1512,6 +1548,15 @@ input[type="range"]::-webkit-slider-thumb:hover {
     font-size: 0.95rem;
 }
 
+.is-mobile .maximize-v-btn {
+    bottom: 12px;
+    right: 12px;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    font-size: 1.1rem;
+}
+
 /* Pantalla completa NATIVA (API Fullscreen) en teléfonos:
    al tocar la tarjeta el modal entra en fullscreen real del navegador
    (oculta la barra del navegador) en orientación vertical. */
@@ -1604,6 +1649,16 @@ input[type="range"]::-webkit-slider-thumb:hover {
     width: 38px;
     height: 38px;
     font-size: 0.95rem;
+}
+
+.is-mobile .tv-modal.is-landscape .maximize-v-btn,
+.tv-modal:fullscreen.is-landscape .maximize-v-btn {
+    bottom: 16px;
+    right: 16px;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    font-size: 1.1rem;
 }
 
 /* Top 5 Canciones Section */
