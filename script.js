@@ -3,9 +3,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const streamUrl = 'https://stream.zeno.fm/zadzh811p48uv';
     const audio = new Audio(streamUrl);
     const playBtn = document.getElementById('play-btn');
+    const headerPlayBtn = document.getElementById('header-play-btn');
     const volumeSlider = document.getElementById('volume-slider');
     const volumeIcon = document.getElementById('volume-icon');
     const icon = playBtn.querySelector('i');
+    const headerIcon = headerPlayBtn ? headerPlayBtn.querySelector('i') : null;
     const songTitleElement = document.getElementById('song-title');
     let isPlaying = false;
 
@@ -13,6 +15,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (icon) {
             icon.classList.remove('fa-pause', 'fa-play');
             icon.classList.add(isPlaying ? 'fa-pause' : 'fa-play');
+        }
+        if (headerIcon) {
+            headerIcon.classList.remove('fa-pause', 'fa-play');
+            headerIcon.classList.add(isPlaying ? 'fa-pause' : 'fa-play');
         }
     }
 
@@ -32,6 +38,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Play/Pause
     playBtn.addEventListener('click', togglePlay);
+    if (headerPlayBtn) {
+        headerPlayBtn.addEventListener('click', togglePlay);
+    }
 
     // Volume Control
     volumeSlider.addEventListener('input', (e) => {
