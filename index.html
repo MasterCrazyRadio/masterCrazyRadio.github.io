@@ -375,6 +375,9 @@
         <div id="tv-modal" class="tv-modal">
             <div class="modal-content">
                 <span class="close-modal" onclick="closeTvModal()">&times;</span>
+                <button id="expand-tv-btn" class="expand-tv-btn" onclick="expandTvFullscreen()" aria-label="Ampliar pantalla">
+                    <i class="fas fa-expand"></i>
+                </button>
                 <div class="video-container">
                     <video id="tv-player" controls playsinline webkit-playsinline></video>
                     <div id="tv-iframe-container" style="display:none;">

@@ -443,6 +443,29 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // Botón "Ampliar pantalla": pantalla completa + modo horizontal (landscape)
+    window.expandTvFullscreen = function () {
+        const modal = document.getElementById('tv-modal');
+        if (!modal || modal.style.display !== 'flex') return;
+        // Forzar orientación horizontal (solo funciona en fullscreen, Android/Chrome)
+        try {
+            if (screen.orientation && screen.orientation.lock) {
+                screen.orientation.lock('landscape').catch(function () { });
+            }
+        } catch (e) { }
+        // Marcar modo horizontal y entrar en fullscreen nativo
+        modal.classList.add('is-landscape');
+        try {
+            if (modal.requestFullscreen) {
+                modal.requestFullscreen().catch(function () { });
+            } else if (modal.webkitRequestFullscreen) {
+                modal.webkitRequestFullscreen();
+            } else if (modal.msRequestFullscreen) {
+                modal.msRequestFullscreen();
+            }
+        } catch (e) { }
+    };
+
     window.addEventListener('orientationchange', function () {
         setTimeout(updateTvOrientationClass, 350);
     });

@@ -1378,6 +1378,33 @@ input[type="range"]::-webkit-slider-thumb:hover {
     color: var(--primary-neon);
 }
 
+/* Botón "Ampliar pantalla": pantalla completa + modo horizontal */
+.expand-tv-btn {
+    position: absolute;
+    top: -40px;
+    right: 48px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid #7DF9FF;
+    background: rgba(125, 249, 255, 0.08);
+    color: #7DF9FF;
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    transition: all 0.3s ease;
+}
+
+.expand-tv-btn:hover {
+    background: linear-gradient(135deg, #A8F000, #A870E0);
+    color: #000;
+    box-shadow: 0 0 20px rgba(168, 112, 224, 0.4);
+    transform: scale(1.1);
+}
+
 /* Contenedor vertical (9:16) para el reproductor */
 .video-container {
     position: relative;
@@ -1477,6 +1504,14 @@ input[type="range"]::-webkit-slider-thumb:hover {
     font-size: 1.9rem;
 }
 
+.is-mobile .expand-tv-btn {
+    top: 14px;
+    right: 56px;
+    width: 38px;
+    height: 38px;
+    font-size: 0.95rem;
+}
+
 /* Pantalla completa NATIVA (API Fullscreen) en teléfonos:
    al tocar la tarjeta el modal entra en fullscreen real del navegador
    (oculta la barra del navegador) en orientación vertical. */
@@ -1560,6 +1595,15 @@ input[type="range"]::-webkit-slider-thumb:hover {
     top: 10px;
     right: 12px;
     font-size: 1.9rem;
+}
+
+.is-mobile .tv-modal.is-landscape .expand-tv-btn,
+.tv-modal:fullscreen.is-landscape .expand-tv-btn {
+    top: 14px;
+    right: 56px;
+    width: 38px;
+    height: 38px;
+    font-size: 0.95rem;
 }
 
 /* Top 5 Canciones Section */
