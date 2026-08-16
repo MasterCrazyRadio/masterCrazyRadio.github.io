@@ -242,11 +242,21 @@ body {
     box-shadow: 0 0 30px rgba(168, 112, 224, 0.05), 0 10px 30px rgba(0, 0, 0, 0.5);
     cursor: pointer;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    /* Sin cuadro al tocar: quita el resaltado de foco/tap y el arrastre */
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-user-drag: none;
+    user-select: none;
+    -webkit-user-select: none;
 }
 
 .hero-logo:hover {
     transform: scale(1.06);
     box-shadow: 0 0 34px rgba(168, 112, 224, 0.35), 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.hero-logo:focus {
+    outline: none;
 }
 
 .hero-brand-text h2 {
