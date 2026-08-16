@@ -83,8 +83,6 @@ document.addEventListener('DOMContentLoaded', () => {
         reconnectTimer = null;
         if (!isPlaying) return;
         showReconnectStatus(true);
-        // Si el ecualizador está en uso, reactivar el AudioContext al reconectar
-        if (eqCtx) resumeEqCtx();
         try {
             audio.load();
             const p = audio.play();
@@ -104,10 +102,8 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             isPlaying = true;
             clearReconnect();
-            // IMPORTANTE: el audio normal NO pasa por Web Audio. El ecualizador
-            // solo se activa cuando el usuario toca su botón (gesto explícito),
-            // así la radio siempre suena directo aunque el EQ no se use.
-            if (eqCtx) resumeEqCtx();
+            // IMPORTANTE: el audio normal NO pasa por Web Audio. El refuerzo
+            // Super Bass usa un elemento oculto aparte; la radio suena directa.
             audio.play().catch(error => {
                 console.error("Playback failed:", error);
                 // Prioridad: reconectarse automáticamente en vez de solo alertar
@@ -126,8 +122,6 @@ document.addEventListener('DOMContentLoaded', () => {
         reconnectAttempts = 0;
         if (reconnectTimer) { clearTimeout(reconnectTimer); reconnectTimer = null; }
         showReconnectStatus(false);
-        // Mantener vivo el AudioContext del EQ si está en uso
-        if (eqCtx) resumeEqCtx();
     });
 
     // Conexión del navegador: al caer la red, avisar; al volver, reconectar ya
@@ -171,188 +165,154 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // === Presets de sonido (activable/desactivable) ===
-    // Cuerpo, Brillo y Super Bass: ajustan graves/medios/agudos con la Web
-    // Audio API. Inicialización a prueba de fallos: se espera a que el
-    // AudioContext esté RUNNING antes de capturar el audio del reproductor.
-    // Si no se logra, la radio sigue sonando directa (jamás se corta).
-    const eqToggleBtn = document.getElementById('eq-toggle-btn');
-    const eqPanel = document.getElementById('eq-panel');
-    const eqState = document.getElementById('eq-state');
-    const eqBass = document.getElementById('eq-bass');
-    const eqMid = document.getElementById('eq-mid');
-    const eqTreble = document.getElementById('eq-treble');
-    const eqBassVal = document.getElementById('eq-bass-val');
-    const eqMidVal = document.getElementById('eq-mid-val');
-    const eqTrebleVal = document.getElementById('eq-treble-val');
-    const eqPresetNormal = document.getElementById('eq-preset-normal');
-    const eqPresetBody = document.getElementById('eq-preset-body');
-    const eqPresetBright = document.getElementById('eq-preset-bright');
-    const eqPresetBass = document.getElementById('eq-preset-bass');
+    // === Boton SUPER BASS (refuerzo de graves opcional) ===
+    // Activa/desactiva el refuerzo de graves con un toque. El refuerzo se
+    // hace en un elemento de audio OCULTO aparte con la misma senal de la
+    // radio: el audio principal JAMAS pasa por Web Audio, asi es imposible
+    // que se corte. Si algo falla, la radio principal sigue sonando normal.
+    const sbBtn = document.getElementById('sb-btn');
+    const sbState = document.getElementById('sb-state');
 
-    let eqCtx = null;
-    let eqSource = null;
-    let eqFilters = null;
-    let eqEnabled = false;
-    let eqFailed = false; // si el navegador no puede activar Web Audio
+    let sbCtx = null;      // AudioContext del refuerzo
+    let sbSource = null;   // fuente del elemento oculto
+    let sbFilter = null;   // filtro de graves
+    let sbAudio = null;    // elemento de audio oculto
+    let sbOn = false;      // estado del boton
+    let sbFailed = false;  // si el navegador no puede con Web Audio
 
-    // Presets disponibles (graves / medios / agudos en dB)
-    const EQ_PRESETS = {
-        normal: { bass: 0,  mid: 0,  treble: 0 },
-        body:   { bass: 6,  mid: 1,  treble: 3 },   // cuerpo
-        bright: { bass: 2,  mid: 0,  treble: 7 },   // brillo
-        bass:   { bass: 10, mid: -3, treble: 2 }    // super bass
-    };
-
-    function loadEqPrefs() {
+    function loadSbPrefs() {
         try {
-            const raw = localStorage.getItem('mcr-eq');
-            if (raw) {
-                const p = JSON.parse(raw);
-                eqEnabled = !!p.enabled;
-                if (typeof p.bass === 'number') eqBass.value = p.bass;
-                if (typeof p.mid === 'number') eqMid.value = p.mid;
-                if (typeof p.treble === 'number') eqTreble.value = p.treble;
-            }
+            sbOn = localStorage.getItem('mcr-sb') === '1';
         } catch (e) { }
     }
 
-    function saveEqPrefs() {
+    function saveSbPrefs() {
         try {
-            localStorage.setItem('mcr-eq', JSON.stringify({
-                enabled: eqEnabled,
-                bass: parseInt(eqBass.value, 10),
-                mid: parseInt(eqMid.value, 10),
-                treble: parseInt(eqTreble.value, 10)
-            }));
+            localStorage.setItem('mcr-sb', sbOn ? '1' : '0');
         } catch (e) { }
     }
 
-    function updateEqUI() {
-        eqState.textContent = eqEnabled ? 'EQ ON' : 'EQ OFF';
-        eqState.classList.toggle('on', eqEnabled);
-        eqToggleBtn.classList.toggle('active', eqEnabled);
-        eqPanel.style.display = eqEnabled ? 'flex' : 'none';
-        eqBassVal.textContent = (parseInt(eqBass.value, 10) > 0 ? '+' : '') + eqBass.value;
-        eqMidVal.textContent = (parseInt(eqMid.value, 10) > 0 ? '+' : '') + eqMid.value;
-        eqTrebleVal.textContent = (parseInt(eqTreble.value, 10) > 0 ? '+' : '') + eqTreble.value;
+    function updateSbUI() {
+        if (!sbBtn || !sbState) return;
+        sbBtn.classList.toggle('active', sbOn);
+        sbState.textContent = sbOn ? 'ON' : 'OFF';
+        sbState.classList.toggle('on', sbOn);
     }
 
-    // Inicializa el grafo SOLO si el AudioContext queda confirmado en "running".
-    // Espera a que resume() complete ANTES de capturar el audio del elemento:
-    // así es imposible que la radio se corte al activar el EQ.
-    async function initEqualizer() {
-        if (eqCtx || eqFailed || !audio) return false;
+    // Inicializa el refuerzo SOLO si el AudioContext queda confirmado en
+    // "running". El MediaElementSource se crea sobre el elemento OCULTO
+    // (sbAudio), nunca sobre el audio principal de la radio.
+    async function initSb() {
+        if (sbCtx || sbFailed) return false;
         const AC = window.AudioContext || window.webkitAudioContext;
-        if (!AC) { eqFailed = true; return false; }
+        if (!AC) { sbFailed = true; return false; }
         try {
-            eqCtx = new AC();
-            if (eqCtx.state === 'suspended') {
-                try { await eqCtx.resume(); } catch (e) { }
+            sbCtx = new AC();
+            if (sbCtx.state === 'suspended') {
+                try { await sbCtx.resume(); } catch (e) { }
             }
-            if (eqCtx.state !== 'running') {
-                // No se pudo activar: NO tocar el audio, la radio sigue directa
-                eqCtx = null;
-                eqFailed = true;
+            if (sbCtx.state !== 'running') {
+                sbCtx = null;
+                sbFailed = true;
                 return false;
             }
-            eqSource = eqCtx.createMediaElementSource(audio);
-            eqFilters = [
-                eqCtx.createBiquadFilter(), // graves
-                eqCtx.createBiquadFilter(), // medios
-                eqCtx.createBiquadFilter()  // agudos
-            ];
-            eqFilters[0].type = 'lowshelf';
-            eqFilters[0].frequency.value = 200;
-            eqFilters[1].type = 'peaking';
-            eqFilters[1].frequency.value = 1000;
-            eqFilters[1].Q.value = 0.8;
-            eqFilters[2].type = 'highshelf';
-            eqFilters[2].frequency.value = 3200;
-            // Cadena permanente (nunca se desconecta)
-            eqSource.connect(eqFilters[0]);
-            eqFilters[0].connect(eqFilters[1]);
-            eqFilters[1].connect(eqFilters[2]);
-            eqFilters[2].connect(eqCtx.destination);
-            applyEq();
+            if (!sbAudio) {
+                sbAudio = new Audio();
+                sbAudio.preload = 'auto';
+                sbAudio.src = audio ? audio.src : '';
+            }
+            sbSource = sbCtx.createMediaElementSource(sbAudio);
+            sbFilter = sbCtx.createBiquadFilter();
+            sbFilter.type = 'lowshelf';
+            sbFilter.frequency.value = 120;
+            sbFilter.gain.value = 10; // +10 dB de graves
+            sbSource.connect(sbFilter);
+            sbFilter.connect(sbCtx.destination);
+            sbAudio.addEventListener('error', function () {
+                if (sbOn) disableSb(); // si falla, vuelve la radio principal
+            });
             return true;
         } catch (e) {
-            console.error('Error iniciando ecualizador:', e);
-            eqCtx = null;
-            eqFailed = true;
+            console.error('Super Bass no disponible:', e);
+            sbCtx = null;
+            sbFailed = true;
             return false;
         }
     }
 
-    // Aplica el EQ: ON = ganancias del preset/sliders, OFF = 0 dB (transparente)
-    function applyEq() {
-        if (!eqFilters) return;
+    // Enciende el refuerzo: arranca el elemento oculto y, cuando esta
+    // sonando, silencia el principal (nunca al reves).
+    async function enableSb() {
+        if (sbOn) return;
+        const ok = await initSb();
+        if (!ok || !sbAudio) return;
         try {
-            eqFilters[0].gain.value = eqEnabled ? parseInt(eqBass.value, 10) : 0;
-            eqFilters[1].gain.value = eqEnabled ? parseInt(eqMid.value, 10) : 0;
-            eqFilters[2].gain.value = eqEnabled ? parseInt(eqTreble.value, 10) : 0;
-        } catch (e) { }
-    }
-
-    // Activa el EQ y aplica un preset
-    function applyPreset(name) {
-        const p = EQ_PRESETS[name];
-        if (!p) return;
-        eqBass.value = p.bass;
-        eqMid.value = p.mid;
-        eqTreble.value = p.treble;
-        if (!eqEnabled) eqEnabled = true;
-        updateEqUI();
-        applyEq();
-        saveEqPrefs();
-    }
-
-    if (eqToggleBtn) {
-        loadEqPrefs();
-        updateEqUI();
-        eqToggleBtn.addEventListener('click', async function () {
-            const ok = await initEqualizer();
-            if (!ok) {
-                eqEnabled = false;
-                updateEqUI();
-                return;
+            sbAudio.volume = 0;
+            const p = sbAudio.play();
+            if (p && p.catch) p.catch(function () { });
+            const fade = function () {
+                sbAudio.volume = (audio && audio.volume) || 1;
+                audio.muted = true;
+                sbOn = true;
+                updateSbUI();
+                saveSbPrefs();
+            };
+            if (sbAudio.readyState >= 3) {
+                fade();
+            } else {
+                sbAudio.addEventListener('playing', fade, { once: true });
+                setTimeout(function () {
+                    if (!sbAudio.paused && sbAudio.readyState >= 2) fade();
+                    else if (!sbOn) {
+                        audio.muted = false;
+                        updateSbUI();
+                        saveSbPrefs();
+                    }
+                }, 6000);
             }
-            eqEnabled = !eqEnabled;
-            updateEqUI();
-            applyEq();
-            saveEqPrefs();
-        });
-        // Presets: activan el EQ y cargan su curva
-        if (eqPresetNormal) eqPresetNormal.addEventListener('click', async function () {
-            if (await initEqualizer()) applyPreset('normal');
-        });
-        if (eqPresetBody) eqPresetBody.addEventListener('click', async function () {
-            if (await initEqualizer()) applyPreset('body');
-        });
-        if (eqPresetBright) eqPresetBright.addEventListener('click', async function () {
-            if (await initEqualizer()) applyPreset('bright');
-        });
-        if (eqPresetBass) eqPresetBass.addEventListener('click', async function () {
-            if (await initEqualizer()) applyPreset('bass');
-        });
-        // Sliders manuales
-        eqBass.addEventListener('input', function () {
-            eqBassVal.textContent = (parseInt(eqBass.value, 10) > 0 ? '+' : '') + eqBass.value;
-            applyEq();
-            saveEqPrefs();
-        });
-        eqMid.addEventListener('input', function () {
-            eqMidVal.textContent = (parseInt(eqMid.value, 10) > 0 ? '+' : '') + eqMid.value;
-            applyEq();
-            saveEqPrefs();
-        });
-        eqTreble.addEventListener('input', function () {
-            eqTrebleVal.textContent = (parseInt(eqTreble.value, 10) > 0 ? '+' : '') + eqTreble.value;
-            applyEq();
-            saveEqPrefs();
-        });
+        } catch (e) {
+            console.error('No se pudo activar Super Bass:', e);
+            audio.muted = false;
+            sbOn = false;
+            updateSbUI();
+            saveSbPrefs();
+        }
     }
 
+    // Apaga el refuerzo: vuelve a la radio principal directa.
+    function disableSb() {
+        if (!sbOn) return;
+        try { if (sbAudio) sbAudio.pause(); } catch (e) { }
+        audio.muted = false;
+        sbOn = false;
+        updateSbUI();
+        saveSbPrefs();
+    }
+
+    if (sbBtn) {
+        loadSbPrefs();
+        updateSbUI();
+        sbBtn.addEventListener('click', function () {
+            if (sbOn) { disableSb(); return; }
+            if (audio.paused && typeof togglePlay === 'function') togglePlay();
+            enableSb();
+        });
+        // Sincronizar con el control de la radio principal
+        audio.addEventListener('pause', function () {
+            if (sbOn && sbAudio) { try { sbAudio.pause(); } catch (e) { } }
+        });
+        audio.addEventListener('play', function () {
+            if (sbOn && sbAudio && sbAudio.paused) {
+                sbAudio.play().catch(function () { });
+            }
+        });
+        const volSlider = document.getElementById('volume-slider');
+        if (volSlider) {
+            volSlider.addEventListener('input', function () {
+                if (sbAudio) { try { sbAudio.volume = parseFloat(volSlider.value) || 0; } catch (e) { } }
+            });
+        }
+    }
 
     // Metadata Fetching using Zeno API (SSE)
     function initMetadata() {
