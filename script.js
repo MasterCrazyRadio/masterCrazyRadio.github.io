@@ -104,10 +104,9 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             isPlaying = true;
             clearReconnect();
-            // Inicializar el EQ en el MISMO gesto del play (antes de que suene):
-            // así el audio siempre viaja por la cadena desde el inicio y tocar el
-            // EQ después NUNCA corta el sonido (solo cambia ganancias).
-            initEqualizer();
+            // IMPORTANTE: el audio normal NO pasa por Web Audio. El ecualizador
+            // solo se activa cuando el usuario toca su botón (gesto explícito),
+            // así la radio siempre suena directo aunque el EQ no se use.
             if (eqCtx) resumeEqCtx();
             audio.play().catch(error => {
                 console.error("Playback failed:", error);
