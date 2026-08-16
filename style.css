@@ -28,6 +28,7 @@ body {
     flex-direction: column;
     perspective: 1000px;
     /* For 3D effects */
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.18), 0 0 2px rgba(255, 255, 255, 0.1);
 }
 
 /* Advanced Background */
