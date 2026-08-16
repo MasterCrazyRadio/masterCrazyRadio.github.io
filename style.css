@@ -1,12 +1,12 @@
 ﻿:root {
     --bg-color: #050510;
     --text-color: #ffffff;
-    --primary-neon: #A8F000;
+    --primary-neon: #F000F0;
     /* Verde caÃ±a del logo */
-    --secondary-neon: #F000F0;
-    /* Fucsia del logo */
-    --tertiary-neon: #F0D800;
-    /* Amarillo del logo */
+    --secondary-neon: #B3F0FF;
+    /* Blanco azul neón */
+    --tertiary-neon: #B3F0FF;
+    /* Blanco azul neón */
     --glass-bg: rgba(255, 255, 255, 0.05);
     --glass-border: rgba(255, 255, 255, 0.1);
     --font-main: 'Outfit', sans-serif;
@@ -52,10 +52,10 @@ body {
     top: -25%;
     left: -25%;
     background:
-        radial-gradient(at 0% 0%, rgba(168, 240, 0, 0.15) 0px, transparent 50%),
+        radial-gradient(at 0% 0%, rgba(240, 0, 240, 0.15) 0px, transparent 50%),
         radial-gradient(at 100% 0%, rgba(240, 0, 240, 0.15) 0px, transparent 50%),
-        radial-gradient(at 100% 100%, rgba(240, 216, 0, 0.15) 0px, transparent 50%),
-        radial-gradient(at 0% 100%, rgba(168, 240, 0, 0.15) 0px, transparent 50%);
+        radial-gradient(at 100% 100%, rgba(179, 240, 255, 0.15) 0px, transparent 50%),
+        radial-gradient(at 0% 100%, rgba(179, 240, 255, 0.15) 0px, transparent 50%);
     filter: blur(60px);
     animation: meshRotate 20s linear infinite;
 }
@@ -208,7 +208,7 @@ body {
     flex-shrink: 0;
     margin-top: -8px;
     border: 3px solid var(--primary-neon);
-    box-shadow: 0 0 30px rgba(168, 240, 0, 0.4), 0 10px 30px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 30px rgba(179, 240, 255, 0.4), 0 10px 30px rgba(0, 0, 0, 0.5);
 }
 
 .hero-brand-text h2 {
@@ -219,7 +219,7 @@ body {
     background: linear-gradient(to right, #fff, var(--primary-neon));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    filter: drop-shadow(0 0 20px rgba(168, 240, 0, 0.3));
+    filter: drop-shadow(0 0 20px rgba(179, 240, 255, 0.3));
 }
 
 .hero-brand-text p {
@@ -256,7 +256,7 @@ body {
     background: linear-gradient(to right, #fff, var(--primary-neon));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    filter: drop-shadow(0 0 20px rgba(168, 240, 0, 0.3));
+    filter: drop-shadow(0 0 20px rgba(179, 240, 255, 0.3));
 }
 
 .electric {
@@ -345,7 +345,7 @@ body {
     font-size: 0.9rem;
     font-weight: 700;
     color: var(--primary-neon);
-    text-shadow: 0 0 12px rgba(168, 240, 0, 0.6);
+    text-shadow: 0 0 12px rgba(179, 240, 255, 0.6);
     margin-bottom: 15px;
     display: flex;
     align-items: center;
@@ -427,13 +427,13 @@ body {
     align-items: center;
     justify-content: center;
     margin: 0 auto 30px;
-    box-shadow: 0 0 20px rgba(168, 240, 0, 0.25);
+    box-shadow: 0 0 20px rgba(179, 240, 255, 0.25);
 }
 
 .play-btn:hover {
     background: linear-gradient(135deg, var(--primary-neon), var(--tertiary-neon));
     color: #000;
-    box-shadow: 0 0 40px rgba(240, 216, 0, 0.55);
+    box-shadow: 0 0 40px rgba(179, 240, 255, 0.55);
     transform: scale(1.1);
 }
 
@@ -461,7 +461,7 @@ input[type="range"]::-webkit-slider-thumb {
     background: linear-gradient(135deg, var(--primary-neon), var(--tertiary-neon));
     border-radius: 50%;
     cursor: pointer;
-    box-shadow: 0 0 10px rgba(168, 240, 0, 0.6);
+    box-shadow: 0 0 10px rgba(179, 240, 255, 0.6);
     transition: 0.2s;
 }
 
@@ -643,7 +643,7 @@ input[type="range"]::-webkit-slider-thumb:hover {
 }
 
 .flyer-slider-btn:hover {
-    background: rgba(168, 240, 0, 0.25);
+    background: rgba(179, 240, 255, 0.25);
 }
 
 .flyer-slider-prev {
@@ -692,14 +692,14 @@ input[type="range"]::-webkit-slider-thumb:hover {
     box-shadow:
         0 30px 60px rgba(0, 0, 0, 0.6),
         0 0 0 1px rgba(255, 255, 255, 0.05) inset,
-        0 0 60px rgba(168, 240, 0, 0.15);
+        0 0 60px rgba(179, 240, 255, 0.15);
 }
 
 .flyer-card:hover {
     box-shadow:
         0 40px 80px rgba(0, 0, 0, 0.7),
         0 0 0 1px rgba(255, 255, 255, 0.1) inset,
-        0 0 80px rgba(168, 240, 0, 0.3);
+        0 0 80px rgba(179, 240, 255, 0.3);
 }
 
 .flyer-glow {
@@ -1039,7 +1039,7 @@ input[type="range"]::-webkit-slider-thumb:hover {
 .tv-card:hover {
     transform: translateY(-10px);
     background: rgba(255, 255, 255, 0.1);
-    box-shadow: 0 10px 30px rgba(168, 240, 0, 0.2);
+    box-shadow: 0 10px 30px rgba(179, 240, 255, 0.2);
     border-color: var(--primary-neon);
 }
 
@@ -1123,7 +1123,7 @@ input[type="range"]::-webkit-slider-thumb:hover {
     padding: 20px;
     position: relative;
     border: 1px solid var(--primary-neon);
-    box-shadow: 0 0 50px rgba(168, 240, 0, 0.2);
+    box-shadow: 0 0 50px rgba(179, 240, 255, 0.2);
 }
 
 .close-modal {
@@ -1224,7 +1224,7 @@ input[type="range"]::-webkit-slider-thumb:hover {
 .top5-item:hover {
     transform: translateY(-4px) scale(1.02);
     border-color: var(--primary-neon);
-    box-shadow: 0 10px 40px rgba(168, 240, 0, 0.2);
+    box-shadow: 0 10px 40px rgba(179, 240, 255, 0.2);
 }
 
 .top5-rank {
@@ -1239,7 +1239,7 @@ input[type="range"]::-webkit-slider-thumb:hover {
 
 .top5-item:nth-child(1) .top5-rank {
     color: #F0D800;
-    text-shadow: 0 0 20px rgba(240, 216, 0, 0.7);
+    text-shadow: 0 0 20px rgba(179, 240, 255, 0.7);
 }
 
 .top5-item:nth-child(2) .top5-rank {
@@ -1249,7 +1249,7 @@ input[type="range"]::-webkit-slider-thumb:hover {
 
 .top5-item:nth-child(3) .top5-rank {
     color: #A8F000;
-    text-shadow: 0 0 20px rgba(168, 240, 0, 0.6);
+    text-shadow: 0 0 20px rgba(179, 240, 255, 0.6);
 }
 
 .top5-info {
@@ -1263,7 +1263,7 @@ input[type="range"]::-webkit-slider-thumb:hover {
     border-radius: 10px;
     object-fit: cover;
     flex-shrink: 0;
-    border: 2px solid rgba(168, 240, 0, 0.25);
+    border: 2px solid rgba(179, 240, 255, 0.25);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
 }
 
@@ -1281,19 +1281,19 @@ input[type="range"]::-webkit-slider-thumb:hover {
     justify-content: center;
     flex-shrink: 0;
     transition: all 0.3s ease;
-    box-shadow: 0 0 15px rgba(168, 240, 0, 0.4);
+    box-shadow: 0 0 15px rgba(179, 240, 255, 0.4);
 }
 
 .top5-play:hover {
     transform: scale(1.1);
-    box-shadow: 0 0 25px rgba(168, 240, 0, 0.7);
+    box-shadow: 0 0 25px rgba(179, 240, 255, 0.7);
 }
 
 /* Estado reproduciendo */
 .top5-item.playing {
     border-color: var(--primary-neon);
-    background: rgba(168, 240, 0, 0.08);
-    box-shadow: 0 0 25px rgba(168, 240, 0, 0.25);
+    background: rgba(179, 240, 255, 0.08);
+    box-shadow: 0 0 25px rgba(179, 240, 255, 0.25);
 }
 
 .top5-item.playing .top5-play {
@@ -1404,7 +1404,7 @@ input[type="range"]::-webkit-slider-thumb:hover {
     max-width: 480px;
     margin: 0 auto;
     border-radius: 16px;
-    border: 2px solid rgba(168, 240, 0, 0.25);
+    border: 2px solid rgba(179, 240, 255, 0.25);
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
     background: #000;
 }
@@ -1420,7 +1420,7 @@ input[type="range"]::-webkit-slider-thumb:hover {
 
 .news-card {
     background: rgba(255, 255, 255, 0.05);
-    border: 2px solid rgba(168, 240, 0, 0.2);
+    border: 2px solid rgba(179, 240, 255, 0.2);
     border-radius: 20px;
     overflow: hidden;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
@@ -1433,7 +1433,7 @@ input[type="range"]::-webkit-slider-thumb:hover {
 .news-card:hover {
     transform: translateY(-5px);
     border-color: var(--primary-neon);
-    box-shadow: 0 15px 50px rgba(168, 240, 0, 0.2);
+    box-shadow: 0 15px 50px rgba(179, 240, 255, 0.2);
 }
 
 .news-card img {
@@ -1546,7 +1546,7 @@ input[type="range"]::-webkit-slider-thumb:hover {
     width: 100%;
     padding: 12px 15px;
     background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(168, 240, 0, 0.3);
+    border: 1px solid rgba(179, 240, 255, 0.3);
     border-radius: 10px;
     color: #fff;
     font-size: 1rem;
@@ -1559,7 +1559,7 @@ input[type="range"]::-webkit-slider-thumb:hover {
     outline: none;
     border-color: var(--primary-neon);
     background: rgba(255, 255, 255, 0.08);
-    box-shadow: 0 0 15px rgba(168, 240, 0, 0.3);
+    box-shadow: 0 0 15px rgba(179, 240, 255, 0.3);
 }
 
 .form-group input::placeholder,
@@ -1585,12 +1585,12 @@ input[type="range"]::-webkit-slider-thumb:hover {
     display: inline-flex;
     align-items: center;
     gap: 10px;
-    box-shadow: 0 5px 20px rgba(168, 240, 0, 0.3);
+    box-shadow: 0 5px 20px rgba(179, 240, 255, 0.3);
 }
 
 .submit-btn:hover {
     transform: translateY(-3px);
-    box-shadow: 0 8px 30px rgba(168, 240, 0, 0.5);
+    box-shadow: 0 8px 30px rgba(179, 240, 255, 0.5);
 }
 
 .submit-btn:active {
