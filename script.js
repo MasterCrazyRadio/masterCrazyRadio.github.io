@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Mostrar/ocultar reproductor flotante al hacer scroll
     function updateFloatingPlayer() {
         if (!floatingPlayer) return;
-        if (window.scrollY > 400) {
+        if (window.scrollY > 100) {
             floatingPlayer.classList.add('visible');
         } else {
             floatingPlayer.classList.remove('visible');
