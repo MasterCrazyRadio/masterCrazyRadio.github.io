@@ -26,6 +26,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const headerIcon = headerPlayBtn ? headerPlayBtn.querySelector('i') : null;
     const songTitleElement = document.getElementById('song-title');
     let isPlaying = false;
+    let reconnectAttempts = 0;
+    let reconnectTimer = null;
+    let connectionLost = false;
+    const RECONNECT_BASE_MS = 2000;   // primer reintento a los 2s
+    const RECONNECT_MAX_MS = 30000;   // máximo 30s entre intentos
 
     function syncPlayState() {
         if (icon) {
@@ -38,19 +43,80 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // === Auto-reconexión: si la conexión se pierde o se vuelve inestable,
+    // el reproductor se reconecta solo para que el oyente nunca quede sin música. ===
+    function showReconnectStatus(show) {
+        const el = document.getElementById('reconnect-status');
+        if (el) el.style.display = show ? 'flex' : 'none';
+    }
+
+    function clearReconnect() {
+        if (reconnectTimer) { clearTimeout(reconnectTimer); reconnectTimer = null; }
+        reconnectAttempts = 0;
+        showReconnectStatus(false);
+    }
+
+    function scheduleReconnect() {
+        if (!isPlaying || connectionLost) return;
+        const delay = Math.min(RECONNECT_BASE_MS * Math.pow(2, reconnectAttempts), RECONNECT_MAX_MS);
+        reconnectAttempts++;
+        if (reconnectTimer) clearTimeout(reconnectTimer);
+        showReconnectStatus(true);
+        reconnectTimer = setTimeout(tryReconnect, delay);
+    }
+
+    function tryReconnect() {
+        reconnectTimer = null;
+        if (!isPlaying) return;
+        showReconnectStatus(true);
+        try {
+            audio.load();
+            const p = audio.play();
+            if (p && p.catch) {
+                p.catch(function () { scheduleReconnect(); });
+            }
+        } catch (e) {
+            scheduleReconnect();
+        }
+    }
+
     function togglePlay() {
         if (isPlaying) {
             audio.pause();
             isPlaying = false;
+            clearReconnect();
         } else {
+            isPlaying = true;
+            clearReconnect();
             audio.play().catch(error => {
                 console.error("Playback failed:", error);
-                alert("Error al reproducir. Verifica tu conexión o intenta más tarde.");
+                // Prioridad: reconectarse automáticamente en vez de solo alertar
+                scheduleReconnect();
             });
-            isPlaying = true;
         }
         syncPlayState();
     }
+
+    // Eventos del stream: reconectar ante fallos o inestabilidad
+    audio.addEventListener('error', function () { if (isPlaying) scheduleReconnect(); });
+    audio.addEventListener('stalled', function () { if (isPlaying) scheduleReconnect(); });
+    audio.addEventListener('waiting', function () { if (isPlaying) showReconnectStatus(true); });
+    audio.addEventListener('ended', function () { if (isPlaying) scheduleReconnect(); });
+    audio.addEventListener('playing', function () {
+        reconnectAttempts = 0;
+        if (reconnectTimer) { clearTimeout(reconnectTimer); reconnectTimer = null; }
+        showReconnectStatus(false);
+    });
+
+    // Conexión del navegador: al caer la red, avisar; al volver, reconectar ya
+    window.addEventListener('offline', function () {
+        connectionLost = true;
+        if (isPlaying) showReconnectStatus(true);
+    });
+    window.addEventListener('online', function () {
+        connectionLost = false;
+        if (isPlaying) tryReconnect();
+    });
 
     // Play/Pause
     playBtn.addEventListener('click', togglePlay);
