@@ -718,13 +718,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Noticias Deportivas Section
+    // Noticias Actuales Section
     const newsGrid = document.getElementById('news-grid');
     if (newsGrid) {
         const NEWS_FEEDS = [
-            { name: 'Fichajes Barça', url: 'https://e00-marca.uecdn.es/rss/futbol/mercado-fichajes.xml', keywords: ['barça', 'barcelona', 'azulgrana', 'blaugrana', 'ferran torres', 'rodri'] },
-            { name: 'Fichajes Real Madrid', url: 'https://e00-marca.uecdn.es/rss/futbol/real-madrid.xml', keywords: ['ficha', 'fichaje', 'mercado', 'traspaso', 'cesión', 'cesion', 'refuerzo', 'firma', 'oferta'] },
-            { name: 'Fichajes', url: 'https://www.mundodeportivo.com/rss/futbol/fichajes.xml', keywords: ['barça', 'barcelona', 'real madrid', 'merengue', 'blancos'] }
+            { name: 'BBC Mundo', url: 'https://feeds.bbci.co.uk/mundo/rss.xml', keywords: [] },
+            { name: 'El Pais', url: 'https://feeds.elpais.com/mrss-s/pages/ep/site/elpais.com/portada', keywords: [] },
+            { name: 'El Tiempo', url: 'https://www.eltiempo.com/rss/colombia.xml', keywords: [] }
         ];
 
         function getItemImage(item) {
@@ -732,15 +732,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Cargar noticias desde news.json (generado por el vigilante diario de
-        // noticias: Real Madrid y Barcelona) y, si no existe, desde los feeds RSS.
+        // noticias actuales) y, si no existe, desde los feeds RSS.
         async function loadNews() {
-            newsGrid.innerHTML = '<p class="news-loading">Cargando noticias deportivas...</p>';
+            newsGrid.innerHTML = '<p class="news-loading">Cargando noticias actuales...</p>';
             try {
                 const res = await fetch('news.json?ts=' + Date.now(), { cache: 'no-store' });
                 if (res.ok) {
                     const data = await res.json();
                     if (Array.isArray(data) && data.length > 0) {
-                        renderNews(data.map(item => ({ ...item, source: item.source || 'Deportes' })));
+                        renderNews(data.map(item => ({ ...item, source: item.source || 'Actualidad' })));
                         return;
                     }
                 }
@@ -755,7 +755,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (!response.ok) throw new Error('API error');
                     const data = await response.json();
                     if (data.status !== 'ok') return [];
-                    // Rumores de fichajes de Barça y Real Madrid, con miniatura real
+                    // Noticias actuales, con miniatura real
                     let items = (data.items || [])
                         .filter(item => item.title && item.link && getItemImage(item));
                     const filtered = items.filter(item =>
@@ -771,7 +771,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     return [];
                 }
             }));
-            // Intercalar feeds (round-robin) para mezclar Real Madrid y Barcelona
+            // Intercalar feeds (round-robin) para mezclar las fuentes
             const mixed = [];
             const seen = new Set();
             const maxLen = Math.max(...results.map(r => r.length), 0);
@@ -783,7 +783,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 }
             }
-            const items = mixed.slice(0, 3);
+            const items = mixed.slice(0, 6);
             if (items.length > 0) {
                 renderNews(items);
             } else {
@@ -802,7 +802,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const img = document.createElement('img');
                 img.src = getItemImage(item);
-                img.alt = item.title || 'Noticia deportiva';
+                img.alt = item.title || 'Noticia actual';
                 img.loading = 'lazy';
                 img.onerror = () => { img.src = 'radio_background.png'; };
 
@@ -810,12 +810,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 info.className = 'news-info';
 
                 const title = document.createElement('h3');
-                title.textContent = item.title || 'Noticia deportiva';
+                title.textContent = item.title || 'Noticia actual';
 
                 const meta = document.createElement('div');
                 meta.className = 'news-meta';
                 const date = item.pubDate ? new Date(item.pubDate).toLocaleDateString('es-CO', { day: 'numeric', month: 'short' }) : '';
-                meta.innerHTML = '<i class="fas fa-newspaper"></i> ' + (item.source || 'Deportes') + ' &middot; ' + date;
+                meta.innerHTML = '<i class="fas fa-newspaper"></i> ' + (item.source || 'Actualidad') + ' &middot; ' + date;
 
                 info.appendChild(title);
                 info.appendChild(meta);
