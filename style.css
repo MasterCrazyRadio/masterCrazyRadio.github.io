@@ -429,13 +429,36 @@ body {
     justify-content: center;
     margin: 0 auto 30px;
     box-shadow: 0 0 20px rgba(168, 240, 0, 0.25);
+    transform-style: preserve-3d;
+    will-change: transform;
+    animation: play3D 5s ease-in-out infinite;
 }
 
 .play-btn:hover {
+    animation-play-state: paused;
     background: linear-gradient(135deg, #A8F000, #7DF9FF);
     color: #000;
     box-shadow: 0 0 40px rgba(168, 240, 0, 0.55);
-    transform: scale(1.1);
+    transform: scale(1.15);
+}
+
+@keyframes play3D {
+    0%, 100% {
+        transform: perspective(600px) rotateY(0deg) translateZ(0);
+        box-shadow: 0 0 20px rgba(168, 240, 0, 0.25);
+    }
+    30% {
+        transform: perspective(600px) rotateY(18deg) translateZ(22px);
+        box-shadow: 0 0 35px rgba(168, 240, 0, 0.55), 0 0 60px rgba(125, 249, 255, 0.25);
+    }
+    50% {
+        transform: perspective(600px) rotateY(0deg) translateZ(35px);
+        box-shadow: 0 0 45px rgba(168, 240, 0, 0.7), 0 0 80px rgba(125, 249, 255, 0.35);
+    }
+    70% {
+        transform: perspective(600px) rotateY(-18deg) translateZ(22px);
+        box-shadow: 0 0 35px rgba(168, 240, 0, 0.55), 0 0 60px rgba(125, 249, 255, 0.25);
+    }
 }
 
 .volume-control {
