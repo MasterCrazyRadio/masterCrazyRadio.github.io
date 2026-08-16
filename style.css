@@ -108,6 +108,12 @@ body {
     position: relative;
 }
 
+.brand-green {
+    color: #A8F000;
+    -webkit-text-fill-color: #A8F000;
+    text-shadow: 0 0 15px rgba(168, 240, 0, 0.5);
+}
+
 .neon-text::before {
     content: attr(data-text);
     position: absolute;
