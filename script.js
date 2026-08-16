@@ -124,6 +124,8 @@ document.addEventListener('DOMContentLoaded', () => {
         reconnectAttempts = 0;
         if (reconnectTimer) { clearTimeout(reconnectTimer); reconnectTimer = null; }
         showReconnectStatus(false);
+        // Mantener vivo el AudioContext del EQ si está en uso
+        if (eqCtx) resumeEqCtx();
     });
 
     // Conexión del navegador: al caer la red, avisar; al volver, reconectar ya
@@ -227,8 +229,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Inicializa el grafo de audio UNA sola vez (source -> filtros -> destino).
-    // Se llama desde el play y desde el toggle EQ (gestos de usuario).
+    // Crea el grafo UNA sola vez: source -> filtros -> destino, SIEMPRE conectado.
+    // El EQ se enciende/apaga solo cambiando la ganancia de los filtros
+    // (0 dB = transparente), NUNCA desconectando: así el audio jamás se corta.
     function initEqualizer() {
         if (eqCtx || !audio) return;
         const AC = window.AudioContext || window.webkitAudioContext;
@@ -236,6 +239,13 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             eqCtx = new AC();
             eqSource = eqCtx.createMediaElementSource(audio);
+            // Auto-resume: si el navegador suspende el contexto (autoplay policy),
+            // lo reanudamos automáticamente en cuanto vuelva a haber actividad.
+            eqCtx.onstatechange = function () {
+                if (eqCtx && eqCtx.state === 'suspended') {
+                    eqCtx.resume().catch(function () { });
+                }
+            };
             eqFilters = [
                 eqCtx.createBiquadFilter(), // graves
                 eqCtx.createBiquadFilter(), // medios
@@ -248,33 +258,27 @@ document.addEventListener('DOMContentLoaded', () => {
             eqFilters[1].Q.value = 0.8;
             eqFilters[2].type = 'highshelf';
             eqFilters[2].frequency.value = 3200;
-            // Conexión inicial: OFF = bypass directo (audio sin tocar)
-            eqSource.connect(eqCtx.destination);
+            // Cadena permanente (nunca se desconecta)
+            eqSource.connect(eqFilters[0]);
+            eqFilters[0].connect(eqFilters[1]);
+            eqFilters[1].connect(eqFilters[2]);
+            eqFilters[2].connect(eqCtx.destination);
             applyEq();
             resumeEqCtx();
         } catch (e) {
             console.error('Error iniciando ecualizador:', e);
+            eqCtx = null; // si falla, el audio sigue normal sin EQ
         }
     }
 
-    // Aplica el estado del EQ: ON = cadena de filtros, OFF = bypass directo.
+    // Aplica el EQ: ON = ganancias del usuario, OFF = 0 dB (transparente).
+    // Sin disconnect(): desconectar en Chrome corta el audio hasta recargar.
     function applyEq() {
-        if (!eqSource || !eqFilters || !eqCtx) return;
+        if (!eqFilters) return;
         try {
-            eqSource.disconnect();
-            if (eqEnabled) {
-                // EQ ON: source -> filtros -> destino
-                eqSource.connect(eqFilters[0]);
-                eqFilters[0].connect(eqFilters[1]);
-                eqFilters[1].connect(eqFilters[2]);
-                eqFilters[2].connect(eqCtx.destination);
-                eqFilters[0].gain.value = parseInt(eqBass.value, 10);
-                eqFilters[1].gain.value = parseInt(eqMid.value, 10);
-                eqFilters[2].gain.value = parseInt(eqTreble.value, 10);
-            } else {
-                // EQ OFF: bypass total, el audio sale directo sin filtros
-                eqSource.connect(eqCtx.destination);
-            }
+            eqFilters[0].gain.value = eqEnabled ? parseInt(eqBass.value, 10) : 0;
+            eqFilters[1].gain.value = eqEnabled ? parseInt(eqMid.value, 10) : 0;
+            eqFilters[2].gain.value = eqEnabled ? parseInt(eqTreble.value, 10) : 0;
         } catch (e) { }
     }
 
