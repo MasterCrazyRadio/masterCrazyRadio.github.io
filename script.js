@@ -634,42 +634,18 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Master Crazy TV (transmisión de Telegram - widget oficial embebible)
+    // Master Crazy TV (transmisión de Telegram)
+    // Al tocar la tarjeta se abre Telegram directamente (la app de cada usuario)
+    // con el livestream del canal, ya que Telegram no permite embeber el video.
     window.playTelegramTV = function () {
-        const modal = document.getElementById('tv-modal');
-        const video = document.getElementById('tv-player');
-        const iframeContainer = document.getElementById('tv-iframe-container');
-        const iframe = document.getElementById('tv-iframe');
-        const title = document.getElementById('channel-name');
-
-        // Detener HLS/video anterior si estaba activo
-        if (window.hls) {
-            window.hls.destroy();
-            window.hls = null;
-        }
-        if (video) {
-            video.pause();
-            video.src = '';
-            video.style.display = 'none';
-        }
-
-        // Detener radio si está sonando
         const playBtn = document.getElementById('play-btn');
         const icon = playBtn.querySelector('i');
+        // Pausar la radio si está sonando
         if (icon.classList.contains('fa-pause')) {
             playBtn.click();
         }
-
-        // Cargar la transmisión en vivo del canal de Telegram (widget oficial)
-        if (iframeContainer) iframeContainer.style.display = 'block';
-        if (iframe) iframe.src = 'https://t.me/mastercrazytv?embed=1&livestream';
-        openTvModal(modal);
-        title.innerHTML = "Master Crazy <span style='color:#7DF9FF;'>TV</span> <br><span style='font-size:0.8rem; color:#aaa;'>Transmisión en vivo</span>";
-
-        // En teléfonos: pantalla completa nativa en vertical
-        if (isMobileDevice()) {
-            requestFullscreenVertical(modal);
-        }
+        // Abrir la transmisión en vivo en Telegram (app o web, según el dispositivo)
+        window.open('https://t.me/mastercrazytv?livestream', '_blank', 'noopener');
     };
 
     window.closeTvModal = function () {
