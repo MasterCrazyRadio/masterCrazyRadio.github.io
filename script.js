@@ -504,6 +504,44 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    // Caracol TV (señal oficial YouTube - embed legal)
+    window.playCaracol = function () {
+        const modal = document.getElementById('tv-modal');
+        const video = document.getElementById('tv-player');
+        const iframeContainer = document.getElementById('tv-iframe-container');
+        const iframe = document.getElementById('tv-iframe');
+        const title = document.getElementById('channel-name');
+
+        // Detener HLS/video anterior si estaba activo
+        if (window.hls) {
+            window.hls.destroy();
+            window.hls = null;
+        }
+        if (video) {
+            video.pause();
+            video.src = '';
+            video.style.display = 'none';
+        }
+
+        // Detener radio si está sonando
+        const playBtn = document.getElementById('play-btn');
+        const icon = playBtn.querySelector('i');
+        if (icon.classList.contains('fa-pause')) {
+            playBtn.click();
+        }
+
+        // Cargar la señal en vivo oficial de Caracol TV (YouTube embed)
+        if (iframeContainer) iframeContainer.style.display = 'block';
+        if (iframe) iframe.src = 'https://www.youtube.com/embed/x0eOenDDelg?autoplay=1&rel=0';
+        openTvModal(modal);
+        title.innerHTML = "Caracol <span style='color:#7DF9FF;'>TV</span> <br><span style='font-size:0.8rem; color:#aaa;'>Señal en vivo</span>";
+
+        // En teléfonos: pantalla completa nativa en vertical
+        if (isMobileDevice()) {
+            requestFullscreenVertical(modal);
+        }
+    };
+
     window.closeTvModal = function () {
         const modal = document.getElementById('tv-modal');
         const video = document.getElementById('tv-player');
