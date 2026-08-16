@@ -47,13 +47,12 @@ document.addEventListener('DOMContentLoaded', () => {
         floatingPlayBtn.addEventListener('click', togglePlay);
     }
 
-    // Mostrar/ocultar reproductor flotante al hacer scroll
+    // Mostrar reproductor flotante: siempre visible al hacer scroll
     function updateFloatingPlayer() {
         if (!floatingPlayer) return;
-        if (window.scrollY > 100) {
+        // Una vez visible, permanece visible para que siempre esté disponible
+        if (window.scrollY > 100 || floatingPlayer.classList.contains('visible')) {
             floatingPlayer.classList.add('visible');
-        } else {
-            floatingPlayer.classList.remove('visible');
         }
     }
     window.addEventListener('scroll', updateFloatingPlayer, { passive: true });
