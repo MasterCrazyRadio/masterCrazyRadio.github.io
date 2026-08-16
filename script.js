@@ -228,7 +228,16 @@ document.addEventListener('DOMContentLoaded', () => {
     window.playChannel = function (channelId, streamUrl) {
         const modal = document.getElementById('tv-modal');
         const video = document.getElementById('tv-player');
+        const iframeContainer = document.getElementById('tv-iframe-container');
         const title = document.getElementById('channel-name');
+
+        // Si había un iframe del partido, ocultarlo y limpiarlo
+        if (iframeContainer) {
+            iframeContainer.style.display = 'none';
+            const iframe = document.getElementById('tv-iframe');
+            if (iframe) iframe.src = '';
+        }
+        if (video) video.style.display = '';
 
         // Stop radio audio if playing
         const playBtn = document.getElementById('play-btn');
@@ -280,15 +289,53 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    // Partido En Vivo (iframe ok.ru)
+    window.playPartido = function () {
+        const modal = document.getElementById('tv-modal');
+        const video = document.getElementById('tv-player');
+        const iframeContainer = document.getElementById('tv-iframe-container');
+        const iframe = document.getElementById('tv-iframe');
+        const title = document.getElementById('channel-name');
+
+        // Detener HLS/video anterior si estaba activo
+        if (window.hls) {
+            window.hls.destroy();
+            window.hls = null;
+        }
+        if (video) {
+            video.pause();
+            video.src = '';
+            video.style.display = 'none';
+        }
+
+        // Detener radio si está sonando
+        const playBtn = document.getElementById('play-btn');
+        const icon = playBtn.querySelector('i');
+        if (icon.classList.contains('fa-pause')) {
+            playBtn.click();
+        }
+
+        // Mostrar el iframe del partido en el modal
+        if (iframeContainer) iframeContainer.style.display = 'block';
+        if (iframe) iframe.src = '//ok.ru/videoembed/13981676805705?nochat=1';
+        modal.style.display = 'flex';
+        title.innerHTML = "Partido <span style='color:#7DF9FF;'>En Vivo</span>";
+    };
+
     window.closeTvModal = function () {
         const modal = document.getElementById('tv-modal');
         const video = document.getElementById('tv-player');
+        const iframeContainer = document.getElementById('tv-iframe-container');
+        const iframe = document.getElementById('tv-iframe');
 
         video.pause();
         video.src = "";
         if (window.hls) {
             window.hls.destroy();
         }
+        // Limpiar iframe del partido
+        if (iframeContainer) iframeContainer.style.display = 'none';
+        if (iframe) iframe.src = '';
 
         modal.style.display = 'none';
     };
