@@ -231,13 +231,88 @@ body {
     text-align: center;
 }
 
+/* Contenedor del logo con efecto aurora: halo de colores en movimiento alrededor */
+.hero-logo-wrap {
+    position: relative;
+    width: 130px;
+    height: 130px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: -8px;
+}
+
+/* Aurora: gradiente cónico girando con blur, detrás del logo */
+.hero-logo-aurora {
+    position: absolute;
+    inset: -26px;
+    border-radius: 50%;
+    background: conic-gradient(from 0deg,
+        #A8F000 0deg,
+        #7DF9FF 90deg,
+        #A870E0 180deg,
+        #7DF9FF 270deg,
+        #A8F000 360deg);
+    filter: blur(18px);
+    opacity: 0.5;
+    z-index: 0;
+    pointer-events: none;
+    animation: aurora-spin 6s linear infinite, aurora-pulse 3s ease-in-out infinite;
+}
+
+/* Segunda capa de aurora, más amplia y lenta, para dar profundidad */
+.hero-logo-wrap::after {
+    content: "";
+    position: absolute;
+    inset: -40px;
+    border-radius: 50%;
+    background: radial-gradient(circle,
+        rgba(168, 240, 0, 0.18) 0%,
+        rgba(125, 249, 255, 0.12) 35%,
+        rgba(168, 112, 224, 0.15) 65%,
+        transparent 100%);
+    filter: blur(12px);
+    opacity: 0.45;
+    z-index: 0;
+    pointer-events: none;
+    animation: aurora-breathe 5s ease-in-out infinite;
+}
+
+@keyframes aurora-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes aurora-pulse {
+    0%, 100% {
+        opacity: 0.4;
+    }
+    50% {
+        opacity: 0.65;
+    }
+}
+
+@keyframes aurora-breathe {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 0.35;
+    }
+    50% {
+        transform: scale(1.12);
+        opacity: 0.55;
+    }
+}
+
 .hero-logo {
+    position: relative;
+    z-index: 1;
     width: 130px;
     height: 130px;
     border-radius: 50%;
     object-fit: cover;
     flex-shrink: 0;
-    margin-top: -8px;
+    margin-top: 0;
     border: 3px solid var(--primary-neon);
     box-shadow: 0 0 30px rgba(168, 112, 224, 0.05), 0 10px 30px rgba(0, 0, 0, 0.5);
     cursor: pointer;
@@ -977,9 +1052,19 @@ input[type="range"]::-webkit-slider-thumb:hover {
         font-size: 3rem;
     }
 
+    .hero-logo-wrap {
+        width: 110px;
+        height: 110px;
+        margin-top: 0;
+    }
+
     .hero-logo {
         width: 110px;
         height: 110px;
+    }
+
+    .hero-logo-aurora {
+        inset: -20px;
     }
 
     .player-container {
