@@ -375,8 +375,8 @@ body {
 .status-indicator {
     font-size: 0.9rem;
     font-weight: 700;
-    color: var(--primary-neon);
-    text-shadow: 0 0 12px rgba(168, 112, 224, 0.15);
+    color: #A8F000;
+    text-shadow: 0 0 12px rgba(168, 240, 0, 0.35);
     margin-bottom: 15px;
     display: flex;
     align-items: center;
@@ -388,9 +388,9 @@ body {
 .live-dot {
     width: 10px;
     height: 10px;
-    background: #A870E0;
+    background: #A8F000;
     border-radius: 50%;
-    box-shadow: 0 0 10px #A870E0;
+    box-shadow: 0 0 10px #A8F000;
     animation: pulse 1s infinite;
 }
 
@@ -496,14 +496,19 @@ body {
     align-items: center;
     justify-content: center;
     gap: 15px;
-    color: rgba(168, 112, 224, 0.05);
+    color: #A8F000;
+}
+
+#volume-icon {
+    color: #A8F000;
+    text-shadow: 0 0 10px rgba(168, 240, 0, 0.5);
 }
 
 input[type="range"] {
     -webkit-appearance: none;
     width: 100px;
     height: 4px;
-    background: rgba(168, 112, 224, 0.12);
+    background: rgba(168, 240, 0, 0.25);
     border-radius: 2px;
     outline: none;
 }
@@ -512,10 +517,10 @@ input[type="range"]::-webkit-slider-thumb {
     -webkit-appearance: none;
     width: 15px;
     height: 15px;
-    background: linear-gradient(135deg, var(--primary-neon), var(--tertiary-neon));
+    background: #A8F000;
     border-radius: 50%;
     cursor: pointer;
-    box-shadow: 0 0 10px rgba(168, 112, 224, 0.15);
+    box-shadow: 0 0 10px rgba(168, 240, 0, 0.5);
     transition: 0.2s;
 }
 
