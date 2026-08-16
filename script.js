@@ -718,13 +718,14 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Noticias Actuales Section
+    // Noticias Deportivas Section
     const newsGrid = document.getElementById('news-grid');
     if (newsGrid) {
         const NEWS_FEEDS = [
-            { name: 'BBC Mundo', url: 'https://feeds.bbci.co.uk/mundo/rss.xml', keywords: [] },
-            { name: 'El Pais', url: 'https://feeds.elpais.com/mrss-s/pages/ep/site/elpais.com/portada', keywords: [] },
-            { name: 'El Tiempo', url: 'https://www.eltiempo.com/rss/colombia.xml', keywords: [] }
+            { name: 'Marca Real Madrid', url: 'https://e00-marca.uecdn.es/rss/futbol/real-madrid.xml', keywords: [] },
+            { name: 'Marca Barcelona', url: 'https://e00-marca.uecdn.es/rss/futbol/barcelona.xml', keywords: [] },
+            { name: 'MD Real Madrid', url: 'https://www.mundodeportivo.com/rss/futbol/real-madrid.xml', keywords: [] },
+            { name: 'MD Barcelona', url: 'https://www.mundodeportivo.com/rss/futbol/fc-barcelona.xml', keywords: [] }
         ];
 
         function getItemImage(item) {
@@ -732,15 +733,16 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Cargar noticias desde news.json (generado por el vigilante diario de
-        // noticias actuales) y, si no existe, desde los feeds RSS.
+        // noticias deportivas: Real Madrid y Barcelona, primera division masculina)
+        // y, si no existe, desde los feeds RSS.
         async function loadNews() {
-            newsGrid.innerHTML = '<p class="news-loading">Cargando noticias actuales...</p>';
+            newsGrid.innerHTML = '<p class="news-loading">Cargando noticias deportivas...</p>';
             try {
                 const res = await fetch('news.json?ts=' + Date.now(), { cache: 'no-store' });
                 if (res.ok) {
                     const data = await res.json();
                     if (Array.isArray(data) && data.length > 0) {
-                        renderNews(data.map(item => ({ ...item, source: item.source || 'Actualidad' })));
+                        renderNews(data.map(item => ({ ...item, source: item.source || 'Deportes' })));
                         return;
                     }
                 }
@@ -755,7 +757,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (!response.ok) throw new Error('API error');
                     const data = await response.json();
                     if (data.status !== 'ok') return [];
-                    // Noticias actuales, con miniatura real
+                    // Noticias de Real Madrid y Barcelona, con miniatura real
                     let items = (data.items || [])
                         .filter(item => item.title && item.link && getItemImage(item));
                     const filtered = items.filter(item =>
@@ -771,7 +773,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     return [];
                 }
             }));
-            // Intercalar feeds (round-robin) para mezclar las fuentes
+            // Intercalar feeds (round-robin) para mezclar Real Madrid y Barcelona
             const mixed = [];
             const seen = new Set();
             const maxLen = Math.max(...results.map(r => r.length), 0);
@@ -802,7 +804,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const img = document.createElement('img');
                 img.src = getItemImage(item);
-                img.alt = item.title || 'Noticia actual';
+                img.alt = item.title || 'Noticia deportiva';
                 img.loading = 'lazy';
                 img.onerror = () => { img.src = 'radio_background.png'; };
 
@@ -810,12 +812,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 info.className = 'news-info';
 
                 const title = document.createElement('h3');
-                title.textContent = item.title || 'Noticia actual';
+                title.textContent = item.title || 'Noticia deportiva';
 
                 const meta = document.createElement('div');
                 meta.className = 'news-meta';
                 const date = item.pubDate ? new Date(item.pubDate).toLocaleDateString('es-CO', { day: 'numeric', month: 'short' }) : '';
-                meta.innerHTML = '<i class="fas fa-newspaper"></i> ' + (item.source || 'Actualidad') + ' &middot; ' + date;
+                meta.innerHTML = '<i class="fas fa-newspaper"></i> ' + (item.source || 'Deportes') + ' &middot; ' + date;
 
                 info.appendChild(title);
                 info.appendChild(meta);
