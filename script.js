@@ -588,7 +588,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (iframeContainer) iframeContainer.style.display = 'block';
         if (iframe) iframe.src = '//ok.ru/videoembed/13981676805705?autoplay=1&nochat=1';
         openTvModal(modal);
-        title.innerHTML = "Partido <span style='color:#7DF9FF;'>En Vivo</span>";
+        title.innerHTML = "Master Crazy <span style='color:#7DF9FF;'>TV</span>";
 
         // En teléfonos: pantalla completa nativa en vertical
         if (isMobileDevice()) {
