@@ -1,3 +1,19 @@
+// Detección de dispositivo real: el viewport está forzado a 1024 en móviles,
+// así que las media queries normales no se disparan. Usamos device-width / userAgent
+// (excluyendo TVs) para saber cuándo es un teléfono real.
+(function () {
+    try {
+        var ua = navigator.userAgent;
+        var isTV = /(Tizen|Web0S|WebOS|SMART-TV|SmartTV|BRAVIA|Viera|Android TV|AFTT|AFTS|ADT-)/i.test(ua);
+        var mqMobile = window.matchMedia && window.matchMedia('(max-device-width: 900px)').matches;
+        var smallScreen = window.screen && window.screen.width > 0 && window.screen.width <= 900;
+        var uaMobile = /iPhone|iPad|iPod|Android(?! TV)|Opera Mini|IEMobile|Mobile/i.test(ua);
+        if (!isTV && (mqMobile || smallScreen || uaMobile)) {
+            document.documentElement.classList.add('is-mobile');
+        }
+    } catch (e) { }
+})();
+
 document.addEventListener('DOMContentLoaded', () => {
     // Audio Player Logic
     const streamUrl = 'https://stream.zeno.fm/zadzh811p48uv';
@@ -338,9 +354,9 @@ document.addEventListener('DOMContentLoaded', () => {
             playBtn.click();
         }
 
-        // Mostrar el iframe del partido en el modal
+        // Mostrar el iframe del partido en el modal (autoplay=1 para arrancar solo en móvil)
         if (iframeContainer) iframeContainer.style.display = 'block';
-        if (iframe) iframe.src = '//ok.ru/videoembed/13981676805705?nochat=1';
+        if (iframe) iframe.src = '//ok.ru/videoembed/13981676805705?autoplay=1&nochat=1';
         modal.style.display = 'flex';
         title.innerHTML = "Partido <span style='color:#7DF9FF;'>En Vivo</span>";
     };
