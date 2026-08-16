@@ -14,6 +14,19 @@
     } catch (e) { }
 })();
 
+// PWA: registrar el Service Worker para instalación y soporte offline
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+        navigator.serviceWorker.register('sw.js')
+            .then(function (reg) {
+                console.log('Service Worker registrado:', reg.scope);
+            })
+            .catch(function (err) {
+                console.error('Error registrando Service Worker:', err);
+            });
+    });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     // Audio Player Logic
     const streamUrl = 'https://stream.zeno.fm/zadzh811p48uv';
