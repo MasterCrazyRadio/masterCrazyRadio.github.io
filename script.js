@@ -263,6 +263,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         modal.style.display = 'flex';
+        // En teléfonos: pantalla completa nativa en vertical
+        if (isMobileDevice()) {
+            requestFullscreenVertical(modal);
+        }
         title.innerHTML = channelId.toUpperCase() + " TV <br><span style='font-size:0.8rem; color:#aaa;'>Cargando stream...</span>";
 
         const handleStreamError = () => {
@@ -328,6 +332,42 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    // Pantalla completa nativa + orientación vertical (teléfonos)
+    // Al tocar la tarjeta, el modal entra en fullscreen real (oculta la barra
+    // del navegador) y se bloquea la orientación vertical en Android.
+    function requestFullscreenVertical(el) {
+        try {
+            if (el.requestFullscreen) {
+                el.requestFullscreen().catch(function () { });
+            } else if (el.webkitRequestFullscreen) {
+                el.webkitRequestFullscreen();
+            } else if (el.msRequestFullscreen) {
+                el.msRequestFullscreen();
+            }
+        } catch (e) { }
+        // Bloquear orientación vertical (solo funciona en fullscreen, Android/Chrome)
+        try {
+            if (screen.orientation && screen.orientation.lock) {
+                screen.orientation.lock('portrait').catch(function () { });
+            }
+        } catch (e) { }
+    }
+
+    function exitFullscreen() {
+        try {
+            if (document.exitFullscreen) document.exitFullscreen();
+            else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+            else if (document.msExitFullscreen) document.msExitFullscreen();
+        } catch (e) { }
+        try {
+            if (screen.orientation && screen.orientation.unlock) screen.orientation.unlock();
+        } catch (e) { }
+    }
+
+    function isMobileDevice() {
+        return document.documentElement.classList.contains('is-mobile');
+    }
+
     // Partido En Vivo (iframe ok.ru)
     window.playPartido = function () {
         const modal = document.getElementById('tv-modal');
@@ -359,6 +399,11 @@ document.addEventListener('DOMContentLoaded', () => {
         if (iframe) iframe.src = '//ok.ru/videoembed/13981676805705?autoplay=1&nochat=1';
         modal.style.display = 'flex';
         title.innerHTML = "Partido <span style='color:#7DF9FF;'>En Vivo</span>";
+
+        // En teléfonos: pantalla completa nativa en vertical
+        if (isMobileDevice()) {
+            requestFullscreenVertical(modal);
+        }
     };
 
     window.closeTvModal = function () {
@@ -377,6 +422,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (iframe) iframe.src = '';
 
         modal.style.display = 'none';
+
+        // Salir de pantalla completa nativa y desbloquear orientación
+        exitFullscreen();
     };
 
     // Close modal on click outside
