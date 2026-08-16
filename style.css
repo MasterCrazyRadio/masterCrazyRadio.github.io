@@ -459,38 +459,41 @@ input[type="range"]::-webkit-slider-thumb:hover {
     display: flex;
     justify-content: center;
     align-items: flex-end;
-    height: 55px;
+    height: 45px;
     gap: 4px;
-    margin-top: 25px;
+    margin-top: 20px;
     padding: 0 10px;
+    width: 100%;
 }
 
 .bar {
     width: 6px;
     border-radius: 4px 4px 2px 2px;
+    background: linear-gradient(to top, #87CEEB, rgba(135, 206, 235, 0.15));
+    box-shadow: 0 0 10px rgba(135, 206, 235, 0.6);
     animation: equalize 1.1s infinite ease-in-out;
     transform-origin: bottom;
 }
 
-/* Colores de la paleta del logo */
-.bar-f {
-    background: linear-gradient(to top, #F000F0, rgba(240, 0, 240, 0.15));
-    box-shadow: 0 0 10px rgba(240, 0, 240, 0.6);
+/* Variación pastel por barra */
+.bar:nth-child(4n+1) {
+    background: linear-gradient(to top, #AEE2FF, rgba(174, 226, 255, 0.15));
+    box-shadow: 0 0 10px rgba(174, 226, 255, 0.6);
 }
 
-.bar-w {
-    background: linear-gradient(to top, #F0F0F0, rgba(240, 240, 240, 0.15));
-    box-shadow: 0 0 10px rgba(240, 240, 240, 0.5);
+.bar:nth-child(4n+2) {
+    background: linear-gradient(to top, #87CEEB, rgba(135, 206, 235, 0.15));
+    box-shadow: 0 0 10px rgba(135, 206, 235, 0.6);
 }
 
-.bar-g {
-    background: linear-gradient(to top, #A8F000, rgba(168, 240, 0, 0.15));
-    box-shadow: 0 0 10px rgba(168, 240, 0, 0.6);
+.bar:nth-child(4n+3) {
+    background: linear-gradient(to top, #B0E0E6, rgba(176, 224, 230, 0.15));
+    box-shadow: 0 0 10px rgba(176, 224, 230, 0.6);
 }
 
-.bar-y {
-    background: linear-gradient(to top, #F0D800, rgba(240, 216, 0, 0.15));
-    box-shadow: 0 0 10px rgba(240, 216, 0, 0.6);
+.bar:nth-child(4n) {
+    background: linear-gradient(to top, #89CFF0, rgba(137, 207, 240, 0.15));
+    box-shadow: 0 0 10px rgba(137, 207, 240, 0.6);
 }
 
 /* Escalonado de la animación tipo ecualizador */
