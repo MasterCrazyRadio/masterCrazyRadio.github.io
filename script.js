@@ -270,8 +270,21 @@ document.addEventListener('DOMContentLoaded', () => {
             hls.loadSource(streamUrl);
             hls.attachMedia(video);
             hls.on(Hls.Events.MANIFEST_PARSED, function () {
-                video.play();
-                title.innerText = channelId.toUpperCase() + " TV";
+                // Reproducción compatible con móvil: iOS bloquea play() con sonido
+                // en callbacks asíncronos, así que iniciamos en silencio y desmutearnos
+                // cuando el video realmente esté sonando.
+                video.muted = true;
+                const playPromise = video.play();
+                if (playPromise !== undefined) {
+                    playPromise.then(() => {
+                        video.muted = false;
+                        title.innerText = channelId.toUpperCase() + " TV";
+                    }).catch(() => {
+                        title.innerText = channelId.toUpperCase() + " TV";
+                    });
+                } else {
+                    title.innerText = channelId.toUpperCase() + " TV";
+                }
             });
             hls.on(Hls.Events.ERROR, function (event, data) {
                 if (data.fatal) {
@@ -282,8 +295,18 @@ document.addEventListener('DOMContentLoaded', () => {
         } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
             video.src = streamUrl;
             video.addEventListener('loadedmetadata', function () {
-                video.play();
-                title.innerText = channelId.toUpperCase() + " TV";
+                video.muted = true;
+                const playPromise = video.play();
+                if (playPromise !== undefined) {
+                    playPromise.then(() => {
+                        video.muted = false;
+                        title.innerText = channelId.toUpperCase() + " TV";
+                    }).catch(() => {
+                        title.innerText = channelId.toUpperCase() + " TV";
+                    });
+                } else {
+                    title.innerText = channelId.toUpperCase() + " TV";
+                }
             });
             video.addEventListener('error', handleStreamError);
         }
