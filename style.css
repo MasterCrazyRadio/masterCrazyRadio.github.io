@@ -303,7 +303,7 @@ body {
 .player-container:hover {
     box-shadow:
         0 30px 60px rgba(0, 0, 0, 0.6),
-        0 0 30px rgba(168, 240, 0, 0.2);
+        0 0 30px rgba(240, 0, 240, 0.25);
 }
 
 .player-glow {
@@ -312,7 +312,7 @@ body {
     left: -50%;
     width: 200%;
     height: 200%;
-    background: conic-gradient(transparent, var(--primary-neon), transparent 30%);
+    background: conic-gradient(transparent, var(--secondary-neon), transparent 30%);
     animation: rotate 4s linear infinite;
     z-index: -1;
     opacity: 0.3;
@@ -329,7 +329,7 @@ body {
 .status-indicator {
     font-size: 0.9rem;
     font-weight: 700;
-    color: var(--primary-neon);
+    color: var(--secondary-neon);
     margin-bottom: 15px;
     display: flex;
     align-items: center;
@@ -402,7 +402,7 @@ body {
     height: 80px;
     border-radius: 50%;
     background: rgba(255, 255, 255, 0.1);
-    border: 2px solid var(--primary-neon);
+    border: 2px solid var(--secondary-neon);
     color: #fff;
     font-size: 2rem;
     cursor: pointer;
@@ -411,13 +411,13 @@ body {
     align-items: center;
     justify-content: center;
     margin: 0 auto 30px;
-    box-shadow: 0 0 20px rgba(168, 240, 0, 0.2);
+    box-shadow: 0 0 20px rgba(240, 0, 240, 0.25);
 }
 
 .play-btn:hover {
-    background: var(--primary-neon);
+    background: var(--secondary-neon);
     color: #000;
-    box-shadow: 0 0 40px rgba(168, 240, 0, 0.6);
+    box-shadow: 0 0 40px rgba(240, 0, 240, 0.6);
     transform: scale(1.1);
 }
 
@@ -465,9 +465,9 @@ input[type="range"]::-webkit-slider-thumb:hover {
 
 .bar {
     width: 8px;
-    background: linear-gradient(to top, var(--tertiary-neon), var(--primary-neon));
+    background: linear-gradient(to top, var(--secondary-neon), rgba(240, 0, 240, 0.15));
     border-radius: 4px;
-    box-shadow: 0 0 10px var(--tertiary-neon);
+    box-shadow: 0 0 10px var(--secondary-neon);
     animation: bounce 1s infinite ease-in-out;
 }
 
