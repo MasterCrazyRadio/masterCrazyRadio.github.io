@@ -114,6 +114,15 @@ body {
     text-shadow: 0 0 15px rgba(168, 240, 0, 0.5);
 }
 
+.brand-sky {
+    background: linear-gradient(135deg, #89CFF0 0%, #AEE2FF 55%, #ffffff 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: #89CFF0;
+    filter: drop-shadow(0 0 12px rgba(137, 207, 240, 0.4));
+}
+
 .neon-text::before {
     content: attr(data-text);
     position: absolute;
