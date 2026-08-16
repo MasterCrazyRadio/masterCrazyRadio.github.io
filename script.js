@@ -262,7 +262,7 @@ document.addEventListener('DOMContentLoaded', () => {
             playBtn.click(); // This will pause the radio
         }
 
-        modal.style.display = 'flex';
+        openTvModal(modal);
         // En teléfonos: pantalla completa nativa en vertical
         if (isMobileDevice()) {
             requestFullscreenVertical(modal);
@@ -368,6 +368,38 @@ document.addEventListener('DOMContentLoaded', () => {
         return document.documentElement.classList.contains('is-mobile');
     }
 
+    // Navegación: el botón "atrás" del teléfono cierra el reproductor
+    // y vuelve a la página de inicio en vez de dejar pantalla negra.
+    let tvModalHistoryPushed = false;
+
+    function openTvModal(modal) {
+        modal.style.display = 'flex';
+        if (!tvModalHistoryPushed) {
+            tvModalHistoryPushed = true;
+            try { history.pushState({ tvModal: true }, ''); } catch (e) { }
+        }
+    }
+
+    // Al pulsar "atrás": cerrar el modal en vez de salir de la página
+    window.addEventListener('popstate', function () {
+        const modal = document.getElementById('tv-modal');
+        if (modal && modal.style.display === 'flex') {
+            closeTvModal();
+            // Re-marcar el historial para que otro "atrás" no salga del sitio
+            tvModalHistoryPushed = true;
+            try { history.pushState({ tvModal: true }, ''); } catch (e) { }
+        }
+    });
+
+    // Si el usuario sale del fullscreen nativo (gesto o atrás en Android),
+    // cerrar el modal para no dejar pantalla negra
+    document.addEventListener('fullscreenchange', function () {
+        const modal = document.getElementById('tv-modal');
+        if (modal && modal.style.display === 'flex' && !document.fullscreenElement && !document.webkitFullscreenElement) {
+            closeTvModal();
+        }
+    });
+
     // Partido En Vivo (iframe ok.ru)
     window.playPartido = function () {
         const modal = document.getElementById('tv-modal');
@@ -397,7 +429,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Mostrar el iframe del partido en el modal (autoplay=1 para arrancar solo en móvil)
         if (iframeContainer) iframeContainer.style.display = 'block';
         if (iframe) iframe.src = '//ok.ru/videoembed/13981676805705?autoplay=1&nochat=1';
-        modal.style.display = 'flex';
+        openTvModal(modal);
         title.innerHTML = "Partido <span style='color:#7DF9FF;'>En Vivo</span>";
 
         // En teléfonos: pantalla completa nativa en vertical
@@ -422,6 +454,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (iframe) iframe.src = '';
 
         modal.style.display = 'none';
+        tvModalHistoryPushed = false;
 
         // Salir de pantalla completa nativa y desbloquear orientación
         exitFullscreen();
@@ -434,6 +467,34 @@ document.addEventListener('DOMContentLoaded', () => {
             closeTvModal();
         }
     };
+
+    // Vigilancia del estado del Partido En Vivo (status.json lo actualiza el bot)
+    // Si la transmisión de OK.ru está en pausa/caída, la tarjeta muestra el mensaje.
+    function refreshPartidoStatus() {
+        fetch('status.json?ts=' + Date.now(), { cache: 'no-store' })
+            .then(function (r) { return r.json(); })
+            .then(function (data) {
+                const badge = document.getElementById('partido-badge');
+                const statusMsg = document.getElementById('partido-status');
+                if (!badge) return;
+                if (data && data.status === 'ONLINE') {
+                    badge.textContent = 'EN VIVO';
+                    badge.classList.remove('offline');
+                    if (statusMsg) statusMsg.style.display = 'none';
+                } else {
+                    badge.textContent = 'EN PAUSA';
+                    badge.classList.add('offline');
+                    if (statusMsg) {
+                        statusMsg.textContent = (data && data.message) ? data.message : 'Transmisión en pausa — vuelve en un momento';
+                        statusMsg.style.display = 'block';
+                    }
+                }
+            })
+            .catch(function () { /* sin status.json aun: mantener estado por defecto */ });
+    }
+
+    refreshPartidoStatus();
+    setInterval(refreshPartidoStatus, 45000);
 
     // Contact Form Handler
     const contactForm = document.getElementById('contactForm');
