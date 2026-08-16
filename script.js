@@ -7,25 +7,57 @@ document.addEventListener('DOMContentLoaded', () => {
     const volumeIcon = document.getElementById('volume-icon');
     const icon = playBtn.querySelector('i');
     const songTitleElement = document.getElementById('song-title');
+    const floatingPlayer = document.getElementById('floating-player');
+    const floatingPlayBtn = document.getElementById('floating-play-btn');
+    const floatingIcon = floatingPlayBtn ? floatingPlayBtn.querySelector('i') : null;
+    const floatingSongTitle = document.getElementById('floating-song-title');
     let isPlaying = false;
 
-    // Play/Pause
-    playBtn.addEventListener('click', () => {
+    function syncPlayState() {
+        if (icon) {
+            icon.classList.remove('fa-pause', 'fa-play');
+            icon.classList.add(isPlaying ? 'fa-pause' : 'fa-play');
+        }
+        if (floatingIcon) {
+            floatingIcon.classList.remove('fa-pause', 'fa-play');
+            floatingIcon.classList.add(isPlaying ? 'fa-pause' : 'fa-play');
+        }
+        if (floatingPlayer) {
+            floatingPlayer.classList.toggle('playing', isPlaying);
+        }
+    }
+
+    function togglePlay() {
         if (isPlaying) {
             audio.pause();
-            icon.classList.remove('fa-pause');
-            icon.classList.add('fa-play');
             isPlaying = false;
         } else {
             audio.play().catch(error => {
                 console.error("Playback failed:", error);
                 alert("Error al reproducir. Verifica tu conexión o intenta más tarde.");
             });
-            icon.classList.remove('fa-play');
-            icon.classList.add('fa-pause');
             isPlaying = true;
         }
-    });
+        syncPlayState();
+    }
+
+    // Play/Pause (botón principal y flotante sincronizados)
+    playBtn.addEventListener('click', togglePlay);
+    if (floatingPlayBtn) {
+        floatingPlayBtn.addEventListener('click', togglePlay);
+    }
+
+    // Mostrar/ocultar reproductor flotante al hacer scroll
+    function updateFloatingPlayer() {
+        if (!floatingPlayer) return;
+        if (window.scrollY > 400) {
+            floatingPlayer.classList.add('visible');
+        } else {
+            floatingPlayer.classList.remove('visible');
+        }
+    }
+    window.addEventListener('scroll', updateFloatingPlayer, { passive: true });
+    updateFloatingPlayer();
 
     // Volume Control
     volumeSlider.addEventListener('input', (e) => {
@@ -52,10 +84,15 @@ document.addEventListener('DOMContentLoaded', () => {
         eventSource.onmessage = function (event) {
             try {
                 const data = JSON.parse(event.data);
+                let titleText = '';
                 if (data.streamTitle) {
-                    songTitleElement.innerText = data.streamTitle;
+                    titleText = data.streamTitle;
                 } else if (data.artist && data.title) {
-                    songTitleElement.innerText = `${data.artist} - ${data.title}`;
+                    titleText = `${data.artist} - ${data.title}`;
+                }
+                if (titleText) {
+                    songTitleElement.innerText = titleText;
+                    if (floatingSongTitle) floatingSongTitle.innerText = titleText;
                 }
             } catch (e) {
                 console.error("Error parsing metadata:", e);
