@@ -1266,6 +1266,44 @@ input[type="range"]::-webkit-slider-thumb:hover {
     }
 }
 
+/* TELÉFONOS REALES: el viewport está forzado a 1024, así que estas reglas
+   se activan por la clase .is-mobile (detección por device-width en JS).
+   El reproductor se amplía a pantalla completa vertical. */
+.is-mobile .tv-modal {
+    padding: 0;
+}
+
+.is-mobile .modal-content {
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    max-width: none;
+    max-height: none;
+    border-radius: 0;
+    padding: 10px 8px 8px;
+    border: none;
+    box-shadow: none;
+    justify-content: center;
+}
+
+.is-mobile .video-container {
+    aspect-ratio: auto;
+    flex: 1 1 auto;
+    width: 100%;
+    min-height: 0;
+}
+
+.is-mobile #channel-name {
+    font-size: 0.95rem;
+    padding: 6px 0 2px;
+}
+
+.is-mobile .close-modal {
+    top: 10px;
+    right: 12px;
+    font-size: 1.9rem;
+}
+
 /* Top 5 Canciones Section */
 .top5-section {
     padding: 80px 20px;
