@@ -171,9 +171,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // === Ecualizador de audio (activable/desactivable) ===
-    // Equivalente web del Equalizer APO: filtra graves, medios y agudos con la
-    // Web Audio API. Al activarlo se conecta el audio a una cadena de filtros.
+    // === Presets de sonido (activable/desactivable) ===
+    // Cuerpo, Brillo y Super Bass: ajustan graves/medios/agudos con la Web
+    // Audio API. Inicialización a prueba de fallos: se espera a que el
+    // AudioContext esté RUNNING antes de capturar el audio del reproductor.
+    // Si no se logra, la radio sigue sonando directa (jamás se corta).
     const eqToggleBtn = document.getElementById('eq-toggle-btn');
     const eqPanel = document.getElementById('eq-panel');
     const eqState = document.getElementById('eq-state');
@@ -183,11 +185,24 @@ document.addEventListener('DOMContentLoaded', () => {
     const eqBassVal = document.getElementById('eq-bass-val');
     const eqMidVal = document.getElementById('eq-mid-val');
     const eqTrebleVal = document.getElementById('eq-treble-val');
+    const eqPresetNormal = document.getElementById('eq-preset-normal');
+    const eqPresetBody = document.getElementById('eq-preset-body');
+    const eqPresetBright = document.getElementById('eq-preset-bright');
+    const eqPresetBass = document.getElementById('eq-preset-bass');
 
     let eqCtx = null;
     let eqSource = null;
     let eqFilters = null;
     let eqEnabled = false;
+    let eqFailed = false; // si el navegador no puede activar Web Audio
+
+    // Presets disponibles (graves / medios / agudos en dB)
+    const EQ_PRESETS = {
+        normal: { bass: 0,  mid: 0,  treble: 0 },
+        body:   { bass: 6,  mid: 1,  treble: 3 },   // cuerpo
+        bright: { bass: 2,  mid: 0,  treble: 7 },   // brillo
+        bass:   { bass: 10, mid: -3, treble: 2 }    // super bass
+    };
 
     function loadEqPrefs() {
         try {
@@ -223,31 +238,25 @@ document.addEventListener('DOMContentLoaded', () => {
         eqTrebleVal.textContent = (parseInt(eqTreble.value, 10) > 0 ? '+' : '') + eqTreble.value;
     }
 
-    // Reanudar el AudioContext SIEMPRE con gesto del usuario: sin esto, el audio
-    // se queda mudo al activar/desactivar el EQ (contexto suspendido).
-    function resumeEqCtx() {
-        if (eqCtx && eqCtx.state === 'suspended') {
-            eqCtx.resume().catch(function () { });
-        }
-    }
-
-    // Crea el grafo UNA sola vez: source -> filtros -> destino, SIEMPRE conectado.
-    // El EQ se enciende/apaga solo cambiando la ganancia de los filtros
-    // (0 dB = transparente), NUNCA desconectando: así el audio jamás se corta.
-    function initEqualizer() {
-        if (eqCtx || !audio) return;
+    // Inicializa el grafo SOLO si el AudioContext queda confirmado en "running".
+    // Espera a que resume() complete ANTES de capturar el audio del elemento:
+    // así es imposible que la radio se corte al activar el EQ.
+    async function initEqualizer() {
+        if (eqCtx || eqFailed || !audio) return false;
         const AC = window.AudioContext || window.webkitAudioContext;
-        if (!AC) return;
+        if (!AC) { eqFailed = true; return false; }
         try {
             eqCtx = new AC();
+            if (eqCtx.state === 'suspended') {
+                try { await eqCtx.resume(); } catch (e) { }
+            }
+            if (eqCtx.state !== 'running') {
+                // No se pudo activar: NO tocar el audio, la radio sigue directa
+                eqCtx = null;
+                eqFailed = true;
+                return false;
+            }
             eqSource = eqCtx.createMediaElementSource(audio);
-            // Auto-resume: si el navegador suspende el contexto (autoplay policy),
-            // lo reanudamos automáticamente en cuanto vuelva a haber actividad.
-            eqCtx.onstatechange = function () {
-                if (eqCtx && eqCtx.state === 'suspended') {
-                    eqCtx.resume().catch(function () { });
-                }
-            };
             eqFilters = [
                 eqCtx.createBiquadFilter(), // graves
                 eqCtx.createBiquadFilter(), // medios
@@ -266,15 +275,16 @@ document.addEventListener('DOMContentLoaded', () => {
             eqFilters[1].connect(eqFilters[2]);
             eqFilters[2].connect(eqCtx.destination);
             applyEq();
-            resumeEqCtx();
+            return true;
         } catch (e) {
             console.error('Error iniciando ecualizador:', e);
-            eqCtx = null; // si falla, el audio sigue normal sin EQ
+            eqCtx = null;
+            eqFailed = true;
+            return false;
         }
     }
 
-    // Aplica el EQ: ON = ganancias del usuario, OFF = 0 dB (transparente).
-    // Sin disconnect(): desconectar en Chrome corta el audio hasta recargar.
+    // Aplica el EQ: ON = ganancias del preset/sliders, OFF = 0 dB (transparente)
     function applyEq() {
         if (!eqFilters) return;
         try {
@@ -284,17 +294,48 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (e) { }
     }
 
+    // Activa el EQ y aplica un preset
+    function applyPreset(name) {
+        const p = EQ_PRESETS[name];
+        if (!p) return;
+        eqBass.value = p.bass;
+        eqMid.value = p.mid;
+        eqTreble.value = p.treble;
+        if (!eqEnabled) eqEnabled = true;
+        updateEqUI();
+        applyEq();
+        saveEqPrefs();
+    }
+
     if (eqToggleBtn) {
         loadEqPrefs();
         updateEqUI();
-        eqToggleBtn.addEventListener('click', function () {
-            initEqualizer();
-            resumeEqCtx();
+        eqToggleBtn.addEventListener('click', async function () {
+            const ok = await initEqualizer();
+            if (!ok) {
+                eqEnabled = false;
+                updateEqUI();
+                return;
+            }
             eqEnabled = !eqEnabled;
             updateEqUI();
             applyEq();
             saveEqPrefs();
         });
+        // Presets: activan el EQ y cargan su curva
+        if (eqPresetNormal) eqPresetNormal.addEventListener('click', async function () {
+            if (await initEqualizer()) applyPreset('normal');
+        });
+        if (eqPresetBody) eqPresetBody.addEventListener('click', async function () {
+            if (await initEqualizer()) applyPreset('body');
+        });
+        if (eqPresetBright) eqPresetBright.addEventListener('click', async function () {
+            if (await initEqualizer()) applyPreset('bright');
+        });
+        if (eqPresetBass) eqPresetBass.addEventListener('click', async function () {
+            if (await initEqualizer()) applyPreset('bass');
+        });
+        // Sliders manuales
         eqBass.addEventListener('input', function () {
             eqBassVal.textContent = (parseInt(eqBass.value, 10) > 0 ? '+' : '') + eqBass.value;
             applyEq();

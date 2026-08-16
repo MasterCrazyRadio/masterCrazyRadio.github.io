@@ -680,6 +680,34 @@ input[type="range"]::-webkit-slider-thumb:hover {
     margin-top: 12px;
 }
 
+.eq-presets {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px;
+    margin-bottom: 4px;
+}
+
+.eq-preset-btn {
+    background: rgba(168, 112, 224, 0.12);
+    border: 1px solid rgba(168, 240, 0, 0.4);
+    color: #7DF9FF;
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.eq-preset-btn:hover,
+.eq-preset-btn.active {
+    background: linear-gradient(135deg, #A8F000, #A870E0);
+    color: #000;
+    border-color: transparent;
+    box-shadow: 0 0 14px rgba(168, 240, 0, 0.35);
+}
+
 .eq-toggle-btn {
     width: 40px;
     height: 40px;
