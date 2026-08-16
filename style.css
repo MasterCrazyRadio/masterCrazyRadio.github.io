@@ -1304,6 +1304,52 @@ input[type="range"]::-webkit-slider-thumb:hover {
     font-size: 1.9rem;
 }
 
+/* Pantalla completa NATIVA (API Fullscreen) en teléfonos:
+   al tocar la tarjeta el modal entra en fullscreen real del navegador
+   (oculta la barra del navegador) en orientación vertical. */
+.tv-modal:fullscreen,
+.tv-modal:-webkit-full-screen {
+    padding: 0 !important;
+    background: #000 !important;
+    backdrop-filter: none !important;
+}
+
+.tv-modal:fullscreen .modal-content,
+.tv-modal:-webkit-full-screen .modal-content {
+    width: 100vw !important;
+    height: 100vh !important;
+    height: 100dvh !important;
+    max-width: none !important;
+    max-height: none !important;
+    border-radius: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 10px 8px 8px !important;
+    justify-content: center !important;
+}
+
+.tv-modal:fullscreen .video-container,
+.tv-modal:-webkit-full-screen .video-container {
+    aspect-ratio: auto !important;
+    flex: 1 1 auto !important;
+    width: 100% !important;
+    min-height: 0 !important;
+}
+
+.tv-modal:fullscreen .video-container iframe,
+.tv-modal:fullscreen .video-container video,
+.tv-modal:-webkit-full-screen .video-container iframe,
+.tv-modal:-webkit-full-screen .video-container video {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important;
+}
+
+.tv-modal:fullscreen #channel-name,
+.tv-modal:-webkit-full-screen #channel-name {
+    padding: 6px 0 2px !important;
+}
+
 /* Top 5 Canciones Section */
 .top5-section {
     padding: 80px 20px;
