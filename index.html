@@ -210,35 +210,12 @@
                                     <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="1">
                                 </div>
 
-                                <!-- Ecualizador de audio (activable/desactivable) -->
-                                <div class="eq-control">
-                                    <button id="eq-toggle-btn" class="eq-toggle-btn" aria-label="Ecualizador de audio">
-                                        <i class="fas fa-sliders-h"></i>
+                                <!-- Boton SUPER BASS: refuerzo de graves opcional -->
+                                <div class="sb-control">
+                                    <button id="sb-btn" class="sb-btn" aria-label="Refuerzo de graves super bass">
+                                        <i class="fas fa-bolt"></i> SUPER BASS
                                     </button>
-                                    <span class="eq-state" id="eq-state">EQ OFF</span>
-                                </div>
-                                <div class="eq-panel" id="eq-panel" style="display:none;">
-                                    <div class="eq-presets">
-                                        <button type="button" class="eq-preset-btn" id="eq-preset-normal">Normal</button>
-                                        <button type="button" class="eq-preset-btn" id="eq-preset-body">Cuerpo</button>
-                                        <button type="button" class="eq-preset-btn" id="eq-preset-bright">Brillo</button>
-                                        <button type="button" class="eq-preset-btn" id="eq-preset-bass">Super Bass</button>
-                                    </div>
-                                    <div class="eq-band">
-                                        <label for="eq-bass">Graves</label>
-                                        <input type="range" id="eq-bass" min="-12" max="12" step="1" value="6">
-                                        <span id="eq-bass-val">+6</span>
-                                    </div>
-                                    <div class="eq-band">
-                                        <label for="eq-mid">Medios</label>
-                                        <input type="range" id="eq-mid" min="-12" max="12" step="1" value="-2">
-                                        <span id="eq-mid-val">-2</span>
-                                    </div>
-                                    <div class="eq-band">
-                                        <label for="eq-treble">Agudos</label>
-                                        <input type="range" id="eq-treble" min="-12" max="12" step="1" value="5">
-                                        <span id="eq-treble-val">+5</span>
-                                    </div>
+                                    <span class="sb-state" id="sb-state">OFF</span>
                                 </div>
                             </div>
 
