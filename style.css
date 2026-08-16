@@ -1383,7 +1383,9 @@ input[type="range"]::-webkit-slider-thumb:hover {
 
 .top5-artist {
     font-size: 0.95rem;
-    color: rgba(168, 112, 224, 0.18);
+    color: #8E5FD8;
+    font-weight: 500;
+    text-shadow: 0 0 8px rgba(142, 95, 216, 0.35);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
