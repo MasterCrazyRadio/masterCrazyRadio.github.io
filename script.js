@@ -125,8 +125,14 @@ document.addEventListener('DOMContentLoaded', () => {
         headerPlayBtn.addEventListener('click', togglePlay);
     }
     // Al tocar el logo de la radio, la radio comienza a sonar
+    // con efecto punch (entra y sale como botón físico)
     if (heroLogo) {
-        heroLogo.addEventListener('click', togglePlay);
+        heroLogo.addEventListener('click', function () {
+            heroLogo.classList.remove('logo-punch');
+            void heroLogo.offsetWidth; // reinicia la animación
+            heroLogo.classList.add('logo-punch');
+            togglePlay();
+        });
     }
 
     // Volume Control
