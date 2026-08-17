@@ -1425,9 +1425,10 @@ input[type="range"]::-webkit-slider-thumb:hover {
 }
 
 .modal-content {
-    width: min(92vw, 420px);
-    max-width: 420px;
+    width: min(92vw, 1500px);
+    max-width: 1500px;
     max-height: 92vh;
+    aspect-ratio: 16 / 9;
     background: #000;
     border-radius: 15px;
     padding: 10px;
@@ -1484,7 +1485,7 @@ input[type="range"]::-webkit-slider-thumb:hover {
 .video-container {
     position: relative;
     width: 100%;
-    aspect-ratio: 9 / 16;
+    aspect-ratio: 16 / 9;
     overflow: hidden;
     background: #000;
     border-radius: 10px;
@@ -1514,8 +1515,8 @@ input[type="range"]::-webkit-slider-thumb:hover {
 /* Pantallas muy grandes (TV / Smart TV / monitores) */
 @media (min-width: 1400px) {
     .modal-content {
-        width: min(46vh, 420px);
-        max-width: 420px;
+        width: min(94vw, 1600px);
+        max-width: 1600px;
     }
 }
 
@@ -2160,9 +2161,9 @@ body.tv-open .tv-modal {
     -webkit-backdrop-filter: none;
 }
 
-/* TV: el reproductor se adapta automaticamente a cualquier tamano de
-   pantalla: el modal nunca se sale del viewport y el video conserva su
-   proporcion (barras negras si hace falta, sin recortar). */
+/* TV: pantalla completa real en cualquier TV box / Smart TV (ONN Watch,
+   Android TV, Fire TV, etc.): el modal llena toda la pantalla aunque el
+   navegador no soporte la API Fullscreen, y el video se adapta solo. */
 .is-tv .tv-modal {
     padding: 0;
     backdrop-filter: none;
@@ -2170,24 +2171,45 @@ body.tv-open .tv-modal {
 }
 
 .is-tv .modal-content {
-    width: min(96vw, 1700px);
-    height: min(90vh, 1080px);
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
     max-width: none;
     max-height: none;
-    border-radius: 10px;
+    border-radius: 0;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+    justify-content: center;
 }
 
 .is-tv .video-container {
     aspect-ratio: auto;
-    flex: 1 1 auto;
+    flex: 1 1 100%;
     width: 100%;
-    height: auto;
+    height: 100%;
     min-height: 0;
-    border-radius: 8px;
+    border-radius: 0;
+}
+
+.is-tv .video-container iframe,
+.is-tv .video-container video {
+    width: 100% !important;
+    height: 100% !important;
 }
 
 .is-tv #channel-name {
-    font-size: 1.2rem;
+    position: absolute;
+    top: 14px;
+    left: 0;
+    right: 0;
+    font-size: 1rem;
+    padding: 4px 12px;
+    z-index: 5;
+    background: rgba(0, 0, 0, 0.35);
+    border-radius: 20px;
+    width: fit-content;
+    margin: 0 auto;
 }
 
 .is-tv .close-modal {
@@ -2306,4 +2328,48 @@ body.tv-open .tv-modal {
 @keyframes tvCardFlash {
     0%, 100% { transform: scale(1); }
     50% { transform: scale(1.04); }
+}
+
+/* ===== Pantalla completa GARANTIZADA del reproductor TV en TODOS los
+   dispositivos (ONN Watch, Android TV, Fire TV, Smart TV, móvil, PC) ===== */
+.tv-modal .modal-content {
+    width: 100vw !important;
+    height: 100vh !important;
+    height: 100dvh !important;
+    max-width: none !important;
+    max-height: none !important;
+    border-radius: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    justify-content: center !important;
+}
+
+.tv-modal .video-container {
+    aspect-ratio: auto !important;
+    flex: 1 1 100% !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    border-radius: 0 !important;
+}
+
+.tv-modal .video-container iframe,
+.tv-modal .video-container video {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.tv-modal #channel-name {
+    position: absolute !important;
+    top: 14px;
+    left: 0;
+    right: 0;
+    font-size: 1rem;
+    padding: 4px 12px;
+    z-index: 5;
+    background: rgba(0, 0, 0, 0.35);
+    border-radius: 20px;
+    width: fit-content;
+    margin: 0 auto;
 }
