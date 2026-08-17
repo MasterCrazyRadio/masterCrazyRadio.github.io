@@ -203,10 +203,20 @@ body {
     text-shadow: 0 0 15px var(--secondary-neon);
 }
 
+.main-nav {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+}
+
 .main-nav ul {
     display: flex;
     list-style: none;
-    gap: 30px;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 24px;
+    margin: 0;
+    padding: 0;
 }
 
 .main-nav a {
