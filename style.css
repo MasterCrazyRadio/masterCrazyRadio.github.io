@@ -2160,7 +2160,9 @@ body.tv-open .tv-modal {
     -webkit-backdrop-filter: none;
 }
 
-/* TV: modal ancho en horizontal (16:9) y sin blur de fondo */
+/* TV: el reproductor se adapta automaticamente a cualquier tamano de
+   pantalla: el modal nunca se sale del viewport y el video conserva su
+   proporcion (barras negras si hace falta, sin recortar). */
 .is-tv .tv-modal {
     padding: 0;
     backdrop-filter: none;
@@ -2168,14 +2170,19 @@ body.tv-open .tv-modal {
 }
 
 .is-tv .modal-content {
-    width: min(94vw, 1500px);
-    max-width: 1500px;
-    max-height: 94vh;
+    width: min(96vw, 1700px);
+    height: min(90vh, 1080px);
+    max-width: none;
+    max-height: none;
     border-radius: 10px;
 }
 
 .is-tv .video-container {
-    aspect-ratio: 16 / 9;
+    aspect-ratio: auto;
+    flex: 1 1 auto;
+    width: 100%;
+    height: auto;
+    min-height: 0;
     border-radius: 8px;
 }
 
