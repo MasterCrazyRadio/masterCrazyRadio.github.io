@@ -17,7 +17,7 @@
     /* Blanco azul neón */
     --glass-bg: rgba(168, 112, 224, 0.05);
     --glass-border: rgba(168, 112, 224, 0.04);
-    --font-main: 'Crash A Like', 'Outfit', sans-serif;
+    --font-main: 'Outfit', sans-serif;
 }
 
 * {
@@ -156,12 +156,17 @@ body {
 }
 
 .neon-text {
-    font-family: 'Crash A Like', sans-serif;
     font-size: 2.1rem;
-    font-weight: 400;
+    font-weight: 900;
     letter-spacing: 2px;
     color: #7DF9FF;
     position: relative;
+}
+
+/* La tipografia del juego Crash SOLO en la palabra MASTER CRAZY */
+.neon-text .brand-green {
+    font-family: 'Crash A Like', sans-serif;
+    font-weight: 400;
 }
 
 .brand-green {
@@ -388,9 +393,8 @@ body {
 }
 
 .hero-brand-text h2 {
-    font-family: 'Crash A Like', sans-serif;
     font-size: 5rem;
-    font-weight: 400;
+    font-weight: 900;
     margin-bottom: 20px;
     line-height: 1.1;
     background: linear-gradient(to right, #A870E0, #A870E0);
