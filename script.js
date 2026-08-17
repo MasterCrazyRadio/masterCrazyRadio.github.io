@@ -4,7 +4,19 @@
 (function () {
     try {
         var ua = navigator.userAgent;
-        var isTV = /(Tizen|Web0S|WebOS|SMART-TV|SmartTV|BRAVIA|Viera|Android TV|AFTT|AFTS|ADT-)/i.test(ua);
+        // Detección de TV real (Smart TV, TV boxes como ONN Watch TV, Google TV,
+        // Fire TV...): se detecta ANTES que móvil para que reciban el modo TV
+        // (modal ancho 16:9 y sin efectos pesados que congelan el video).
+        var isTV = /(Tizen|Web0S|WebOS|SMART-TV|SmartTV|BRAVIA|Viera|Android TV|GoogleTV|Chromecast|AFT[A-Z]|ADT-|ONN|Roku|Xbox|PlayStation|Fire ?TV|MiBox|Mi ?TV|Hisense|Vestel|Philips TV|Panasonic)/i.test(ua);
+        try {
+            if (!isTV && navigator.userAgentData && navigator.userAgentData.brands &&
+                navigator.userAgentData.brands.some(function (b) { return /Google TV|Android TV/i.test(b.brand); })) {
+                isTV = true;
+            }
+        } catch (e2) { }
+        if (isTV) {
+            document.documentElement.classList.add('is-tv');
+        }
         var mqMobile = window.matchMedia && window.matchMedia('(max-device-width: 900px)').matches;
         var smallScreen = window.screen && window.screen.width > 0 && window.screen.width <= 900;
         var uaMobile = /iPhone|iPad|iPod|Android(?! TV)|Opera Mini|IEMobile|Mobile/i.test(ua);
@@ -424,8 +436,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         openTvModal(modal);
-        // En teléfonos: pantalla completa nativa en vertical
-        if (isMobileDevice()) {
+        // En teléfonos y TV: pantalla completa nativa
+        if (isMobileDevice() || isTvDevice()) {
             requestFullscreenVertical(modal);
         }
         title.innerHTML = channelId.toUpperCase() + " TV <br><span style='font-size:0.8rem; color:#aaa;'>Cargando stream...</span>";
@@ -517,6 +529,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Giro del teléfono: al voltear a horizontal (landscape) mientras se ve un
     // canal de TV, la transmisión se expande a toda la pantalla.
     function updateTvOrientationClass() {
+        if (isTvDevice()) return; // en TV la orientación es fija (horizontal)
         const modal = document.getElementById('tv-modal');
         if (!modal || modal.style.display !== 'flex') return;
         const landscape = window.innerWidth > window.innerHeight;
@@ -559,6 +572,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Giroscopio (deviceorientation) con permiso en iOS: refuerzo de la detección
     function enableGyroOrientation() {
+        if (isTvDevice()) return; // giroscopio solo aplica a teléfonos
         try {
             window.addEventListener('deviceorientation', function () {
                 updateTvOrientationClass();
@@ -566,7 +580,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (e) { }
     }
     try {
-        if (typeof DeviceOrientationEvent !== 'undefined' &&
+        if (!isTvDevice() && typeof DeviceOrientationEvent !== 'undefined' &&
             typeof DeviceOrientationEvent.requestPermission === 'function') {
             // iOS pide permiso con un gesto del usuario
             document.addEventListener('click', function once() {
@@ -597,6 +611,10 @@ document.addEventListener('DOMContentLoaded', () => {
         return document.documentElement.classList.contains('is-mobile');
     }
 
+    function isTvDevice() {
+        return document.documentElement.classList.contains('is-tv');
+    }
+
     // Navegación: el botón "atrás" del teléfono cierra el reproductor
     // y vuelve a la página de inicio en vez de dejar pantalla negra.
     let tvModalHistoryPushed = false;
@@ -605,6 +623,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function openTvModal(modal) {
         modal.style.display = 'flex';
+        // Modo rendimiento: se apagan las animaciones pesadas de la página
+        // mientras se ve TV para que el video no se congele (TV boxes, gama baja)
+        document.body.classList.add('tv-open');
         if (!tvModalHistoryPushed) {
             tvModalHistoryPushed = true;
             try { history.pushState({ tvModal: true }, ''); } catch (e) { }
@@ -664,8 +685,8 @@ document.addEventListener('DOMContentLoaded', () => {
         openTvModal(modal);
         title.innerHTML = "Master Crazy <span style='color:#7DF9FF;'>TV</span>";
 
-        // En teléfonos: pantalla completa nativa en vertical
-        if (isMobileDevice()) {
+        // En teléfonos y TV: pantalla completa nativa
+        if (isMobileDevice() || isTvDevice()) {
             requestFullscreenVertical(modal);
         }
     };
@@ -703,8 +724,8 @@ document.addEventListener('DOMContentLoaded', () => {
         openTvModal(modal);
         title.innerHTML = "Caracol <span style='color:#7DF9FF;'>TV</span> <br><span style='font-size:0.8rem; color:#aaa;'>Señal en vivo</span>";
 
-        // En teléfonos: pantalla completa nativa en vertical
-        if (isMobileDevice()) {
+        // En teléfonos y TV: pantalla completa nativa
+        if (isMobileDevice() || isTvDevice()) {
             requestFullscreenVertical(modal);
         }
     };
@@ -726,6 +747,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         modal.style.display = 'none';
         tvModalHistoryPushed = false;
+        // Se reactivan las animaciones de la página
+        document.body.classList.remove('tv-open');
 
         // Salir de pantalla completa nativa y desbloquear orientación
         exitFullscreen();
