@@ -2130,3 +2130,69 @@ input[type="range"]::-webkit-slider-thumb:hover {
 .submit-btn i {
     font-size: 1rem;
 }
+
+/* ===== Modo TV: rendimiento para Smart TV y TV boxes (ONN Watch TV, Google TV, Android TV) ===== */
+
+/* Mientras se ve TV se apagan los efectos pesados de la página para que el
+   video no se congele en dispositivos con hardware limitado (TV boxes,
+   móviles gama baja). Se reactivan al cerrar el modal. */
+body.tv-open .mesh-gradient {
+    animation: none;
+    filter: none;
+}
+
+body.tv-open .spotlight {
+    display: none;
+}
+
+body.tv-open .visualizer-container .bar {
+    animation: none;
+}
+
+body.tv-open .flyer-shine,
+body.tv-open .flyer-glow,
+body.tv-open .hero-logo-aurora {
+    animation: none;
+}
+
+body.tv-open .tv-modal {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+}
+
+/* TV: modal ancho en horizontal (16:9) y sin blur de fondo */
+.is-tv .tv-modal {
+    padding: 0;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+}
+
+.is-tv .modal-content {
+    width: min(94vw, 1500px);
+    max-width: 1500px;
+    max-height: 94vh;
+    border-radius: 10px;
+}
+
+.is-tv .video-container {
+    aspect-ratio: 16 / 9;
+    border-radius: 8px;
+}
+
+.is-tv #channel-name {
+    font-size: 1.2rem;
+}
+
+.is-tv .close-modal {
+    bottom: 18px;
+    right: 18px;
+    font-size: 2.4rem;
+}
+
+.is-tv .expand-tv-btn {
+    bottom: 18px;
+    right: 80px;
+    width: 48px;
+    height: 48px;
+    font-size: 1.2rem;
+}
