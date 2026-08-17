@@ -23,6 +23,20 @@
         if (!isTV && (mqMobile || smallScreen || uaMobile)) {
             document.documentElement.classList.add('is-mobile');
         }
+        // Modo bajo consumo: TV boxes, Smart TV y móviles gama baja.
+        // Se apagan las animaciones/efectos pesados de GPU para que la página
+        // sea fluida y rápida en dispositivos con hardware limitado.
+        var isLowPower = false;
+        try {
+            var cores = navigator.hardwareConcurrency || 8;
+            var mem = navigator.deviceMemory || 8;
+            isLowPower = isTV || (uaMobile && (cores <= 4 || mem <= 4));
+        } catch (e3) {
+            isLowPower = isTV;
+        }
+        if (isLowPower) {
+            document.documentElement.classList.add('is-low-power');
+        }
     } catch (e) { }
 })();
 
@@ -52,6 +66,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const headerIcon = headerPlayBtn ? headerPlayBtn.querySelector('i') : null;
     const songTitleElement = document.getElementById('song-title');
     let isPlaying = false;
+    // Modo bajo consumo activo (TV boxes, Smart TV, móviles gama baja):
+    // se omiten los efectos que dependen del mouse y animaciones de GPU.
+    const lowPowerMode = document.documentElement.classList.contains('is-low-power');
     // La radio se pausa mientras suena el video de noticias o un Top Crazy,
     // y se reanuda sola en cuanto se pausan o terminan.
     let radioPausedForVideo = false;
@@ -282,34 +299,38 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize Metadata
     initMetadata();
 
-    // Spotlight Effect
+    // Spotlight Effect (se omite en modo bajo consumo: consume GPU/CPU)
     const spotlight = document.querySelector('.spotlight');
-    document.addEventListener('mousemove', (e) => {
-        spotlight.style.left = e.clientX + 'px';
-        spotlight.style.top = e.clientY + 'px';
-    });
+    if (!lowPowerMode) {
+        document.addEventListener('mousemove', (e) => {
+            spotlight.style.left = e.clientX + 'px';
+            spotlight.style.top = e.clientY + 'px';
+        });
+    }
 
-    // 3D Tilt Effect for Player
+    // 3D Tilt Effect for Player (se omite en modo bajo consumo)
     const card = document.getElementById('tilt-card');
     const wrapper = document.querySelector('.player-wrapper');
 
-    wrapper.addEventListener('mousemove', (e) => {
-        const rect = wrapper.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
+    if (!lowPowerMode) {
+        wrapper.addEventListener('mousemove', (e) => {
+            const rect = wrapper.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
 
-        const centerX = rect.width / 2;
-        const centerY = rect.height / 2;
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
 
-        const rotateX = ((y - centerY) / centerY) * -10; // Max 10 deg rotation
-        const rotateY = ((x - centerX) / centerX) * 10;
+            const rotateX = ((y - centerY) / centerY) * -10; // Max 10 deg rotation
+            const rotateY = ((x - centerX) / centerX) * 10;
 
-        card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
-    });
+            card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
+        });
 
-    wrapper.addEventListener('mouseleave', () => {
-        card.style.transform = 'rotateX(0) rotateY(0) scale(1)';
-    });
+        wrapper.addEventListener('mouseleave', () => {
+            card.style.transform = 'rotateX(0) rotateY(0) scale(1)';
+        });
+    }
 
     // Smooth scroll
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -381,10 +402,10 @@ document.addEventListener('DOMContentLoaded', () => {
         restartFlyerTimer();
     }
 
-    // Flyer 3D Tilt Effect (applies to active slide)
+    // Flyer 3D Tilt Effect (applies to active slide) - se omite en modo bajo consumo
     const flyerWrapper = document.querySelector('.flyer-wrapper');
 
-    if (flyerWrapper) {
+    if (flyerWrapper && !lowPowerMode) {
         const tiltable = flyerWrapper.querySelector('.flyer-slide-card');
         if (tiltable) {
             flyerWrapper.addEventListener('mousemove', (e) => {

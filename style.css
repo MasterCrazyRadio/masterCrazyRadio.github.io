@@ -2203,3 +2203,75 @@ body.tv-open .tv-modal {
     height: 48px;
     font-size: 1.2rem;
 }
+
+/* ===== Modo bajo consumo: ONN Watch TV, Fire TV, Smart TV y móviles gama baja =====
+   Se activa automáticamente con la clase .is-low-power (detectada en JS por
+   user-agent + núcleos/RAM). Apaga los efectos de GPU más costosos para que
+   la página sea fluida y rápida en hardware limitado. */
+
+/* Sin blur ni rotación del fondo */
+.is-low-power .mesh-gradient {
+    animation: none;
+    filter: none;
+}
+
+/* Sin spotlight (además el JS no lo mueve en este modo) */
+.is-low-power .spotlight {
+    display: none;
+}
+
+/* Sin aurora ni brillos del logo */
+.is-low-power .hero-logo-aurora {
+    animation: none;
+    filter: none;
+}
+
+/* Sin glow giratorio del reproductor */
+.is-low-power .player-glow {
+    animation: none;
+    filter: none;
+}
+
+/* Sin brillos de los flyers */
+.is-low-power .flyer-glow,
+.is-low-power .flyer-shine {
+    animation: none;
+    filter: none;
+}
+
+/* Sin ecualizador animado */
+.is-low-power .visualizer-container .bar {
+    animation: none;
+}
+
+/* Botón WhatsApp sin pulso ni onda */
+.is-low-power .whatsapp-float {
+    animation: none;
+}
+.is-low-power .whatsapp-float::before {
+    filter: none;
+}
+.is-low-power .whatsapp-float::after {
+    animation: none;
+    display: none;
+}
+
+/* Miniaturas del Top 5 sin pulso */
+.is-low-power .top5-item.playing .top5-thumb {
+    animation: none;
+}
+
+/* Sin desenfoque de fondo (backdrop-filter) en toda la página */
+.is-low-power * {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+
+/* No pintar secciones fuera de pantalla hasta que se acerque el scroll */
+.is-low-power .tv-section,
+.is-low-power .top5-section,
+.is-low-power .news-section,
+.is-low-power .contact-section {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 700px;
+}
