@@ -2295,3 +2295,15 @@ body.tv-open .tv-modal {
     border: none;
     background: #000;
 }
+
+/* Resaltado temporal de la tarjeta MASTER CRAZY TV al llegar desde el header */
+.tv-card.tv-card-flash {
+    border-color: #A8F000;
+    box-shadow: 0 0 0 3px rgba(168, 240, 0, 0.35), 0 0 35px rgba(168, 240, 0, 0.35);
+    animation: tvCardFlash 1s ease-in-out;
+}
+
+@keyframes tvCardFlash {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.04); }
+}

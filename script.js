@@ -340,13 +340,26 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Smooth scroll
+    // Smooth scroll: la opción TV del header lleva directo a la tarjeta
+    // MASTER CRAZY TV (centrada y con resaltado para que se ubique al instante)
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             e.preventDefault();
-            document.querySelector(this.getAttribute('href')).scrollIntoView({
-                behavior: 'smooth'
-            });
+            const target = this.getAttribute('href');
+            if (target === '#tv-section') {
+                const mctv = document.getElementById('master-crazy-tv-card');
+                if (mctv) {
+                    mctv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    // Resaltar brevemente la tarjeta para que se vea
+                    mctv.classList.remove('tv-card-flash');
+                    void mctv.offsetWidth; // reinicia la animación
+                    mctv.classList.add('tv-card-flash');
+                    setTimeout(function () { mctv.classList.remove('tv-card-flash'); }, 2200);
+                    return;
+                }
+            }
+            const el = document.querySelector(target);
+            if (el) el.scrollIntoView({ behavior: 'smooth' });
         });
     });
 
