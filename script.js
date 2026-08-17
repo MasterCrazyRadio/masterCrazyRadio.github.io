@@ -57,6 +57,39 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // === La radio nunca se queda en silencio ===
+    // Guardamos el estado de reproducción y, al volver a la página (botón
+    // "atrás" del teléfono tras leer una noticia, cambio de pestaña, cierre
+    // de la TV o recarga tras navegar fuera), la radio se reanuda sola.
+    const RADIO_STATE_KEY = 'mcr_radio_playing';
+
+    function persistPlayState() {
+        try {
+            if (isPlaying) sessionStorage.setItem(RADIO_STATE_KEY, '1');
+            else sessionStorage.removeItem(RADIO_STATE_KEY);
+        } catch (e) { }
+    }
+
+    function resumeRadioIfPaused() {
+        try {
+            if (sessionStorage.getItem(RADIO_STATE_KEY) !== '1') return;
+            if (!audio.paused) return; // ya está sonando
+            isPlaying = true;
+            clearReconnect();
+            const p = audio.play();
+            if (p && p.catch) {
+                p.catch(function () { scheduleReconnect(); });
+            }
+            syncPlayState();
+        } catch (e) { }
+    }
+
+    // Al volver a esta pestaña (atrás del teléfono, cambio de pestaña, etc.)
+    document.addEventListener('visibilitychange', function () {
+        if (!document.hidden) resumeRadioIfPaused();
+    });
+    window.addEventListener('pageshow', resumeRadioIfPaused);
+
     // === Auto-reconexión: si la conexión se pierde o se vuelve inestable,
     // el reproductor se reconecta solo para que el oyente nunca quede sin música. ===
     function showReconnectStatus(show) {
@@ -110,6 +143,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 scheduleReconnect();
             });
         }
+        persistPlayState();
         syncPlayState();
     }
 
@@ -149,6 +183,10 @@ document.addEventListener('DOMContentLoaded', () => {
             togglePlay();
         });
     }
+
+    // Si la radio estaba sonando al salir de la página (noticia, enlace externo),
+    // se reanuda automáticamente al volver (incluye recargas tras "atrás").
+    resumeRadioIfPaused();
 
     // Volume Control
     volumeSlider.addEventListener('input', (e) => {
@@ -347,11 +385,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         if (video) video.style.display = '';
 
-        // Stop radio audio if playing
-        const playBtn = document.getElementById('play-btn');
-        const icon = playBtn.querySelector('i');
-        if (icon.classList.contains('fa-pause')) {
-            playBtn.click(); // This will pause the radio
+        // Pausar la radio mientras se ve TV (se reanuda sola al cerrar el modal)
+        if (isPlaying) {
+            radioWasPlayingBeforeTv = true;
+            togglePlay();
+        } else {
+            radioWasPlayingBeforeTv = false;
         }
 
         openTvModal(modal);
@@ -531,6 +570,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Navegación: el botón "atrás" del teléfono cierra el reproductor
     // y vuelve a la página de inicio en vez de dejar pantalla negra.
     let tvModalHistoryPushed = false;
+    // La radio se pausa al abrir la TV y se reanuda sola al cerrarla
+    let radioWasPlayingBeforeTv = false;
 
     function openTvModal(modal) {
         modal.style.display = 'flex';
@@ -579,11 +620,12 @@ document.addEventListener('DOMContentLoaded', () => {
             video.style.display = 'none';
         }
 
-        // Detener radio si está sonando
-        const playBtn = document.getElementById('play-btn');
-        const icon = playBtn.querySelector('i');
-        if (icon.classList.contains('fa-pause')) {
-            playBtn.click();
+        // Pausar la radio mientras se ve TV (se reanuda sola al cerrar el modal)
+        if (isPlaying) {
+            radioWasPlayingBeforeTv = true;
+            togglePlay();
+        } else {
+            radioWasPlayingBeforeTv = false;
         }
 
         // Mostrar el iframe del partido en el modal (autoplay=1 para arrancar solo en móvil)
@@ -617,11 +659,12 @@ document.addEventListener('DOMContentLoaded', () => {
             video.style.display = 'none';
         }
 
-        // Detener radio si está sonando
-        const playBtn = document.getElementById('play-btn');
-        const icon = playBtn.querySelector('i');
-        if (icon.classList.contains('fa-pause')) {
-            playBtn.click();
+        // Pausar la radio mientras se ve TV (se reanuda sola al cerrar el modal)
+        if (isPlaying) {
+            radioWasPlayingBeforeTv = true;
+            togglePlay();
+        } else {
+            radioWasPlayingBeforeTv = false;
         }
 
         // Cargar la señal en vivo oficial de Caracol TV (YouTube embed)
@@ -656,6 +699,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Salir de pantalla completa nativa y desbloquear orientación
         exitFullscreen();
+
+        // Al cerrar la TV (atrás, X o clic fuera), la radio vuelve a sonar
+        if (radioWasPlayingBeforeTv) {
+            radioWasPlayingBeforeTv = false;
+            togglePlay();
+        }
     };
 
     // Close modal on click outside
