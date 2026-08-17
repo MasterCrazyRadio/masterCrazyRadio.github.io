@@ -119,7 +119,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Al volver a esta pestaña (atrás del teléfono, cambio de pestaña, etc.)
     document.addEventListener('visibilitychange', function () {
-        if (!document.hidden) resumeRadioIfPaused();
+        if (!document.hidden) {
+            resumeRadioIfPaused();
+            // Si se estaba viendo la transmisión de Master Crazy TV (OK.ru),
+            // reconectar: los navegadores congelan el iframe en segundo plano
+            const modal = document.getElementById('tv-modal');
+            if (modal && modal.style.display === 'flex' && tvIsPartido) {
+                reloadTvIframe();
+            }
+        }
     });
     window.addEventListener('pageshow', resumeRadioIfPaused);
 
@@ -446,6 +454,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const iframe = document.getElementById('tv-iframe');
             if (iframe) iframe.src = '';
         }
+        tvIsPartido = false;
+        stopTvWatchdog();
         if (video) video.style.display = '';
 
         // Pausar la radio mientras se ve TV (se reanuda sola al cerrar el modal)
@@ -673,6 +683,75 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // === Auto-reconexión de la transmisión de Master Crazy TV (iframe de OK.ru) ===
+    // El iframe es cross-origin y OK.ru no expone eventos de pausa/error al padre,
+    // así que un vigilante recarga el embed cuando la transmisión se detiene/congela:
+    //  - recarga periódica suave mientras el usuario está viendo (si la transmisión
+    //    se quedó congelada, se auto-corrige sola),
+    //  - recarga al volver a la pestaña (los navegadores congelan el iframe),
+    //  - recarga si el embed no termina de cargar en 45s.
+    const TV_PARTIDO_EMBED = '//ok.ru/videoembed/13981676805705?autoplay=1&nochat=1';
+    const TV_WATCHDOG_MS = 15000;
+    const TV_RELOAD_INTERVAL_MS = lowPowerMode ? 180000 : 300000; // 3 min en TV box, 5 min resto
+    const TV_LOAD_TIMEOUT_MS = 45000;
+    let tvWatchdogTimer = null;
+    let tvIframeLoadTimer = null;
+    let tvLastReload = 0;
+    let tvIsPartido = false;
+
+    function reloadTvIframe() {
+        const iframe = document.getElementById('tv-iframe');
+        const modal = document.getElementById('tv-modal');
+        if (!iframe || !tvIsPartido) return;
+        if (!modal || modal.style.display !== 'flex') return;
+        const now = Date.now();
+        if (now - tvLastReload < 10000) return; // anti-bucle
+        tvLastReload = now;
+        const title = document.getElementById('channel-name');
+        if (title) {
+            title.innerHTML = "Master Crazy <span style='color:#7DF9FF;'>TV</span> <br><span style='font-size:0.8rem; color:#ffb84d;'>Reconectando...</span>";
+        }
+        // Recarga real del embed (vaciar y volver a poner la URL)
+        iframe.src = '';
+        iframe.src = TV_PARTIDO_EMBED;
+        armTvLoadWatchdog();
+    }
+
+    function armTvLoadWatchdog() {
+        if (tvIframeLoadTimer) clearTimeout(tvIframeLoadTimer);
+        tvIframeLoadTimer = setTimeout(function () {
+            tvIframeLoadTimer = null;
+            // El embed no cargó a tiempo: reintentar la reconexión
+            reloadTvIframe();
+        }, TV_LOAD_TIMEOUT_MS);
+    }
+
+    function startTvWatchdog() {
+        stopTvWatchdog();
+        tvLastReload = Date.now();
+        tvWatchdogTimer = setInterval(function () {
+            const modal = document.getElementById('tv-modal');
+            if (!modal || modal.style.display !== 'flex' || !tvIsPartido) return;
+            if (document.hidden) return; // pestaña en segundo plano: no recargar
+            if (Date.now() - tvLastReload >= TV_RELOAD_INTERVAL_MS) {
+                reloadTvIframe();
+            }
+        }, TV_WATCHDOG_MS);
+    }
+
+    function stopTvWatchdog() {
+        if (tvWatchdogTimer) { clearInterval(tvWatchdogTimer); tvWatchdogTimer = null; }
+        if (tvIframeLoadTimer) { clearTimeout(tvIframeLoadTimer); tvIframeLoadTimer = null; }
+    }
+
+    // Al terminar de cargar el embed, se desarma el vigilante de carga
+    const tvIframeEl = document.getElementById('tv-iframe');
+    if (tvIframeEl) {
+        tvIframeEl.addEventListener('load', function () {
+            if (tvIframeLoadTimer) { clearTimeout(tvIframeLoadTimer); tvIframeLoadTimer = null; }
+        });
+    }
+
     // Partido En Vivo (iframe ok.ru)
     window.playPartido = function () {
         const modal = document.getElementById('tv-modal');
@@ -702,7 +781,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Mostrar el iframe del partido en el modal (autoplay=1 para arrancar solo en móvil)
         if (iframeContainer) iframeContainer.style.display = 'block';
-        if (iframe) iframe.src = '//ok.ru/videoembed/13981676805705?autoplay=1&nochat=1';
+        if (iframe) {
+            tvIsPartido = true;
+            iframe.src = TV_PARTIDO_EMBED;
+            armTvLoadWatchdog();
+            startTvWatchdog();
+        }
         openTvModal(modal);
         title.innerHTML = "Master Crazy <span style='color:#7DF9FF;'>TV</span>";
 
@@ -740,6 +824,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Cargar la señal en vivo oficial de Caracol TV (YouTube embed)
+        tvIsPartido = false; // el watchdog de reconexión es solo para la transmisión de OK.ru
+        stopTvWatchdog();
         if (iframeContainer) iframeContainer.style.display = 'block';
         if (iframe) iframe.src = 'https://www.youtube.com/embed/x0eOenDDelg?autoplay=1&rel=0';
         openTvModal(modal);
@@ -765,6 +851,8 @@ document.addEventListener('DOMContentLoaded', () => {
         // Limpiar iframe del partido
         if (iframeContainer) iframeContainer.style.display = 'none';
         if (iframe) iframe.src = '';
+        tvIsPartido = false;
+        stopTvWatchdog();
 
         modal.style.display = 'none';
         tvModalHistoryPushed = false;
