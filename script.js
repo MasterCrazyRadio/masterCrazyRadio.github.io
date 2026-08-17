@@ -886,6 +886,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Vigilancia del estado del Partido En Vivo (status.json lo actualiza el bot)
     // Si la transmisión de OK.ru está en pausa/caída, la tarjeta muestra el mensaje.
+    // IMPORTANTE: solo muestra "EN PAUSA" si status.json es RECIENTE (el bot lo
+    // actualiza) y dice offline. Si el archivo está viejo o no existe, se asume
+    // que la transmisión está EN VIVO (evita avisos falsos de pausa).
     function refreshPartidoStatus() {
         fetch('status.json?ts=' + Date.now(), { cache: 'no-store' })
             .then(function (r) { return r.json(); })
@@ -893,20 +896,31 @@ document.addEventListener('DOMContentLoaded', () => {
                 const badge = document.getElementById('partido-badge');
                 const statusMsg = document.getElementById('partido-status');
                 if (!badge) return;
+                // ¿El archivo fue actualizado hace menos de 30 minutos?
+                let esReciente = false;
+                if (data && data.updatedAt) {
+                    const edad = Date.now() - new Date(data.updatedAt).getTime();
+                    esReciente = edad < 30 * 60 * 1000;
+                }
                 if (data && data.status === 'ONLINE') {
                     badge.textContent = 'EN VIVO';
                     badge.classList.remove('offline');
                     if (statusMsg) statusMsg.style.display = 'none';
-                } else {
+                } else if (esReciente) {
                     badge.textContent = 'EN PAUSA';
                     badge.classList.add('offline');
                     if (statusMsg) {
                         statusMsg.textContent = (data && data.message) ? data.message : 'Transmisión en pausa — vuelve en un momento';
                         statusMsg.style.display = 'block';
                     }
+                } else {
+                    // Archivo viejo o ausente: asumir que está al aire
+                    badge.textContent = 'EN VIVO';
+                    badge.classList.remove('offline');
+                    if (statusMsg) statusMsg.style.display = 'none';
                 }
             })
-            .catch(function () { /* sin status.json aun: mantener estado por defecto */ });
+            .catch(function () { /* sin status.json: mantener EN VIVO por defecto */ });
     }
 
     refreshPartidoStatus();
