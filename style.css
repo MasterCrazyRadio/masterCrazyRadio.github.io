@@ -2378,3 +2378,47 @@ body.tv-open .tv-modal {
 .tv-modal.partido-mode #channel-name {
     display: none !important;
 }
+
+/* Aviso de reconexión con conteo 3-2-1 GO (Master Crazy TV) */
+.tv-reconnect-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    background: rgba(0, 0, 0, 0.72);
+    z-index: 5;
+    pointer-events: none;
+}
+
+.tv-reconnect-count {
+    font-size: 8rem;
+    font-weight: 900;
+    color: #A8F000;
+    text-shadow: 0 0 30px rgba(168, 240, 0, 0.7);
+    line-height: 1;
+}
+
+.tv-reconnect-count.go {
+    color: #7DF9FF;
+    text-shadow: 0 0 40px rgba(125, 249, 255, 0.8);
+    font-size: 9rem;
+}
+
+.tv-reconnect-label {
+    font-size: 1.2rem;
+    color: #7DF9FF;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    text-shadow: 0 0 15px rgba(125, 249, 255, 0.5);
+}
+
+@keyframes reconnectPop {
+    0% { transform: scale(1.6); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}

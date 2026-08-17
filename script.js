@@ -711,6 +711,45 @@ document.addEventListener('DOMContentLoaded', () => {
     let tvLastReload = 0;
     let tvIsPartido = false;
 
+    // === Aviso en pantalla con conteo 3-2-1 GO mientras reconecta ===
+    let tvReconnectTimer = null;
+
+    function setReconnectNumber(text, isGo) {
+        const countEl = document.getElementById('tv-reconnect-count');
+        if (!countEl) return;
+        countEl.textContent = text;
+        countEl.classList.toggle('go', !!isGo);
+        // Reiniciar la animación pop en cada número
+        countEl.style.animation = 'none';
+        void countEl.offsetWidth;
+        countEl.style.animation = 'reconnectPop 0.6s ease-in-out';
+    }
+
+    function showReconnectCountdown() {
+        const overlay = document.getElementById('tv-reconnect-overlay');
+        if (!overlay) return;
+        overlay.style.display = 'flex';
+        let n = 3;
+        setReconnectNumber(String(n), false);
+        clearInterval(tvReconnectTimer);
+        tvReconnectTimer = setInterval(function () {
+            n--;
+            if (n >= 1) {
+                setReconnectNumber(String(n), false);
+            } else {
+                setReconnectNumber('GO', true);
+                clearInterval(tvReconnectTimer);
+                tvReconnectTimer = null;
+            }
+        }, 1000);
+    }
+
+    function hideReconnectCountdown() {
+        const overlay = document.getElementById('tv-reconnect-overlay');
+        if (overlay) overlay.style.display = 'none';
+        if (tvReconnectTimer) { clearInterval(tvReconnectTimer); tvReconnectTimer = null; }
+    }
+
     function reloadTvIframe() {
         const iframe = document.getElementById('tv-iframe');
         const modal = document.getElementById('tv-modal');
@@ -719,10 +758,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const now = Date.now();
         if (now - tvLastReload < 10000) return; // anti-bucle
         tvLastReload = now;
-        const title = document.getElementById('channel-name');
-        if (title) {
-            title.innerHTML = "Master Crazy <span style='color:#7DF9FF;'>TV</span> <br><span style='font-size:0.8rem; color:#ffb84d;'>Reconectando...</span>";
-        }
+        // Aviso en pantalla: conteo 3-2-1 GO mientras reconecta
+        showReconnectCountdown();
         // Recarga real del embed (vaciar y volver a poner la URL)
         iframe.src = '';
         iframe.src = TV_PARTIDO_EMBED;
@@ -757,10 +794,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Al terminar de cargar el embed, se desarma el vigilante de carga
+    // y se oculta el aviso de reconexión
     const tvIframeEl = document.getElementById('tv-iframe');
     if (tvIframeEl) {
         tvIframeEl.addEventListener('load', function () {
             if (tvIframeLoadTimer) { clearTimeout(tvIframeLoadTimer); tvIframeLoadTimer = null; }
+            hideReconnectCountdown();
         });
     }
 
@@ -771,6 +810,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const iframeContainer = document.getElementById('tv-iframe-container');
         const iframe = document.getElementById('tv-iframe');
         const title = document.getElementById('channel-name');
+
+        // Al abrir de nuevo, ocultar cualquier aviso de reconexión anterior
+        hideReconnectCountdown();
 
         // Detener HLS/video anterior si estaba activo
         if (window.hls) {
@@ -863,6 +905,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (iframe) iframe.src = '';
         tvIsPartido = false;
         stopTvWatchdog();
+        hideReconnectCountdown();
 
         modal.style.display = 'none';
         modal.classList.remove('partido-mode');
