@@ -148,8 +148,9 @@ body {
 }
 
 .neon-text {
-    font-size: 2rem;
-    font-weight: 900;
+    font-family: 'Anton', sans-serif;
+    font-size: 2.1rem;
+    font-weight: 400;
     letter-spacing: 2px;
     color: #7DF9FF;
     text-transform: uppercase;
@@ -380,8 +381,9 @@ body {
 }
 
 .hero-brand-text h2 {
+    font-family: 'Anton', sans-serif;
     font-size: 5rem;
-    font-weight: 900;
+    font-weight: 400;
     margin-bottom: 20px;
     line-height: 1.1;
     background: linear-gradient(to right, #A870E0, #A870E0);
