@@ -40,6 +40,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const headerIcon = headerPlayBtn ? headerPlayBtn.querySelector('i') : null;
     const songTitleElement = document.getElementById('song-title');
     let isPlaying = false;
+    // La radio se pausa mientras suena el video de noticias o un Top Crazy,
+    // y se reanuda sola en cuanto se pausan o terminan.
+    let radioPausedForVideo = false;
+    let radioPausedForTop5 = false;
     let reconnectAttempts = 0;
     let reconnectTimer = null;
     let connectionLost = false;
@@ -187,6 +191,32 @@ document.addEventListener('DOMContentLoaded', () => {
     // Si la radio estaba sonando al salir de la página (noticia, enlace externo),
     // se reanuda automáticamente al volver (incluye recargas tras "atrás").
     resumeRadioIfPaused();
+
+    // Video de noticias deportivas: al reproducirse pausa la radio y al
+    // pausarse o terminar, la radio vuelve a sonar.
+    const newsVideo = document.querySelector('.news-video');
+    if (newsVideo) {
+        newsVideo.addEventListener('play', function () {
+            if (isPlaying) {
+                radioPausedForVideo = true;
+                togglePlay();
+            } else {
+                radioPausedForVideo = false;
+            }
+        });
+        newsVideo.addEventListener('pause', function () {
+            if (radioPausedForVideo) {
+                radioPausedForVideo = false;
+                togglePlay();
+            }
+        });
+        newsVideo.addEventListener('ended', function () {
+            if (radioPausedForVideo) {
+                radioPausedForVideo = false;
+                togglePlay();
+            }
+        });
+    }
 
     // Volume Control
     volumeSlider.addEventListener('input', (e) => {
@@ -905,8 +935,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
             resetPlayIcons();
+            // La radio se pausa mientras suena la canción del Top Crazy
+            if (isPlaying) {
+                radioPausedForTop5 = true;
+                togglePlay();
+            } else {
+                radioPausedForTop5 = false;
+            }
             audio.src = src;
-            audio.play().catch(err => console.error('Error al reproducir audio:', err));
+            audio.play().catch(err => {
+                console.error('Error al reproducir audio:', err);
+                // Si no pudo sonar la canción, la radio vuelve de inmediato
+                if (radioPausedForTop5) {
+                    radioPausedForTop5 = false;
+                    togglePlay();
+                }
+            });
             currentItem = item;
             item.classList.add('playing');
             const icon = item.querySelector('.top5-play i');
@@ -932,6 +976,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 currentItem.classList.remove('playing');
                 const icon = currentItem.querySelector('.top5-play i');
                 if (icon) icon.className = 'fas fa-play';
+            }
+            // Al pausar o terminar la canción, la radio vuelve a sonar
+            if (radioPausedForTop5) {
+                radioPausedForTop5 = false;
+                togglePlay();
             }
         });
     }
