@@ -2373,3 +2373,8 @@ body.tv-open .tv-modal {
     width: fit-content;
     margin: 0 auto;
 }
+
+/* Dentro de la transmisión de Master Crazy TV: sin título flotante en la parte alta */
+.tv-modal.partido-mode #channel-name {
+    display: none !important;
+}

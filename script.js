@@ -480,6 +480,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         openTvModal(modal);
+        modal.classList.remove('partido-mode');
         // Pantalla completa nativa en cualquier dispositivo
         requestFullscreenVertical(modal);
         title.innerHTML = channelId.toUpperCase() + " TV <br><span style='font-size:0.8rem; color:#aaa;'>Cargando stream...</span>";
@@ -799,6 +800,7 @@ document.addEventListener('DOMContentLoaded', () => {
             startTvWatchdog();
         }
         openTvModal(modal);
+        modal.classList.add('partido-mode'); // sin título flotante dentro de la transmisión
         title.innerHTML = "Master Crazy <span style='color:#7DF9FF;'>TV</span>";
 
         // Pantalla completa nativa en cualquier dispositivo
@@ -838,6 +840,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (iframeContainer) iframeContainer.style.display = 'block';
         if (iframe) iframe.src = 'https://www.youtube.com/embed/x0eOenDDelg?autoplay=1&rel=0';
         openTvModal(modal);
+        modal.classList.remove('partido-mode');
         title.innerHTML = "Caracol <span style='color:#7DF9FF;'>TV</span> <br><span style='font-size:0.8rem; color:#aaa;'>Señal en vivo</span>";
 
         // Pantalla completa nativa en cualquier dispositivo
@@ -862,6 +865,7 @@ document.addEventListener('DOMContentLoaded', () => {
         stopTvWatchdog();
 
         modal.style.display = 'none';
+        modal.classList.remove('partido-mode');
         tvModalHistoryPushed = false;
         // Se reactivan las animaciones de la página
         document.body.classList.remove('tv-open');
