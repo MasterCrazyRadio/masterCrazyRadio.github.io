@@ -156,11 +156,12 @@ body {
 }
 
 .neon-text {
-    font-size: 2.6rem;
+    font-size: 2.3rem;
     font-weight: 900;
-    letter-spacing: 2px;
+    letter-spacing: 1px;
     color: #7DF9FF;
     position: relative;
+    white-space: nowrap;
 }
 
 /* La tipografia del juego Crash SOLO en la palabra MASTER CRAZY */
