@@ -461,8 +461,16 @@
         <section id="news-section" class="news-section">
             <h2 class="section-title">Noticias <span class="highlight">Deportivas</span></h2>
 
-            <!-- Video destacado de Leoncito del Fútbol -->
+            <!-- Estados de WhatsApp / Canal oficial -->
             <div class="news-tiktok">
+                <h3 class="news-tiktok-title"><i class="fab fa-whatsapp"></i> Estados de WhatsApp</h3>
+                <!-- Embed oficial del Canal de WhatsApp (se activa con el ID en script.js) -->
+                <div id="whatsapp-status-wrap" class="whatsapp-status-wrap" style="display:none;">
+                    <iframe id="whatsapp-status-embed" class="whatsapp-status-embed"
+                        src="" width="100%" height="560" frameborder="0"
+                        allowfullscreen loading="lazy" title="Estados de WhatsApp"></iframe>
+                </div>
+                <!-- Video de respaldo (Leoncito del Fútbol) mientras no haya canal configurado -->
                 <video class="news-video" controls preload="metadata" poster="leoncito_video_thumb.jpg">
                     <source src="leoncito_video.mp4" type="video/mp4">
                     Tu navegador no soporta video HTML5.

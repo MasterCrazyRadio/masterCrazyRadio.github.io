@@ -929,6 +929,23 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // === Estados de WhatsApp en el espacio de video de Noticias Deportivas ===
+    // Nota: los estados personales de WhatsApp no se pueden incrustar en una web
+    // (son privados, duran 24h y no tienen API pública). Lo que SÍ se incrusta de
+    // forma oficial es un CANAL de WhatsApp: todo lo que publiques ahí (fotos,
+    // videos, texto) aparece automáticamente en la web. Pega el enlace de tu canal:
+    //   https://www.whatsapp.com/channel/<ID>
+    const WHATSAPP_CHANNEL_URL = ''; // ej: 'https://www.whatsapp.com/channel/0029Va...'
+
+    const whatsappWrap = document.getElementById('whatsapp-status-wrap');
+    const whatsappEmbed = document.getElementById('whatsapp-status-embed');
+    const newsVideoEl = document.querySelector('.news-video');
+    if (whatsappWrap && whatsappEmbed && WHATSAPP_CHANNEL_URL) {
+        whatsappEmbed.src = WHATSAPP_CHANNEL_URL.replace(/\/$/, '') + '/embed';
+        whatsappWrap.style.display = 'block';
+        if (newsVideoEl) newsVideoEl.style.display = 'none';
+    }
+
     // Noticias Deportivas Section
     const newsGrid = document.getElementById('news-grid');
     if (newsGrid) {
