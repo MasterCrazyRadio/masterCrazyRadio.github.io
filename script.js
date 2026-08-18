@@ -669,6 +669,20 @@ document.addEventListener('DOMContentLoaded', () => {
         // Modo rendimiento: se apagan las animaciones pesadas de la página
         // mientras se ve TV para que el video no se congele (TV boxes, gama baja)
         document.body.classList.add('tv-open');
+        // En TV (ONN Watch, Fire TV, Smart TV, Android TV): entrar directo a
+        // fullscreen nativo para que el video estirado ocupe el 100% real de la
+        // pantalla (oculta la barra del navegador). El CSS .is-tv ya llena 100vw/100vh.
+        if (isTvDevice()) {
+            try {
+                if (typeof window.expandTvFullscreen === 'function') {
+                    window.expandTvFullscreen();
+                } else {
+                    const el = modal;
+                    if (el.requestFullscreen) { el.requestFullscreen().catch(function () { }); }
+                    else if (el.webkitRequestFullscreen) { el.webkitRequestFullscreen(); }
+                }
+            } catch (e) { }
+        }
         if (!tvModalHistoryPushed) {
             tvModalHistoryPushed = true;
             try { history.pushState({ tvModal: true }, ''); } catch (e) { }
@@ -698,13 +712,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // === Auto-reconexión de la transmisión de Master Crazy TV (iframe de OK.ru) ===
     // El iframe es cross-origin y OK.ru no expone eventos de pausa/error al padre,
     // así que un vigilante recarga el embed cuando la transmisión se detiene/congela:
-    //  - recarga periódica suave mientras el usuario está viendo (si la transmisión
-    //    se quedó congelada, se auto-corrige sola),
+    //  - recarga periódica MUY espaciada (30 min) como red de seguridad: el stream de
+    //    OBS ya se auto-reconecta solo, así que recargas frecuentes solo causan
+    //    micro-pausas visibles en la página,
     //  - recarga al volver a la pestaña (los navegadores congelan el iframe),
     //  - recarga si el embed no termina de cargar en 45s.
     const TV_PARTIDO_EMBED = '//ok.ru/videoembed/13981676805705?autoplay=1&nochat=1';
     const TV_WATCHDOG_MS = 15000;
-    const TV_RELOAD_INTERVAL_MS = lowPowerMode ? 180000 : 300000; // 3 min en TV box, 5 min resto
+    const TV_RELOAD_INTERVAL_MS = 1800000; // 30 min: red de seguridad sin pausas molestas
     const TV_LOAD_TIMEOUT_MS = 45000;
     let tvWatchdogTimer = null;
     let tvIframeLoadTimer = null;
@@ -1201,4 +1216,143 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    // ===== Compartir Master Crazy TV: enlace directo + toque sostenido =====
+    // Link directo: ...#mctv -> al abrir, entra directo a la transmisión en vivo.
+    const MCTV_SHARE_HASH = '#mctv';
+
+    function getMctvShareUrl() {
+        return location.origin + location.pathname + MCTV_SHARE_HASH;
+    }
+
+    function fallbackCopy(text) {
+        try {
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            ta.style.position = 'fixed';
+            ta.style.opacity = '0';
+            document.body.appendChild(ta);
+            ta.focus();
+            ta.select();
+            const ok = document.execCommand('copy');
+            document.body.removeChild(ta);
+            return ok;
+        } catch (e) { return false; }
+    }
+
+    let shareToastTimer = null;
+    function showShareToast(msg) {
+        let toast = document.getElementById('share-toast');
+        if (!toast) {
+            toast = document.createElement('div');
+            toast.id = 'share-toast';
+            toast.className = 'share-toast';
+            document.body.appendChild(toast);
+        }
+        toast.textContent = msg;
+        toast.classList.add('show');
+        if (shareToastTimer) clearTimeout(shareToastTimer);
+        shareToastTimer = setTimeout(function () { toast.classList.remove('show'); }, 2600);
+    }
+
+    // Copia el enlace directo y muestra confirmación (toast inmediato, copia async)
+    window.shareMctv = function () {
+        const url = getMctvShareUrl();
+        // Confirmación visual inmediata (no depende del permiso de clipboard)
+        const btn = document.getElementById('mctv-share-btn');
+        if (btn) {
+            btn.classList.add('copied');
+            setTimeout(function () { btn.classList.remove('copied'); }, 1800);
+        }
+        showShareToast('🔗 Enlace copiado');
+        // Copia al portapapeles (con respaldo ejecCommand)
+        const doCopy = function () {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(url).catch(function () { fallbackCopy(url); });
+            } else {
+                fallbackCopy(url);
+            }
+        };
+        if (document.hasFocus && document.hasFocus()) {
+            doCopy();
+        } else {
+            // Sin foco (toque sostenido en móvil): esperar un tick y copiar
+            setTimeout(doCopy, 50);
+        }
+    };
+
+    // Toque sostenido (long-press) en la tarjeta MASTER CRAZY TV:
+    // mantener presionado ~600ms copia el enlace directo sin abrir el video.
+    (function () {
+        const card = document.getElementById('master-crazy-tv-card');
+        const btn = document.getElementById('mctv-share-btn');
+        if (!card) return;
+        let pressTimer = null;
+        let longPressFired = false;
+        let startX = 0, startY = 0;
+
+        function cancelPress() {
+            if (pressTimer) { clearTimeout(pressTimer); pressTimer = null; }
+            longPressFired = false;
+        }
+
+        card.addEventListener('touchstart', function (e) {
+            longPressFired = false;
+            const t = e.touches && e.touches[0];
+            startX = t ? t.clientX : 0;
+            startY = t ? t.clientY : 0;
+            cancelPress();
+            pressTimer = setTimeout(function () {
+                longPressFired = true;
+                if (navigator.vibrate) { try { navigator.vibrate(60); } catch (err) { } }
+                shareMctv();
+            }, 600);
+        }, { passive: true });
+
+        card.addEventListener('touchmove', function (e) {
+            const t = e.touches && e.touches[0];
+            if (t && (Math.abs(t.clientX - startX) > 12 || Math.abs(t.clientY - startY) > 12)) {
+                cancelPress();
+            }
+        }, { passive: true });
+
+        card.addEventListener('touchend', function () {
+            cancelPress();
+        });
+        card.addEventListener('touchcancel', function () {
+            cancelPress();
+        });
+
+        // Si fue long-press, evitar el click que abriría el video
+        card.addEventListener('click', function (e) {
+            if (longPressFired) {
+                e.preventDefault();
+                e.stopPropagation();
+                longPressFired = false;
+            }
+        });
+    })();
+
+    // Deep-link: si la URL trae #mctv, ir directo a la tarjeta y abrir la transmisión.
+    function handleMctvDeepLink() {
+        if (location.hash !== MCTV_SHARE_HASH) return;
+        const card = document.getElementById('master-crazy-tv-card');
+        if (card) {
+            card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            card.classList.remove('tv-card-flash');
+            void card.offsetWidth;
+            card.classList.add('tv-card-flash');
+            setTimeout(function () { card.classList.remove('tv-card-flash'); }, 2400);
+            // Abrir la transmisión directamente (dentro del video)
+            setTimeout(function () {
+                if (typeof window.playPartido === 'function') {
+                    window.playPartido();
+                }
+            }, 700);
+        }
+    }
+    window.addEventListener('hashchange', handleMctvDeepLink);
+    // Al cargar la página ya con #mctv (después del DOMContentLoaded)
+    setTimeout(handleMctvDeepLink, 1200);
+
 });
