@@ -1400,6 +1400,86 @@ input[type="range"]::-webkit-slider-thumb:hover {
     transition: transform 0.3s ease;
 }
 
+/* Botón compartir en tarjetas TV: toque sostenido o clic copia el enlace directo */
+.tv-share-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: 2px solid rgba(125, 249, 255, 0.55);
+    background: rgba(0, 0, 0, 0.45);
+    color: #7DF9FF;
+    font-size: 0.95rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 6;
+    opacity: 0.75;
+    transition: all 0.25s ease;
+    -webkit-tap-highlight-color: transparent;
+    outline: none;
+}
+
+.tv-share-btn:hover,
+.tv-share-btn:focus {
+    background: linear-gradient(135deg, #A8F000, #A870E0);
+    color: #000;
+    border-color: #A8F000;
+    opacity: 1;
+    transform: scale(1.08);
+}
+
+.tv-share-btn:active {
+    transform: scale(0.92);
+}
+
+.tv-share-btn.copied {
+    background: #A8F000;
+    color: #000;
+    border-color: #A8F000;
+    opacity: 1;
+}
+
+/* Toast de "enlace copiado" */
+.share-toast {
+    position: fixed;
+    left: 50%;
+    bottom: 90px;
+    transform: translateX(-50%) translateY(20px);
+    background: rgba(10, 14, 25, 0.92);
+    border: 1px solid rgba(168, 240, 0, 0.6);
+    color: #A8F000;
+    padding: 12px 22px;
+    border-radius: 30px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    z-index: 9999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.5);
+    max-width: 88vw;
+    text-align: center;
+}
+
+.share-toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+/* En TV el botón compartir se ve más grande y siempre visible */
+.is-tv .tv-share-btn {
+    width: 52px;
+    height: 52px;
+    font-size: 1.3rem;
+    top: 16px;
+    right: 16px;
+    opacity: 0.9;
+}
+
 .tv-card:hover .play-overlay {
     opacity: 1;
 }
@@ -1627,7 +1707,28 @@ input[type="range"]::-webkit-slider-thumb:hover {
 .tv-modal:-webkit-full-screen .video-container video {
     width: 100% !important;
     height: 100% !important;
-    object-fit: contain !important;
+}
+
+/* Fullscreen en TV: estirado 100% (zoom-crop iframe / fill video) */
+.tv-modal:fullscreen .video-container iframe,
+.tv-modal:-webkit-full-screen .video-container iframe {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1.02);
+    width: auto;
+    height: auto;
+    min-width: 100%;
+    min-height: 100%;
+    aspect-ratio: 16 / 9;
+    max-width: none;
+    max-height: none;
+    object-fit: fill !important;
+}
+
+.tv-modal:fullscreen .video-container video,
+.tv-modal:-webkit-full-screen .video-container video {
+    object-fit: fill !important;
 }
 
 .tv-modal:fullscreen #channel-name,
@@ -1659,7 +1760,28 @@ input[type="range"]::-webkit-slider-thumb:hover {
 .tv-modal:fullscreen.is-landscape .video-container video {
     width: 100% !important;
     height: 100% !important;
-    object-fit: contain !important;
+}
+
+/* Landscape: estirado 100% tambi�n en m�viles en horizontal */
+.is-mobile .tv-modal.is-landscape .video-container iframe,
+.tv-modal:fullscreen.is-landscape .video-container iframe {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1.02);
+    width: auto;
+    height: auto;
+    min-width: 100%;
+    min-height: 100%;
+    aspect-ratio: 16 / 9;
+    max-width: none;
+    max-height: none;
+    object-fit: fill !important;
+}
+
+.is-mobile .tv-modal.is-landscape .video-container video,
+.tv-modal:fullscreen.is-landscape .video-container video {
+    object-fit: fill !important;
 }
 
 .is-mobile .tv-modal.is-landscape #channel-name,
@@ -2190,12 +2312,32 @@ body.tv-open .tv-modal {
     height: 100%;
     min-height: 0;
     border-radius: 0;
+    overflow: hidden;
 }
 
-.is-tv .video-container iframe,
+/* ESTIRADO 100% en TV (ONN Watch, Fire TV, Smart TV, Android TV):
+   el iframe se agranda hasta cubrir todo el viewport (zoom-crop) y el
+   video nativo se estira con object-fit: fill. Cero barras negras. */
+.is-tv .video-container iframe {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1.02);
+    width: auto;
+    height: auto;
+    min-width: 100%;
+    min-height: 100%;
+    aspect-ratio: 16 / 9;
+    max-width: none;
+    max-height: none;
+    border: none;
+    background: #000;
+}
+
 .is-tv .video-container video {
     width: 100% !important;
     height: 100% !important;
+    object-fit: fill !important;
 }
 
 .is-tv #channel-name {

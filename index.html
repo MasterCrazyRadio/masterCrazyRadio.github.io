@@ -337,6 +337,13 @@
                         <span class="live-badge" id="partido-badge">EN VIVO</span>
                         <span class="partido-status" id="partido-status" style="display:none;"></span>
                     </div>
+                    <!-- Botón compartir: toque sostenido o clic copia el enlace directo a la transmisión -->
+                    <button class="tv-share-btn" id="mctv-share-btn" type="button"
+                        onclick="event.stopPropagation();shareMctv()"
+                        aria-label="Compartir Master Crazy TV"
+                        title="Compartir: mantén presionado o toca aquí para copiar el enlace directo">
+                        <i class="fas fa-share-alt"></i>
+                    </button>
                     <div class="play-overlay"><i class="fas fa-play"></i></div>
                 </div>
 
