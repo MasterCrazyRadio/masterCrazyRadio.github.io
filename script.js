@@ -925,6 +925,7 @@ document.addEventListener('DOMContentLoaded', () => {
         modal.style.display = 'none';
         modal.classList.remove('partido-mode');
         modal.classList.remove('deep-link-mode');
+        modal.classList.remove('forced-landscape');
         tvModalHistoryPushed = false;
         // Se reactivan las animaciones de la página
         document.body.classList.remove('tv-open');
@@ -1354,6 +1355,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 // bloquean sin gesto). El video se ve en zoom-crop: cero barras negras.
                 const m = document.getElementById('tv-modal');
                 if (m) m.classList.add('deep-link-mode');
+                applyForcedLandscape();
                 setTimeout(function () {
                     if (typeof window.expandTvFullscreen === 'function') {
                         window.expandTvFullscreen();
@@ -1397,6 +1399,24 @@ document.addEventListener('DOMContentLoaded', () => {
         if (navigator.vibrate) { try { navigator.vibrate(30); } catch (e) { } }
     };
 
+    // Giroscopio forzado: en portrait el video rota 90 grados para verse horizontal,
+    // mientras los botones (X y maximizar) quedan fijos y visibles.
+    function applyForcedLandscape() {
+        const modal = document.getElementById('tv-modal');
+        if (!modal || !modal.classList.contains('deep-link-mode')) return;
+        if (window.innerHeight > window.innerWidth) {
+            modal.classList.add('forced-landscape');
+        } else {
+            modal.classList.remove('forced-landscape');
+        }
+    }
+    window.addEventListener('resize', function () {
+        const modal = document.getElementById('tv-modal');
+        if (modal && modal.classList.contains('deep-link-mode')) applyForcedLandscape();
+    });
+    window.addEventListener('orientationchange', function () {
+        setTimeout(applyForcedLandscape, 350);
+    });
     window.addEventListener('hashchange', handleMctvDeepLink);
     // Al cargar la página ya con #mctv (después del DOMContentLoaded)
     setTimeout(handleMctvDeepLink, 1200);

@@ -2748,3 +2748,95 @@ body.tv-open .tv-modal {
     background: rgba(0, 0, 0, 0.65) !important;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
 }
+
+/* ===== GIROSCOPIO FORZADO en deep-link #mctv =====
+   En portrait el video rota 90 grados (se ve horizontal) mientras los
+   botones X y maximizar quedan fijos en pantalla, siempre visibles. */
+.tv-modal.deep-link-mode.forced-landscape .modal-content {
+    width: 100vh !important;
+    height: 100vw !important;
+    max-width: none !important;
+    max-height: none !important;
+}
+
+.tv-modal.deep-link-mode.forced-landscape .video-container {
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) rotate(90deg) !important;
+    width: 100vh !important;
+    height: 100vw !important;
+    flex: none !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    aspect-ratio: auto !important;
+    border-radius: 0 !important;
+    overflow: hidden !important;
+    background: #000 !important;
+}
+
+.tv-modal.deep-link-mode.forced-landscape .video-container iframe {
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    width: auto !important;
+    height: auto !important;
+    min-width: 100% !important;
+    min-height: 100% !important;
+    aspect-ratio: 16 / 9 !important;
+    max-width: none !important;
+    max-height: none !important;
+    object-fit: fill !important;
+    border: none !important;
+    background: #000 !important;
+}
+
+/* Botones SIEMPRE visibles por encima del video rotado */
+.tv-modal.deep-link-mode .close-modal,
+.tv-modal.deep-link-mode .expand-tv-btn {
+    position: fixed !important;
+    z-index: 9999 !important;
+    background: rgba(0, 0, 0, 0.6) !important;
+    border: 2px solid rgba(125, 249, 255, 0.7) !important;
+    color: #7DF9FF !important;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.6) !important;
+}
+
+.tv-modal.deep-link-mode .close-modal {
+    top: 16px !important;
+    right: 16px !important;
+    bottom: auto !important;
+    width: 44px !important;
+    height: 44px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 50% !important;
+    font-size: 1.6rem !important;
+    line-height: 1 !important;
+}
+
+.tv-modal.deep-link-mode .expand-tv-btn {
+    top: 16px !important;
+    left: 16px !important;
+    right: auto !important;
+    bottom: auto !important;
+    width: 44px !important;
+    height: 44px !important;
+    font-size: 1.1rem !important;
+}
+
+/* En landscape normal (sin rotar) los botones también quedan fijos arriba */
+.tv-modal.deep-link-mode:not(.forced-landscape) .close-modal {
+    top: 16px !important;
+    right: 16px !important;
+    bottom: auto !important;
+}
+
+.tv-modal.deep-link-mode:not(.forced-landscape) .expand-tv-btn {
+    top: 16px !important;
+    left: 16px !important;
+    right: auto !important;
+    bottom: auto !important;
+}
