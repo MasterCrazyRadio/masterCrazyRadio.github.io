@@ -924,6 +924,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         modal.style.display = 'none';
         modal.classList.remove('partido-mode');
+        modal.classList.remove('deep-link-mode');
         tvModalHistoryPushed = false;
         // Se reactivan las animaciones de la página
         document.body.classList.remove('tv-open');
@@ -1348,7 +1349,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (typeof window.playPartido === 'function') {
                     window.playPartido();
                 }
-                // Forzar horizontal + pantalla completa automáticamente (sin espacios negros)
+                // Modo deep-link: el modal ocupa el 100% de la pantalla en cualquier
+                // dispositivo (CSS puro, no depende de la API fullscreen que los móviles
+                // bloquean sin gesto). El video se ve en zoom-crop: cero barras negras.
+                const m = document.getElementById('tv-modal');
+                if (m) m.classList.add('deep-link-mode');
                 setTimeout(function () {
                     if (typeof window.expandTvFullscreen === 'function') {
                         window.expandTvFullscreen();
