@@ -405,6 +405,14 @@
                         <div class="tv-reconnect-count" id="tv-reconnect-count">3</div>
                         <div class="tv-reconnect-label">Reconectando transmisión...</div>
                     </div>
+                    <!-- Overlay de activación de audio (autoplay bloqueado por el navegador) -->
+                    <div id="tv-audio-overlay" class="tv-audio-overlay" style="display:none;" onclick="activateTvAudio()">
+                        <div class="tv-audio-overlay-inner">
+                            <i class="fas fa-volume-up"></i>
+                            <span>Toca para activar el sonido</span>
+                            <small>y ver en pantalla completa</small>
+                        </div>
+                    </div>
                 </div>
                 <h3 id="channel-name">Nombre del Canal</h3>
             </div>

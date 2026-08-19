@@ -1348,9 +1348,50 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (typeof window.playPartido === 'function') {
                     window.playPartido();
                 }
+                // Forzar horizontal + pantalla completa automáticamente (sin espacios negros)
+                setTimeout(function () {
+                    if (typeof window.expandTvFullscreen === 'function') {
+                        window.expandTvFullscreen();
+                    }
+                    showTvAudioOverlay();
+                }, 400);
             }, 700);
         }
     }
+
+    // Overlay de audio: el navegador bloquea el autoplay con sonido hasta que el
+    // usuario interactúa. Se muestra al entrar por link directo y un toque lo desbloquea.
+    function showTvAudioOverlay() {
+        const ov = document.getElementById('tv-audio-overlay');
+        if (ov) ov.style.display = 'flex';
+    }
+
+    function hideTvAudioOverlay() {
+        const ov = document.getElementById('tv-audio-overlay');
+        if (ov) ov.style.display = 'none';
+    }
+
+    window.activateTvAudio = function () {
+        hideTvAudioOverlay();
+        // El toque del usuario desbloquea el autoplay con sonido:
+        // recargar el embed para que arranque con audio
+        try {
+            const iframe = document.getElementById('tv-iframe');
+            const src = iframe ? iframe.src : '';
+            if (iframe) {
+                iframe.src = '';
+                setTimeout(function () { iframe.src = src; }, 150);
+            }
+        } catch (e) { }
+        // Reforzar fullscreen/landscape tras el gesto
+        setTimeout(function () {
+            if (typeof window.expandTvFullscreen === 'function') {
+                window.expandTvFullscreen();
+            }
+        }, 500);
+        if (navigator.vibrate) { try { navigator.vibrate(30); } catch (e) { } }
+    };
+
     window.addEventListener('hashchange', handleMctvDeepLink);
     // Al cargar la página ya con #mctv (después del DOMContentLoaded)
     setTimeout(handleMctvDeepLink, 1200);
