@@ -1,7 +1,7 @@
 {
-  "online": false,
+  "online": true,
   "mensaje": "ESTAMOS FUERA DE LA CANCHA",
   "mensaje2": "VOLVEREMOS PRONTO!!",
-  "updatedAt": "2026-10-16T06:18:00Z",
-  "nota": "Ponga online en false cuando OBS este apagado y no haya transmision. El sitio mostrara la pantalla negra con el aviso."
+  "updatedAt": "2026-10-16T06:33:20Z",
+  "nota": "Actualizado automaticamente por el vigilante de OBS."
 }
