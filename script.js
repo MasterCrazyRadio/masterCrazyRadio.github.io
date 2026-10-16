@@ -699,6 +699,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (typeof applyTvFitMode === 'function') applyTvFitMode();
         // Pantalla completa nativa en cualquier dispositivo
         requestFullscreenVertical(modal);
+        // Vista horizontal automatica (igual que Master Crazy TV)
+        vistaHorizontalAutomatica();
         title.innerHTML = channelId.toUpperCase() + " TV <br><span style='font-size:0.8rem; color:#aaa;'>Cargando stream...</span>";
 
         const handleStreamError = () => {
@@ -1174,6 +1176,8 @@ document.addEventListener('DOMContentLoaded', () => {
         // imagen llenando la pantalla (sin recortes ni barras).
         modal.classList.add('deep-link-mode');
         if (typeof applyTvFitMode === 'function') applyTvFitMode();
+        // Vista horizontal automatica (igual que Master Crazy TV)
+        vistaHorizontalAutomatica();
         title.innerHTML = "Quiero <span style='color:#7DF9FF;'>TV</span> <br><span style='font-size:0.8rem; color:#aaa;'>Señal en vivo</span>";
 
         // Pantalla completa nativa en cualquier dispositivo
@@ -1683,6 +1687,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Giroscopio forzado: en portrait el video rota 90 grados para verse horizontal,
     // mientras los botones (X y maximizar) quedan fijos y visibles.
+    // Vista horizontal automatica (igual que Master Crazy TV): intenta bloquear
+    // la pantalla en horizontal y, si el equipo no lo permite, gira el
+    // contenido con la rotacion por CSS.
+    function vistaHorizontalAutomatica() {
+        try {
+            if (typeof applyForcedLandscape === 'function') applyForcedLandscape();
+            if (screen.orientation && screen.orientation.lock) {
+                screen.orientation.lock('landscape').catch(function () { });
+            }
+        } catch (e) { }
+    }
+
     function applyForcedLandscape() {
         const modal = document.getElementById('tv-modal');
         if (!modal || !modal.classList.contains('deep-link-mode')) return;
