@@ -1133,7 +1133,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // Caracol TV (señal oficial YouTube - embed legal)
-    window.playCaracol = function () {
+    window.playQuieroTv = function () {
         const modal = document.getElementById('tv-modal');
         const video = document.getElementById('tv-player');
         const iframeContainer = document.getElementById('tv-iframe-container');
@@ -1159,18 +1159,21 @@ document.addEventListener('DOMContentLoaded', () => {
             radioWasPlayingBeforeTv = false;
         }
 
-        // Cargar la señal en vivo oficial de Caracol TV (YouTube embed)
+        // Cargar la señal en vivo del canal Quiero TV (YouTube embed)
         tvIsPartido = false; // el watchdog de reconexión es solo para la transmisión de OK.ru
         stopTvWatchdog();
         if (iframeContainer) iframeContainer.style.display = 'block';
-        if (iframe) iframe.src = 'https://www.youtube.com/embed/x0eOenDDelg?autoplay=1&rel=0';
+        if (iframe) iframe.src = 'https://www.youtube.com/embed/vGNglKWqwcQ?autoplay=1&rel=0';
         openTvModal(modal);
         modal.classList.remove('partido-mode');
-        title.innerHTML = "Caracol <span style='color:#7DF9FF;'>TV</span> <br><span style='font-size:0.8rem; color:#aaa;'>Señal en vivo</span>";
+        title.innerHTML = "Quiero <span style='color:#7DF9FF;'>TV</span> <br><span style='font-size:0.8rem; color:#aaa;'>Señal en vivo</span>";
 
         // Pantalla completa nativa en cualquier dispositivo
         requestFullscreenVertical(modal);
     };
+
+    // Compatibilidad: cualquier referencia antigua sigue funcionando
+    window.playCaracol = window.playQuieroTv;
 
     window.closeTvModal = function () {
         const modal = document.getElementById('tv-modal');
