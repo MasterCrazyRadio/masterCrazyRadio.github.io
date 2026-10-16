@@ -3242,7 +3242,9 @@ body.tv-open .tv-modal {
 }
 
 .tv-offline-inner {
-    max-width: 420px;
+    max-width: min(90vw, 430px);
+    max-height: 90dvh;
+    overflow: hidden;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -3254,10 +3256,11 @@ body.tv-open .tv-modal {
     box-shadow: 0 0 40px rgba(125, 249, 255, 0.15);
 }
 
+/* Balon emoji (el clasico blanco y negro): se ve igual en todo telefono */
 .tv-offline-ball {
-    width: clamp(84px, 26vw, 130px);
-    height: auto;
-    margin-bottom: 20px;
+    font-size: clamp(3rem, 15vw, 5rem);
+    line-height: 1;
+    margin-bottom: 18px;
     filter: drop-shadow(0 0 16px rgba(125, 249, 255, 0.45));
     animation: balonGira 6s ease-in-out infinite;
 }
@@ -3265,6 +3268,39 @@ body.tv-open .tv-modal {
 @keyframes balonGira {
     0%, 100% { transform: rotate(-8deg) scale(1); }
     50%      { transform: rotate(8deg) scale(1.06); }
+}
+
+.tv-offline-title {
+    font-size: clamp(1.35rem, 6.2vw, 2.6rem);
+}
+
+.tv-offline-sub {
+    font-size: clamp(1rem, 4.2vw, 1.5rem);
+}
+
+/* ===== Ajuste para pantalla HORIZONTAL (acostado) ===== */
+@media (orientation: landscape) {
+    .tv-offline-inner {
+        max-width: min(78vw, 620px);
+        max-height: 92dvh;
+        padding: 14px 22px;
+        border-radius: 16px;
+    }
+
+    .tv-offline-ball {
+        font-size: clamp(1.9rem, 6vw, 3.2rem);
+        margin-bottom: 8px;
+    }
+
+    .tv-offline-title {
+        font-size: clamp(1.1rem, 3.3vw, 2.1rem);
+        line-height: 1.1;
+    }
+
+    .tv-offline-sub {
+        margin-top: 10px;
+        font-size: clamp(0.9rem, 2.3vw, 1.35rem);
+    }
 }
 
 .tv-offline-title {
