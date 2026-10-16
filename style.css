@@ -3190,19 +3190,19 @@ body.tv-open .tv-modal {
     width: min(62vw, 260px);
     height: 9px;
     margin-top: 26px;
-    border: 2px solid rgba(242, 242, 242, 0.55);
+    border: 2px solid rgba(125, 249, 255, 0.45);
     border-radius: 5px;
     background: rgba(255, 255, 255, 0.06);
     overflow: hidden;
-    box-shadow: 0 0 14px rgba(242, 242, 242, 0.12);
+    box-shadow: 0 0 14px rgba(125, 249, 255, 0.15);
 }
 
 .tv-loading-bar {
     width: 0%;
     height: 100%;
-    background: #F2F2F2;
-    box-shadow: 0 0 14px rgba(242, 242, 242, 0.85);
-    animation: psLoad 2.8s ease-in-out infinite;
+    background: #7DF9FF;
+    box-shadow: 0 0 14px rgba(125, 249, 255, 0.85);
+    animation: psLoad 6s ease-in-out infinite;
 }
 
 @keyframes psLoad {
