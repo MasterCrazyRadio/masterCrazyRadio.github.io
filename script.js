@@ -686,12 +686,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Diagnostico en pantalla (para leer el estado desde una captura) ---
     const APP_VERSION = 'v15';
     function tvDebug(extra) {
-        try {
-            const el = document.getElementById('tv-debug');
-            if (!el) return;
-            const fs = (document.fullscreenEnabled === true) ? 'FS:si' : 'FS:no';
-            el.textContent = APP_VERSION + ' | ' + fs + (extra ? ' | ' + extra : '');
-        } catch (e) { }
+        // Diagnostico en pantalla retirado a pedido del Ser Superior.
     }
     window.tvDebug = tvDebug;
 
@@ -846,15 +841,41 @@ document.addEventListener('DOMContentLoaded', () => {
         tvOpenedAtMs = Date.now();
     }
 
-    // Al pulsar "atrás": cerrar el modal en vez de salir de la página
+    // ===== Mini reproductor (estilo DGO / Disney+) =====
+    // Al pulsar ATRAS la transmision se hace pequena y SIGUE reproduciendo.
+    // Un toque sobre el mini la devuelve a pantalla completa.
+    function enterMiniTv() {
+        const modal = document.getElementById('tv-modal');
+        if (!modal) return;
+        exitFullscreen();
+        modal.classList.remove('deep-link-mode');
+        modal.classList.remove('forced-landscape');
+        modal.classList.add('tv-mini');
+        document.body.classList.remove('tv-open');
+    }
+    function exitMiniTv() {
+        const modal = document.getElementById('tv-modal');
+        if (!modal) return;
+        modal.classList.remove('tv-mini');
+        document.body.classList.add('tv-open');
+        modal.classList.add('deep-link-mode');
+        if (typeof applyTvFitMode === 'function') applyTvFitMode();
+        requestFullscreenVertical(document.documentElement);
+    }
+    window.enterMiniTv = enterMiniTv;
+    window.exitMiniTv = exitMiniTv;
+
+    // Al pulsar ATRAS: primero se hace mini (y sigue sonando); otro ATRAS cierra.
     window.addEventListener('popstate', function () {
         const modal = document.getElementById('tv-modal');
-        if (modal && modal.style.display === 'flex') {
+        if (!modal || modal.style.display !== 'flex') return;
+        if (!modal.classList.contains('tv-mini')) {
+            enterMiniTv();
+        } else {
             closeTvModal();
-            // Re-marcar el historial para que otro "atrás" no salga del sitio
-            tvModalHistoryPushed = true;
-            try { history.pushState({ tvModal: true }, ''); } catch (e) { }
         }
+        tvModalHistoryPushed = true;
+        try { history.pushState({ tvModal: true }, ''); } catch (e) { }
     });
 
     // Si el usuario sale del fullscreen nativo (gesto o atrás en Android),
@@ -1092,6 +1113,7 @@ document.addEventListener('DOMContentLoaded', () => {
         modal.classList.remove('partido-mode');
         modal.classList.remove('deep-link-mode');
         modal.classList.remove('forced-landscape');
+        modal.classList.remove('tv-mini');
         tvModalHistoryPushed = false;
         // Se reactivan las animaciones de la página
         document.body.classList.remove('tv-open');
@@ -1790,6 +1812,11 @@ document.addEventListener('DOMContentLoaded', () => {
         if (catcher) {
             catcher.addEventListener('click', function (e) {
                 e.stopPropagation();
+                const m = getModal();
+                if (m && m.classList.contains('tv-mini')) {
+                    if (typeof window.exitMiniTv === 'function') window.exitMiniTv();
+                    return;
+                }
                 mostrarControles();
             });
             catcher.addEventListener('touchstart', function (e) {
