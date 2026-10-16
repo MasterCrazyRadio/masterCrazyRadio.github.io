@@ -858,6 +858,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         openTvModal(modal);
         modal.classList.add('partido-mode'); // sin título flotante dentro de la transmisión
+        // Pantalla completa en TODOS los dispositivos (moviles, TV boxes, Smart TV
+        // y autoradios Android): el modal ocupa todo el viewport y la imagen se
+        // ajusta SIN recortar, aunque la API Fullscreen no exista en el equipo.
+        modal.classList.add('deep-link-mode');
+        applyForcedLandscape();
         title.innerHTML = "Master Crazy <span style='color:#7DF9FF;'>TV</span>";
 
         // Pantalla completa nativa en cualquier dispositivo
