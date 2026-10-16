@@ -3242,7 +3242,29 @@ body.tv-open .tv-modal {
 }
 
 .tv-offline-inner {
-    max-width: 900px;
+    max-width: 420px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 26px 20px;
+    border: 2px solid rgba(125, 249, 255, 0.35);
+    border-radius: 20px;
+    background: #000000;
+    box-shadow: 0 0 40px rgba(125, 249, 255, 0.15);
+}
+
+.tv-offline-ball {
+    width: clamp(84px, 26vw, 130px);
+    height: auto;
+    margin-bottom: 20px;
+    filter: drop-shadow(0 0 16px rgba(125, 249, 255, 0.45));
+    animation: balonGira 6s ease-in-out infinite;
+}
+
+@keyframes balonGira {
+    0%, 100% { transform: rotate(-8deg) scale(1); }
+    50%      { transform: rotate(8deg) scale(1.06); }
 }
 
 .tv-offline-title {

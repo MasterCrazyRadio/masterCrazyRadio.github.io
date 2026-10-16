@@ -1709,6 +1709,12 @@ document.addEventListener('DOMContentLoaded', () => {
         stopTvWatchdog();
         tvIsPartido = false;
         hideReconnectCountdown();
+        // Formato VERTICAL: se suelta el bloqueo horizontal para que el aviso
+        // se vea de pie en el telefono.
+        try {
+            if (modal) modal.classList.remove('forced-landscape');
+            if (screen.orientation && screen.orientation.unlock) screen.orientation.unlock();
+        } catch (e) { }
         if (aviso) aviso.style.display = 'flex';
         if (modal) {
             modal.style.display = 'flex';
