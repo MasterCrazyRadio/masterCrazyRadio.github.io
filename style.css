@@ -3200,7 +3200,8 @@ body.tv-open .tv-modal {
     object-fit: cover;
     border: 3px solid rgba(168, 240, 0, 0.55);
     box-shadow: 0 0 34px rgba(168, 240, 0, 0.40);
-    animation: curtainPulse 6s ease-in-out infinite;
+    animation: curtainBreath 60s ease-in-out infinite;
+    transform-origin: center center;
 }
 
 /* Anillo: 8 circulitos verde limon que quedan CASI ESTATICOS
@@ -3237,9 +3238,11 @@ body.tv-open .tv-modal {
     to { transform: rotate(360deg); }
 }
 
-@keyframes curtainPulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.015); }
+/* Respiracion: el logo crece hacia afuera y se recoge hacia adentro, en
+   SINCRONIA con el giro del anillo (los dos completan su ciclo en 60 s). */
+@keyframes curtainBreath {
+    0%, 100% { transform: scale(0.97); }
+    50%      { transform: scale(1.06); }
 }
 
 /* ===== Controles que se ocultan a los 5 segundos =====
