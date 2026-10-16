@@ -3,13 +3,15 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=1024, initial-scale=1.0, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Master Crazy Radio | Radio Colombia Número Uno en Cumbia - Cauca</title>
     <link rel="canonical" href="https://mastercrazyradio.github.io/">
     <link rel="manifest" href="manifest.json">
     <!-- Conexion anticipada al servidor de la radio: arranque mas rapido -->
     <link rel="preconnect" href="https://stream.zeno.fm" crossorigin>
     <link rel="dns-prefetch" href="https://stream.zeno.fm">
+    <!-- Precarga del logo principal (es la imagen mas grande visible al abrir) -->
+    <link rel="preload" as="image" href="logo_circular.jpg" fetchpriority="high">
     <meta name="theme-color" content="#A870E0">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -22,7 +24,7 @@
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
     <meta name="description" content="Master Crazy Radio, la radio Colombia número uno en cumbia. Escucha en vivo la mejor música las 24 horas desde el Cauca, Colombia. Música, cumbia y más.">
     <meta name="keywords" content="radio, cumbia, colombia, cauca, radio colombia numero uno, musica colombiana, radio en vivo, popayan, radio cauca">
-    <meta name="robots" content="index, follow">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
     <meta name="author" content="Master Crazy Radio">
     <meta name="geo.region" content="CO-CAU">
     <meta name="geo.placename" content="Cauca, Colombia">
@@ -31,6 +33,10 @@
     <meta property="og:image" content="https://mastercrazyradio.github.io/logo_circular.jpg">
     <meta property="og:url" content="https://mastercrazyradio.github.io/">
     <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Master Crazy Radio">
+    <meta property="og:image:width" content="1024">
+    <meta property="og:image:height" content="1024">
+    <meta property="og:image:alt" content="Logo de Master Crazy Radio">
     <meta property="og:locale" content="es_CO">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Master Crazy Radio | Radio Colombia Número Uno en Cumbia">
@@ -174,7 +180,7 @@
                 <div class="hero-brand">
                     <div class="hero-logo-wrap">
                         <div class="hero-logo-aurora"></div>
-                        <img src="logo_circular.jpg" alt="Master Crazy Radio - Radio Colombia Número Uno en Cumbia, Cauca" class="hero-logo" id="hero-logo">
+                        <img src="logo_circular.jpg" alt="Master Crazy Radio - Radio Colombia Número Uno en Cumbia, Cauca" class="hero-logo" id="hero-logo" width="1024" height="1024" fetchpriority="high" decoding="async">
                     </div>
                     <div class="hero-brand-text">
                         <h2 class="animate-up"><span class="brand-green">Master Crazy,</span> <span class="brand-sky">Mas que radio!!</span></h2>
@@ -255,14 +261,14 @@
                                     <div class="flyer-card flyer-slide-card active">
                                         <div class="flyer-glow"></div>
                                         <div class="flyer-shine"></div>
-                                        <img src="flayer.jpeg" alt="Evento Especial - Master Crazy Radio" class="flyer-image">
+                                        <img src="flayer.jpeg" alt="Evento Especial - Master Crazy Radio" class="flyer-image" width="720" height="1280" loading="lazy" decoding="async">
                                     </div>
                                 </div>
                                 <div class="flyer-slide">
                                     <div class="flyer-card flyer-slide-card">
                                         <div class="flyer-glow"></div>
                                         <div class="flyer-shine"></div>
-                                        <img src="cauca_se_toma.jpeg" alt="El Cauca se Toma" class="flyer-image">
+                                        <img src="cauca_se_toma.jpeg" alt="El Cauca se Toma" class="flyer-image" width="720" height="1280" loading="lazy" decoding="async">
                                     </div>
                                 </div>
                             </div>
@@ -406,7 +412,7 @@
                                 <span></span><span></span><span></span><span></span>
                                 <span></span><span></span><span></span><span></span>
                             </div>
-                            <img id="tv-curtain-logo" class="tv-curtain-logo" src="logo-transmision.jpg" alt="Master Crazy TV">
+                            <img id="tv-curtain-logo" class="tv-curtain-logo" src="logo-transmision.jpg" alt="Master Crazy TV" width="1024" height="1024" loading="lazy" decoding="async">
                         </div>
                     </div>
                     <!-- Overlay de activación de audio (autoplay bloqueado por el navegador) -->
@@ -527,7 +533,7 @@
     </footer>
 
     <a href="https://wa.me/573117307017" class="whatsapp-float" target="_blank">
-        <img src="whatsapp_logo.jpg" alt="WhatsApp" class="whatsapp-icon">
+        <img src="whatsapp_logo.jpg" alt="WhatsApp" class="whatsapp-icon" width="740" height="740" loading="lazy" decoding="async">
     </a>
 
     <!-- PIN de acceso - Master Crazy TV (transmision protegida) -->
