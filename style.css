@@ -3091,3 +3091,38 @@ body.tv-open .tv-modal {
     cursor: pointer !important;
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.6) !important;
 }
+
+/* ===== Controles que se ocultan a los 5 segundos =====
+   Desaparecen solos y vuelven con un toque en la pantalla. */
+.tv-modal .close-modal,
+.tv-modal .expand-tv-btn,
+.tv-modal .fitmode-tv-btn,
+.tv-modal #channel-name {
+    transition: opacity .35s ease !important;
+}
+
+.tv-modal.controls-hidden .close-modal,
+.tv-modal.controls-hidden .expand-tv-btn,
+.tv-modal.controls-hidden .fitmode-tv-btn,
+.tv-modal.controls-hidden #channel-name {
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+/* Zona de toque invisible: solo activa mientras los controles estan ocultos */
+.tv-tap-catcher {
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    display: none;
+    background: transparent;
+}
+
+.tv-modal.controls-hidden .tv-tap-catcher {
+    display: block;
+}
+
+/* El aviso de activar audio siempre por encima de la zona de toque */
+.tv-modal .tv-audio-overlay {
+    z-index: 20 !important;
+}

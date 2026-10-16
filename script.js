@@ -1534,6 +1534,72 @@ document.addEventListener('DOMContentLoaded', () => {
     applyTvFitMode();
     document.addEventListener('DOMContentLoaded', applyTvFitMode);
 
+    // ===== Controles auto-ocultables (5 s) del reproductor de TV =====
+    // Los botones (cerrar, ampliar, ajuste) desaparecen a los 5 segundos y
+    // vuelven con un toque en la pantalla.
+    (function () {
+        const HIDE_MS = 5000;
+        let hideTimer = null;
+
+        function getModal() { return document.getElementById('tv-modal'); }
+
+        function mostrarControles() {
+            const modal = getModal();
+            if (!modal) return;
+            modal.classList.remove('controls-hidden');
+            if (hideTimer) clearTimeout(hideTimer);
+            hideTimer = setTimeout(ocultarControles, HIDE_MS);
+        }
+
+        function ocultarControles() {
+            const modal = getModal();
+            if (!modal || modal.style.display !== 'flex') return;
+            // No ocultar mientras esté visible el aviso de activar audio
+            const audio = document.getElementById('tv-audio-overlay');
+            if (audio && audio.style.display !== 'none') {
+                hideTimer = setTimeout(ocultarControles, HIDE_MS);
+                return;
+            }
+            modal.classList.add('controls-hidden');
+        }
+
+        // Cualquier interacción reinicia la cuenta atrás
+        ['mousemove', 'touchstart', 'click', 'keydown'].forEach(function (ev) {
+            document.addEventListener(ev, function () {
+                const modal = getModal();
+                if (modal && modal.style.display === 'flex') mostrarControles();
+            }, true);
+        });
+
+        // Toque sobre el video (el iframe tapa la pantalla: zona de toque propia)
+        const catcher = document.getElementById('tv-tap-catcher');
+        if (catcher) {
+            catcher.addEventListener('click', function (e) {
+                e.stopPropagation();
+                mostrarControles();
+            });
+            catcher.addEventListener('touchstart', function (e) {
+                e.stopPropagation();
+                mostrarControles();
+            }, { passive: true });
+        }
+
+        // Arrancar el temporizador cada vez que se abre el modal
+        const modal = getModal();
+        if (modal && window.MutationObserver) {
+            new MutationObserver(function () {
+                if (modal.style.display === 'flex') {
+                    mostrarControles();
+                } else {
+                    if (hideTimer) clearTimeout(hideTimer);
+                    modal.classList.remove('controls-hidden');
+                }
+            }).observe(modal, { attributes: true, attributeFilter: ['style'] });
+        }
+
+        window.startTvControlsTimer = mostrarControles;
+    })();
+
     window.addEventListener('hashchange', handleMctvDeepLink);
     // Al cargar la página ya con #mctv (después del DOMContentLoaded)
     setTimeout(handleMctvDeepLink, 1200);
