@@ -999,6 +999,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Canal que se esta viendo: 'partido' (Master Crazy TV), 'hls' o 'youtube'.
     // El aviso de "fuera de la cancha" es SOLO para Master Crazy TV.
     let tvCanalActual = null;
+    // Hay aviso de "sin transmision" en pantalla?
+    let offlineMostrando = false;
 
     // === Cortina con el logo mientras conecta / reconecta ===
     let tvReconnectTimer = null;
@@ -1716,7 +1718,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.mostrarAvisoOffline = function () {
         const modal = document.getElementById('tv-modal');
-        const aviso = document.getElementById('tv-offline');
         const iframe = document.getElementById('tv-iframe');
         const video = document.getElementById('tv-player');
         try { if (iframe) iframe.src = ''; } catch (e) { }
@@ -1724,14 +1725,14 @@ document.addEventListener('DOMContentLoaded', () => {
         if (window.hls) { try { window.hls.destroy(); } catch (e) { } window.hls = null; }
         stopTvWatchdog();
         tvIsPartido = false;
-        hideReconnectCountdown();
-        // Formato VERTICAL: se suelta el bloqueo horizontal para que el aviso
-        // se vea de pie en el telefono.
+        offlineMostrando = true;
+        // Formato VERTICAL: se suelta el bloqueo horizontal
         try {
             if (modal) modal.classList.remove('forced-landscape');
             if (screen.orientation && screen.orientation.unlock) screen.orientation.unlock();
         } catch (e) { }
-        if (aviso) aviso.style.display = 'flex';
+        // SOLO el logo con la barra de carga (sin mensajes de texto)
+        window.mostrarCortinaPermanente();
         if (modal) {
             modal.style.display = 'flex';
             modal.classList.add('deep-link-mode');
@@ -1739,7 +1740,17 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    // Cortina FIJA: logo + barra de carga, se queda en pantalla hasta que vuelva
+    // la señal (no se oculta sola).
+    window.mostrarCortinaPermanente = function () {
+        if (tvCurtainTimer) { clearTimeout(tvCurtainTimer); tvCurtainTimer = null; }
+        if (tvReconnectTimer) { clearInterval(tvReconnectTimer); tvReconnectTimer = null; }
+        const overlay = document.getElementById('tv-reconnect-overlay');
+        if (overlay) overlay.style.display = 'flex';
+    };
+
     window.ocultarAvisoOffline = function () {
+        offlineMostrando = false;
         const aviso = document.getElementById('tv-offline');
         if (aviso) aviso.style.display = 'none';
     };
@@ -1749,12 +1760,11 @@ document.addEventListener('DOMContentLoaded', () => {
     //  - Sin aviso: cada 20 s.
     function revisarEstadoYActuar() {
         window.consultarEstadoEmision(function (offline) {
-            const aviso = document.getElementById('tv-offline');
-            const v = !!aviso && aviso.style.display !== 'none';
+            const v = offlineMostrando;
             const modal = document.getElementById('tv-modal');
             const abierto = !!modal && modal.style.display === 'flex';
             if (!offline && v) {
-                // Volvio la transmision: quitar el aviso y reconectar
+                // Volvio la transmision: quitar la cortina y reconectar
                 window.ocultarAvisoOffline();
                 if (typeof window.playPartido === 'function' && tvCanalActual === 'partido') {
                     window.playPartido();
@@ -1767,12 +1777,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     (function vigilarEstadoEmision() {
         const modal = document.getElementById('tv-modal');
-        const aviso = document.getElementById('tv-offline');
-        const avisoVisible = !!aviso && aviso.style.display !== 'none';
         const tvAbierto = !!modal && modal.style.display === 'flex';
-
-        if (tvAbierto || avisoVisible) revisarEstadoYActuar();
-        setTimeout(vigilarEstadoEmision, avisoVisible ? 3000 : 20000);
+        if (tvAbierto || offlineMostrando) revisarEstadoYActuar();
+        setTimeout(vigilarEstadoEmision, offlineMostrando ? 3000 : 20000);
     })();
 
     // IMPORTANTE: los navegadores CONGELAN los temporizadores cuando la pestaña
