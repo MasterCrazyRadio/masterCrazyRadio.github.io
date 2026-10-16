@@ -131,6 +131,125 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     window.addEventListener('pageshow', resumeRadioIfPaused);
 
+    // ===== Radio optimizada: pantalla apagada, redes lentas y reconexion =====
+    // 1) Media Session: con la pantalla apagada el sistema mantiene el audio
+    //    vivo y muestra los controles en la pantalla de bloqueo.
+    // 2) Vigilante permanente: si el sistema lo suspende o la red se cae
+    //    (2G / 3G / H+ o cambio Wi-Fi <-> datos) vuelve a conectar solo.
+    // 3) Nunca se queda en silencio: insiste indefinidamente y recarga la
+    //    conexion tras varios fallos seguidos.
+    (function initRadioOptimizations() {
+        try { audio.preload = 'auto'; } catch (e) { }
+
+        let fallosSeguidos = 0;
+
+        function pausar() {
+            isPlaying = false;
+            audio.pause();
+            syncPlayState();
+            persistPlayState();
+        }
+
+        function reanudar() {
+            isPlaying = true;
+            clearReconnect();
+            const p = audio.play();
+            if (p && p.catch) p.catch(function () { scheduleReconnect(); });
+            syncPlayState();
+            persistPlayState();
+        }
+
+        function reconectar(forzarRecarga) {
+            if (!isPlaying) return;
+            if (radioPausedForVideo || radioPausedForTop5) return;
+            clearReconnect();
+            if (forzarRecarga) {
+                try { audio.load(); } catch (e) { }
+            }
+            const p = audio.play();
+            if (p && p.catch) {
+                p.catch(function () {
+                    fallosSeguidos++;
+                    if (fallosSeguidos >= 3) {
+                        fallosSeguidos = 0;
+                        try { audio.load(); } catch (e) { }
+                    }
+                    scheduleReconnect();
+                });
+            } else {
+                fallosSeguidos = 0;
+            }
+        }
+
+        // --- Media Session (controles con la pantalla apagada) ---
+        try {
+            if ('mediaSession' in navigator) {
+                navigator.mediaSession.metadata = new MediaMetadata({
+                    title: 'Master Crazy Radio',
+                    artist: 'Radio Colombia Numero Uno en Cumbia',
+                    album: 'Master Crazy Radio',
+                    artwork: [
+                        { src: 'logo_circular.jpg', sizes: '1024x1024', type: 'image/jpeg' }
+                    ]
+                });
+                navigator.mediaSession.setActionHandler('play', function () { reanudar(); });
+                navigator.mediaSession.setActionHandler('pause', function () { pausar(); });
+                navigator.mediaSession.setActionHandler('stop', function () { pausar(); });
+            }
+        } catch (e) { }
+
+        audio.addEventListener('playing', function () {
+            fallosSeguidos = 0;
+            try {
+                if ('mediaSession' in navigator) navigator.mediaSession.playbackState = 'playing';
+            } catch (e) { }
+        });
+        audio.addEventListener('play', function () {
+            try {
+                if ('mediaSession' in navigator) navigator.mediaSession.playbackState = 'playing';
+            } catch (e) { }
+        });
+        audio.addEventListener('pause', function () {
+            try {
+                if ('mediaSession' in navigator) navigator.mediaSession.playbackState = 'paused';
+            } catch (e) { }
+            // Si el sistema la pauso por su cuenta, se retoma sola
+            if (isPlaying && !radioPausedForVideo && !radioPausedForTop5) {
+                setTimeout(function () { reconectar(false); }, 1200);
+            }
+        });
+
+        // --- Cortes tipicos de red en 2G / 3G / H+ ---
+        ['error', 'stalled', 'ended'].forEach(function (ev) {
+            audio.addEventListener(ev, function () {
+                if (isPlaying && !radioPausedForVideo && !radioPausedForTop5) {
+                    setTimeout(function () { reconectar(true); }, 800);
+                }
+            });
+        });
+
+        // --- Vigilante permanente: la radio nunca se queda muda ---
+        setInterval(function () {
+            if (!isPlaying) return;
+            if (radioPausedForVideo || radioPausedForTop5) return;
+            if (audio.paused || audio.readyState === 0) {
+                reconectar(audio.readyState === 0);
+            }
+        }, 10000);
+
+        // --- Cambio de red (Wi-Fi <-> datos) o vuelta de la conexion ---
+        try {
+            if (navigator.connection && navigator.connection.addEventListener) {
+                navigator.connection.addEventListener('change', function () {
+                    if (isPlaying) setTimeout(function () { reconectar(true); }, 1200);
+                });
+            }
+        } catch (e) { }
+        window.addEventListener('online', function () {
+            if (isPlaying) setTimeout(function () { reconectar(true); }, 800);
+        });
+    })();
+
     // === Auto-reconexión: si la conexión se pierde o se vuelve inestable,
     // el reproductor se reconecta solo para que el oyente nunca quede sin música. ===
     function showReconnectStatus(show) {
