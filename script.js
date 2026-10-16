@@ -1691,11 +1691,18 @@ document.addEventListener('DOMContentLoaded', () => {
     // la pantalla en horizontal y, si el equipo no lo permite, gira el
     // contenido con la rotacion por CSS.
     // ===== Aviso "FUERA DE LA CANCHA" cuando no hay transmision (OBS apagado) =====
+    // Fuente RAPIDA: GitHub raw se actualiza en segundos (sin esperar el
+    // rebuild de GitHub Pages). Si falla, se usa el archivo local del sitio.
+    const STATUS_RAW = 'https://raw.githubusercontent.com/MasterCrazyRadio/masterCrazyRadio.github.io/ia/status.json';
     window.consultarEstadoEmision = function (cb) {
-        fetch('status.json?ts=' + Date.now(), { cache: 'no-store' })
-            .then(function (r) { return r.json(); })
+        const ts = Date.now();
+        fetch(STATUS_RAW + '?ts=' + ts, { cache: 'no-store' })
+            .then(function (r) { if (!r.ok) throw new Error('bad'); return r.json(); })
+            .catch(function () {
+                return fetch('status.json?ts=' + ts, { cache: 'no-store' }).then(function (r) { return r.json(); });
+            })
             .then(function (data) { cb(!!(data && data.online === false), data); })
-            .catch(function () { cb(false, null); }); // sin archivo: se asume en vivo
+            .catch(function () { cb(false, null); }); // sin datos: se asume en vivo
     };
 
     window.mostrarAvisoOffline = function () {
@@ -1728,16 +1735,30 @@ document.addEventListener('DOMContentLoaded', () => {
         if (aviso) aviso.style.display = 'none';
     };
 
-    // Mientras el usuario ve TV: si la transmision se cae, aparece el aviso
-    setInterval(function () {
+    // Revision del estado con ritmo adaptativo:
+    //  - Con el aviso visible: cada 5 s (para que desaparezca AL INSTANTE cuando
+    //    usted arranca la transmision en OBS).
+    //  - Sin aviso: cada 20 s (para detectar si la transmision se cae).
+    (function vigilarEstadoEmision() {
         const modal = document.getElementById('tv-modal');
-        if (!modal || modal.style.display !== 'flex') return;
-        window.consultarEstadoEmision(function (offline) {
-            const aviso = document.getElementById('tv-offline');
-            const visible = aviso && aviso.style.display !== 'none';
-            if (offline && !visible) window.mostrarAvisoOffline();
-        });
-    }, 45000);
+        const aviso = document.getElementById('tv-offline');
+        const avisoVisible = !!aviso && aviso.style.display !== 'none';
+        const tvAbierto = !!modal && modal.style.display === 'flex';
+
+        if (tvAbierto || avisoVisible) {
+            window.consultarEstadoEmision(function (offline) {
+                const v = !!aviso && aviso.style.display !== 'none';
+                if (offline && tvAbierto && !v) {
+                    window.mostrarAvisoOffline();
+                } else if (!offline && v) {
+                    // Volvio la transmision: quitar el aviso y reconectar
+                    window.ocultarAvisoOffline();
+                    if (typeof window.playPartido === 'function') window.playPartido();
+                }
+            });
+        }
+        setTimeout(vigilarEstadoEmision, avisoVisible ? 5000 : 20000);
+    })();
 
     function vistaHorizontalAutomatica() {
         try {
