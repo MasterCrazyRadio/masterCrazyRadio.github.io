@@ -862,7 +862,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // y autoradios Android): el modal ocupa todo el viewport y la imagen se
         // ajusta SIN recortar, aunque la API Fullscreen no exista en el equipo.
         modal.classList.add('deep-link-mode');
-        applyForcedLandscape();
+        applyTvFitMode();
         title.innerHTML = "Master Crazy <span style='color:#7DF9FF;'>TV</span>";
 
         // Pantalla completa nativa en cualquier dispositivo
@@ -1512,6 +1512,27 @@ document.addEventListener('DOMContentLoaded', () => {
             abrirPin();
         };
     })();
+
+    // ===== Ajuste de imagen del reproductor de TV (Llenar / Completo) =====
+    // "Llenar" (tv-fit-cover): la imagen cubre TODA la pantalla (puede recortar
+    // los bordes). "Completo": se ve la imagen entera (barras negras si sobran).
+    // El modo se recuerda por equipo en localStorage.
+    function applyTvFitMode() {
+        const modal = document.getElementById('tv-modal');
+        if (!modal) return;
+        let mode = 'cover';
+        try { mode = localStorage.getItem('mctv_fit_mode') || 'cover'; } catch (e) { }
+        modal.classList.toggle('tv-fit-cover', mode === 'cover');
+    }
+    window.toggleTvFitMode = function () {
+        const modal = document.getElementById('tv-modal');
+        if (!modal) return;
+        const cover = !modal.classList.contains('tv-fit-cover');
+        modal.classList.toggle('tv-fit-cover', cover);
+        try { localStorage.setItem('mctv_fit_mode', cover ? 'cover' : 'contain'); } catch (e) { }
+    };
+    applyTvFitMode();
+    document.addEventListener('DOMContentLoaded', applyTvFitMode);
 
     window.addEventListener('hashchange', handleMctvDeepLink);
     // Al cargar la página ya con #mctv (después del DOMContentLoaded)

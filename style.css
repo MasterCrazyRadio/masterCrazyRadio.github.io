@@ -3044,3 +3044,50 @@ body.tv-open .tv-modal {
     object-fit: contain !important;
     background: #000 !important;
 }
+
+/* ===== Ajuste de imagen: MODO LLENAR (cover) =====
+   La transmision cubre TODA la pantalla; para lograrlo recorta los bordes
+   sobrantes (16:9 sobre pantallas mas anchas o mas altas). Es el modo por
+   defecto y se cambia con el boton de ajuste de imagen del reproductor. */
+.tv-modal.tv-fit-cover .video-container iframe {
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    width: max(100vw, 177.78vh) !important;
+    height: max(100vh, 56.25vw) !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    max-width: none !important;
+    max-height: none !important;
+    aspect-ratio: auto !important;
+    border: none !important;
+    background: #000 !important;
+}
+
+.tv-modal.tv-fit-cover .video-container video {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    background: #000 !important;
+}
+
+/* Boton de ajuste de imagen (Llenar / Completo), siempre visible */
+.fitmode-tv-btn {
+    position: fixed !important;
+    top: 70px !important;
+    left: 16px !important;
+    z-index: 9999 !important;
+    width: 44px !important;
+    height: 44px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: rgba(0, 0, 0, 0.6) !important;
+    border: 2px solid rgba(125, 249, 255, 0.7) !important;
+    color: #7DF9FF !important;
+    border-radius: 50% !important;
+    font-size: 1.05rem !important;
+    cursor: pointer !important;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.6) !important;
+}
