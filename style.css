@@ -3104,6 +3104,22 @@ body.tv-open .tv-modal {
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.6) !important;
 }
 
+/* Diagnostico en pantalla del reproductor de TV (para soporte remoto) */
+.tv-debug {
+    position: fixed;
+    left: 10px;
+    bottom: 10px;
+    z-index: 9999;
+    font-family: monospace;
+    font-size: 11px;
+    color: #7DF9FF;
+    background: rgba(0, 0, 0, 0.55);
+    padding: 3px 7px;
+    border-radius: 6px;
+    pointer-events: none;
+    white-space: nowrap;
+}
+
 /* ===== Controles que se ocultan a los 5 segundos =====
    Desaparecen solos y vuelven con un toque en la pantalla. */
 .tv-modal .close-modal,

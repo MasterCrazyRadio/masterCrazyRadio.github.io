@@ -683,14 +683,34 @@ document.addEventListener('DOMContentLoaded', () => {
     // entra en fullscreen real (oculta la barra del navegador). La orientación
     // queda LIBRE: si el usuario voltea el teléfono, la transmisión ocupa toda
     // la pantalla en horizontal (ver listeners de orientación abajo).
+    // --- Diagnostico en pantalla (para leer el estado desde una captura) ---
+    const APP_VERSION = 'v15';
+    function tvDebug(extra) {
+        try {
+            const el = document.getElementById('tv-debug');
+            if (!el) return;
+            const fs = (document.fullscreenEnabled === true) ? 'FS:si' : 'FS:no';
+            el.textContent = APP_VERSION + ' | ' + fs + (extra ? ' | ' + extra : '');
+        } catch (e) { }
+    }
+    window.tvDebug = tvDebug;
+
     function requestFullscreenVertical(el) {
         try {
-            if (el.requestFullscreen) {
-                el.requestFullscreen().catch(function () { });
-            } else if (el.webkitRequestFullscreen) {
-                el.webkitRequestFullscreen();
-            } else if (el.msRequestFullscreen) {
-                el.msRequestFullscreen();
+            const target = el || document.documentElement;
+            let p = null;
+            if (target.requestFullscreen) {
+                p = target.requestFullscreen();
+            } else if (target.webkitRequestFullscreen) {
+                p = target.webkitRequestFullscreen();
+            } else if (target.msRequestFullscreen) {
+                p = target.msRequestFullscreen();
+            }
+            if (p && p.then) {
+                p.then(function () { tvDebug('FS ok'); })
+                    .catch(function (err) { tvDebug('FS NO: ' + (err && err.name ? err.name : 'error')); });
+            } else {
+                tvDebug(p ? 'FS ok' : 'FS NO: sin API');
             }
         } catch (e) { }
         // No bloquear la orientación: permite girar el teléfono (giroscopio)
@@ -1654,12 +1674,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
             } catch (e) { }
             cerrarPin();
-            if (!document.fullscreenElement && !document.webkitFullscreenElement) {
-                requestFullscreenVertical(document.documentElement);
-            }
+            // Esperar a que el teclado termine de cerrarse ANTES de pedir la
+            // pantalla completa (si no, el navegador la cancela).
             setTimeout(function () {
+                if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+                    requestFullscreenVertical(document.documentElement);
+                }
+                if (typeof window.tvDebug === 'function') window.tvDebug('PIN ok');
                 if (typeof window.playPartido === 'function') window.playPartido();
-            }, 120);
+            }, 450);
         }
 
         inputs.forEach(function (input, idx) {
