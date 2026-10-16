@@ -2840,3 +2840,162 @@ body.tv-open .tv-modal {
     right: auto !important;
     bottom: auto !important;
 }
+
+/* ===== PIN de acceso · Master Crazy TV ===== */
+.pin-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin-left: 6px;
+    padding: 2px 8px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .5px;
+    color: #0b0518;
+    background: #7DF9FF;
+    border-radius: 999px;
+    vertical-align: middle;
+}
+
+.pin-badge i {
+    font-size: 9px;
+}
+
+.pin-modal {
+    position: fixed;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(5, 2, 12, .88);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+    z-index: 10000;
+}
+
+.pin-modal.open {
+    display: flex;
+}
+
+.pin-box {
+    position: relative;
+    width: 100%;
+    max-width: 380px;
+    padding: 30px 22px 22px;
+    text-align: center;
+    background: linear-gradient(160deg, #170a2e, #090313);
+    border: 2px solid var(--primary-neon);
+    border-radius: 20px;
+    box-shadow: 0 0 45px rgba(168, 112, 224, .35), 0 20px 50px rgba(0, 0, 0, .65);
+    animation: pinPop .25s ease;
+}
+
+@keyframes pinPop {
+    from { transform: scale(.92); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.pin-close {
+    position: absolute;
+    top: 8px;
+    right: 14px;
+    background: none;
+    border: 0;
+    cursor: pointer;
+    color: #b9a6d6;
+    font-size: 26px;
+    line-height: 1;
+}
+
+.pin-close:hover {
+    color: #fff;
+}
+
+.pin-lock {
+    font-size: 34px;
+    color: var(--primary-neon);
+    margin-bottom: 10px;
+}
+
+.pin-title {
+    margin: 0 0 6px;
+    font-size: 22px;
+    color: #fff;
+}
+
+.pin-sub {
+    margin: 0 0 18px;
+    font-size: 14px;
+    color: #b9a6d6;
+}
+
+.pin-inputs {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 8px;
+}
+
+.pin-digit {
+    width: 52px;
+    height: 60px;
+    text-align: center;
+    font-size: 26px;
+    font-weight: 700;
+    color: #fff;
+    background: rgba(255, 255, 255, .06);
+    border: 2px solid rgba(168, 112, 224, .5);
+    border-radius: 12px;
+    outline: none;
+    transition: border-color .2s, box-shadow .2s;
+}
+
+.pin-digit:focus {
+    border-color: var(--primary-neon);
+    box-shadow: 0 0 16px rgba(168, 112, 224, .6);
+}
+
+.pin-error {
+    display: none;
+    min-height: 18px;
+    margin: 10px 0;
+    font-size: 13px;
+    color: #ff6b81;
+}
+
+.pin-submit {
+    width: 100%;
+    padding: 13px;
+    border: 0;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 700;
+    color: #10061f;
+    background: linear-gradient(90deg, var(--primary-neon), #7DF9FF);
+}
+
+.pin-submit:hover {
+    filter: brightness(1.1);
+}
+
+.pin-help {
+    display: inline-block;
+    margin-top: 14px;
+    font-size: 13px;
+    color: #25D366;
+    text-decoration: none;
+}
+
+.pin-help i {
+    margin-right: 5px;
+}
+
+@media (max-width: 420px) {
+    .pin-digit {
+        width: 46px;
+        height: 54px;
+        font-size: 22px;
+    }
+}

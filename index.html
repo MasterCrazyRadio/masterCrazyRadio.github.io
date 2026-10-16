@@ -329,11 +329,12 @@
                 </div>
 
                 <!-- Master Crazy TV (transmisión ok.ru) -->
-                <div class="tv-card" id="master-crazy-tv-card" onclick="playPartido()">
+                <div class="tv-card" id="master-crazy-tv-card" onclick="requestMctvAccess()">
                     <div class="tv-card-content">
                         <i class="fas fa-futbol tv-icon"></i>
                         <h3>Master Crazy TV</h3>
                         <span class="live-badge" id="partido-badge">EN VIVO</span>
+                        <span class="pin-badge" title="Transmisi&oacute;n protegida con PIN"><i class="fas fa-lock"></i> PIN</span>
                         <span class="partido-status" id="partido-status" style="display:none;"></span>
                     </div>
                     <!-- Botón compartir: toque sostenido o clic copia el enlace directo a la transmisión -->
@@ -522,6 +523,27 @@
     <a href="https://wa.me/573117307017" class="whatsapp-float" target="_blank">
         <img src="whatsapp_logo.jpg" alt="WhatsApp" class="whatsapp-icon">
     </a>
+
+    <!-- PIN de acceso - Master Crazy TV (transmision protegida) -->
+    <div class="pin-modal" id="pin-modal" role="dialog" aria-modal="true" aria-labelledby="pin-title">
+        <div class="pin-box">
+            <button class="pin-close" id="pin-close" type="button" aria-label="Cerrar">&times;</button>
+            <div class="pin-lock"><i class="fas fa-lock"></i></div>
+            <h3 class="pin-title" id="pin-title">Master <span class="brand-green">Crazy TV</span></h3>
+            <p class="pin-sub">Transmisi&oacute;n protegida. Ingresa el PIN de 4 d&iacute;gitos.</p>
+            <div class="pin-inputs" id="pin-inputs">
+                <input class="pin-digit" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="1" autocomplete="off" aria-label="D&iacute;gito 1">
+                <input class="pin-digit" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="1" autocomplete="off" aria-label="D&iacute;gito 2">
+                <input class="pin-digit" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="1" autocomplete="off" aria-label="D&iacute;gito 3">
+                <input class="pin-digit" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="1" autocomplete="off" aria-label="D&iacute;gito 4">
+            </div>
+            <p class="pin-error" id="pin-error"></p>
+            <button class="pin-submit" id="pin-submit" type="button">Ver transmisi&oacute;n</button>
+            <a class="pin-help" id="pin-help" href="https://wa.me/573117307017" target="_blank" rel="noopener">
+                <i class="fab fa-whatsapp"></i> &iquest;No tienes PIN? Sol&iacute;ctalo aqu&iacute;
+            </a>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>

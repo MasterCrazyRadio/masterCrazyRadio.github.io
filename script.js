@@ -1347,7 +1347,9 @@ document.addEventListener('DOMContentLoaded', () => {
             setTimeout(function () { card.classList.remove('tv-card-flash'); }, 2400);
             // Abrir la transmisión directamente (dentro del video)
             setTimeout(function () {
-                if (typeof window.playPartido === 'function') {
+                if (typeof window.requestMctvAccess === 'function') {
+                    window.requestMctvAccess();
+                } else if (typeof window.playPartido === 'function') {
                     window.playPartido();
                 }
                 // Modo deep-link: el modal ocupa el 100% de la pantalla en cualquier
@@ -1417,6 +1419,95 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('orientationchange', function () {
         setTimeout(applyForcedLandscape, 350);
     });
+    // ===== PIN de acceso · Master Crazy TV =====
+    // Gate de acceso a la transmisión de la tarjeta "Master Crazy TV".
+    // PIN correcto: 2468. Si el usuario no lo tiene, se le redirige a WhatsApp.
+    (function () {
+        const PIN_CORRECTO = '2468';
+        const WHATSAPP_URL = 'https://wa.me/573117307017?text=' +
+            encodeURIComponent('Hola, quiero el PIN para ver Master Crazy TV');
+        const STORAGE_KEY = 'mctv_pin_ok';
+
+        const pinModal = document.getElementById('pin-modal');
+        if (!pinModal) return;
+
+        const inputs = Array.prototype.slice.call(pinModal.querySelectorAll('.pin-digit'));
+        const errorEl = document.getElementById('pin-error');
+        const submitBtn = document.getElementById('pin-submit');
+        const closeBtn = document.getElementById('pin-close');
+        const helpLink = document.getElementById('pin-help');
+        if (helpLink) helpLink.href = WHATSAPP_URL;
+
+        function tieneAcceso() {
+            try { return localStorage.getItem(STORAGE_KEY) === '1'; } catch (e) { return false; }
+        }
+        function guardarAcceso() {
+            try { localStorage.setItem(STORAGE_KEY, '1'); } catch (e) { }
+        }
+        function redirigirAWhatsApp() {
+            window.location.href = WHATSAPP_URL;
+        }
+        function abrirPin() {
+            pinModal.classList.add('open');
+            if (errorEl) { errorEl.textContent = ''; errorEl.style.display = 'none'; }
+            inputs.forEach(function (i) { i.value = ''; });
+            setTimeout(function () { if (inputs[0]) inputs[0].focus(); }, 60);
+        }
+        function cerrarPin() {
+            pinModal.classList.remove('open');
+        }
+        function validarPin() {
+            const pin = inputs.map(function (i) { return i.value; }).join('');
+            if (pin.length < 4) {
+                if (errorEl) {
+                    errorEl.textContent = 'Ingresa los 4 dígitos.';
+                    errorEl.style.display = 'block';
+                }
+                return;
+            }
+            if (pin === PIN_CORRECTO) {
+                guardarAcceso();
+                cerrarPin();
+                if (typeof window.playPartido === 'function') window.playPartido();
+            } else {
+                if (errorEl) {
+                    errorEl.textContent = 'PIN incorrecto. Te llevamos a WhatsApp para solicitarlo…';
+                    errorEl.style.display = 'block';
+                }
+                setTimeout(redirigirAWhatsApp, 1600);
+            }
+        }
+
+        inputs.forEach(function (input, idx) {
+            input.addEventListener('input', function () {
+                input.value = input.value.replace(/[^0-9]/g, '').slice(0, 1);
+                if (input.value && idx < inputs.length - 1) inputs[idx + 1].focus();
+                if (inputs.every(function (i) { return i.value.length === 1; })) validarPin();
+            });
+            input.addEventListener('keydown', function (e) {
+                if (e.key === 'Backspace' && !input.value && idx > 0) inputs[idx - 1].focus();
+                if (e.key === 'Enter') validarPin();
+            });
+            input.addEventListener('focus', function () { input.select(); });
+        });
+
+        if (submitBtn) submitBtn.addEventListener('click', validarPin);
+        if (closeBtn) closeBtn.addEventListener('click', cerrarPin);
+        pinModal.addEventListener('click', function (e) { if (e.target === pinModal) cerrarPin(); });
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && pinModal.classList.contains('open')) cerrarPin();
+        });
+
+        // Punto de entrada de la tarjeta Master Crazy TV
+        window.requestMctvAccess = function () {
+            if (tieneAcceso()) {
+                if (typeof window.playPartido === 'function') window.playPartido();
+                return;
+            }
+            abrirPin();
+        };
+    })();
+
     window.addEventListener('hashchange', handleMctvDeepLink);
     // Al cargar la página ya con #mctv (después del DOMContentLoaded)
     setTimeout(handleMctvDeepLink, 1200);
