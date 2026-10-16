@@ -1602,7 +1602,12 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!pinModal) return;
             pinModal.classList.remove('open');
         }
-        function validarPin() {
+        let pinValido = false;
+
+        // auto = true cuando se dispara al completar los 4 dígitos (sin toque).
+        // En ese caso NO se abre la transmisión: los navegadores solo permiten
+        // pantalla completa con un toque real del usuario.
+        function validarPin(auto) {
             const pin = inputs.map(function (i) { return i.value; }).join('');
             if (pin.length < 4) {
                 if (errorEl) {
@@ -1613,14 +1618,21 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             if (pin === PIN_CORRECTO) {
                 guardarAcceso();
-                cerrarPin();
-                // Reforzar pantalla completa dentro del mismo toque del usuario
-                if (!document.fullscreenElement && !document.webkitFullscreenElement) {
-                    requestFullscreenVertical(document.documentElement);
+                pinValido = true;
+                if (auto) {
+                    if (errorEl) {
+                        errorEl.style.color = '#7DF9FF';
+                        errorEl.textContent = 'PIN correcto. Toca “Ver transmisi\u00f3n”.';
+                        errorEl.style.display = 'block';
+                    }
+                    if (submitBtn) submitBtn.classList.add('pin-listo');
+                    return;
                 }
-                if (typeof window.playPartido === 'function') window.playPartido();
+                abrirTransmision();
             } else {
+                pinValido = false;
                 if (errorEl) {
+                    errorEl.style.color = '#ff6b81';
                     errorEl.textContent = 'PIN incorrecto. Te llevamos a WhatsApp para solicitarlo…';
                     errorEl.style.display = 'block';
                 }
@@ -1628,15 +1640,31 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
+        // Abre la transmisión pidiendo la pantalla completa DENTRO del toque
+        function abrirTransmision() {
+            // Cerrar el teclado ANTES de pedir pantalla completa: con el teclado
+            // abierto, el navegador sale de pantalla completa para mostrarlo.
+            try {
+                if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
+            } catch (e) { }
+            cerrarPin();
+            if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+                requestFullscreenVertical(document.documentElement);
+            }
+            setTimeout(function () {
+                if (typeof window.playPartido === 'function') window.playPartido();
+            }, 120);
+        }
+
         inputs.forEach(function (input, idx) {
             input.addEventListener('input', function () {
                 input.value = input.value.replace(/[^0-9]/g, '').slice(0, 1);
                 if (input.value && idx < inputs.length - 1) inputs[idx + 1].focus();
-                if (inputs.every(function (i) { return i.value.length === 1; })) validarPin();
+                if (inputs.every(function (i) { return i.value.length === 1; })) validarPin(true);
             });
             input.addEventListener('keydown', function (e) {
                 if (e.key === 'Backspace' && !input.value && idx > 0) inputs[idx - 1].focus();
-                if (e.key === 'Enter') validarPin();
+                if (e.key === 'Enter') validarPin(false);
             });
             input.addEventListener('focus', function () { input.select(); });
         });
@@ -1656,7 +1684,7 @@ document.addEventListener('DOMContentLoaded', () => {
             } catch (e) { }
         }
 
-        if (submitBtn) submitBtn.addEventListener('click', validarPin);
+        if (submitBtn) submitBtn.addEventListener('click', function () { validarPin(false); });
         if (closeBtn) closeBtn.addEventListener('click', cancelarPin);
         if (pinModal) {
             pinModal.addEventListener('click', function (e) { if (e.target === pinModal) cancelarPin(); });
@@ -1669,9 +1697,9 @@ document.addEventListener('DOMContentLoaded', () => {
         // SIEMPRE definido: si la ventana de PIN no esta disponible, reproduce
         // directamente para no perder nunca la transmision.
         window.requestMctvAccess = function () {
-            // Pantalla limpia desde el primer toque: se pide la pantalla completa
-            // nativa de inmediato para que NO se vea la barra de direcciones.
-            requestFullscreenVertical(document.documentElement);
+            // NO se pide pantalla completa aqui: si se activa y luego se abre el
+            // teclado del PIN, el navegador sale de pantalla completa y ya no la
+            // vuelve a conceder. Se pide al abrir la transmision, con un toque real.
             if (tieneAcceso() || !pinModal) {
                 if (typeof window.playPartido === 'function') window.playPartido();
                 return;

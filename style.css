@@ -2983,6 +2983,18 @@ body.tv-open .tv-modal {
     filter: brightness(1.1);
 }
 
+/* PIN correcto: se resalta el boton para el toque final (necesario para que
+   el navegador conceda la pantalla completa). */
+.pin-submit.pin-listo {
+    animation: pinListo 1s ease-in-out infinite;
+    box-shadow: 0 0 22px rgba(125, 249, 255, 0.85);
+}
+
+@keyframes pinListo {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.04); }
+}
+
 .pin-help {
     display: inline-block;
     margin-top: 14px;
