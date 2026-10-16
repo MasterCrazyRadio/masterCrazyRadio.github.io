@@ -680,6 +680,8 @@ document.addEventListener('DOMContentLoaded', () => {
             if (iframe) iframe.src = '';
         }
         tvIsPartido = false;
+        tvCanalActual = 'hls';
+        if (typeof window.ocultarAvisoOffline === 'function') window.ocultarAvisoOffline();
         stopTvWatchdog();
         if (video) video.style.display = '';
 
@@ -994,6 +996,9 @@ document.addEventListener('DOMContentLoaded', () => {
     let tvIframeLoadTimer = null;
     let tvLastReload = 0;
     let tvIsPartido = false;
+    // Canal que se esta viendo: 'partido' (Master Crazy TV), 'hls' o 'youtube'.
+    // El aviso de "fuera de la cancha" es SOLO para Master Crazy TV.
+    let tvCanalActual = null;
 
     // === Cortina con el logo mientras conecta / reconecta ===
     let tvReconnectTimer = null;
@@ -1121,6 +1126,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (iframeContainer) iframeContainer.style.display = 'block';
         if (iframe) {
             tvIsPartido = true;
+            tvCanalActual = 'partido';
             iframe.src = TV_PARTIDO_EMBED;
             armTvLoadWatchdog();
             startTvWatchdog();
@@ -1167,6 +1173,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Cargar la señal en vivo del canal Quiero TV (YouTube embed)
         tvIsPartido = false; // el watchdog de reconexión es solo para la transmisión de OK.ru
+        tvCanalActual = 'youtube';
+        if (typeof window.ocultarAvisoOffline === 'function') window.ocultarAvisoOffline();
         stopTvWatchdog();
         if (iframeContainer) iframeContainer.style.display = 'block';
         if (iframe) iframe.src = 'https://www.youtube.com/embed/vGNglKWqwcQ?autoplay=1&rel=0';
@@ -1202,6 +1210,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (iframeContainer) iframeContainer.style.display = 'none';
         if (iframe) iframe.src = '';
         tvIsPartido = false;
+        tvCanalActual = null;
         stopTvWatchdog();
         hideReconnectCountdown();
 
@@ -1748,7 +1757,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (tvAbierto || avisoVisible) {
             window.consultarEstadoEmision(function (offline) {
                 const v = !!aviso && aviso.style.display !== 'none';
-                if (offline && tvAbierto && !v) {
+                if (offline && tvAbierto && tvCanalActual === 'partido' && !v) {
                     window.mostrarAvisoOffline();
                 } else if (!offline && v) {
                     // Volvio la transmision: quitar el aviso y reconectar
