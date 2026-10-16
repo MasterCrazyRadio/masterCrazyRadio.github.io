@@ -1,15 +1,16 @@
 {
-  "name": "Master Crazy Radio - Radio Colombia Número Uno en Cumbia",
+  "name": "Master Crazy Radio - Radio Colombia N\u00famero Uno en Cumbia",
   "short_name": "Master Crazy",
-  "description": "Radio Colombia Número Uno en Cumbia. Música colombiana en vivo las 24 horas desde el Cauca, Colombia. Canales de TV en vivo, partidos y noticias deportivas.",
+  "description": "Radio Colombia N\u00famero Uno en Cumbia. M\u00fasica colombiana en vivo las 24 horas desde el Cauca, Colombia. Canales de TV en vivo y partidos.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
+  "display_override": ["standalone", "fullscreen"],
   "orientation": "any",
   "background_color": "#050510",
   "theme_color": "#A870E0",
   "lang": "es",
-  "categories": ["music", "entertainment", "news", "sports"],
+  "categories": ["music", "entertainment", "sports"],
   "icons": [
     {
       "src": "icon-192.png",
@@ -41,12 +42,6 @@
       "name": "TV en Vivo",
       "short_name": "TV",
       "url": "./#tv-section",
-      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
-    },
-    {
-      "name": "Noticias Deportivas",
-      "short_name": "Noticias",
-      "url": "./#news-section",
       "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
     }
   ]
