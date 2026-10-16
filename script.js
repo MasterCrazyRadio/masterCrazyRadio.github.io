@@ -232,22 +232,41 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         // --- Cortes tipicos de red en 2G / 3G / H+ ---
-        ['error', 'stalled', 'ended'].forEach(function (ev) {
+        // IMPORTANTE: mientras el elemento NO este pausado, el stream esta
+        // cargando o sonando bien, asi que NO se toca nada. Asi se evita el
+        // bucle de "reconectando" al recargar la pagina. La recarga forzada se
+        // reserva para errores reales.
+        audio.addEventListener('error', function () {
+            if (!isPlaying || radioPausedForVideo || radioPausedForTop5) return;
+            setTimeout(function () { reconectar(true); }, 1500);
+        });
+        ['stalled', 'ended'].forEach(function (ev) {
             audio.addEventListener(ev, function () {
-                if (isPlaying && !radioPausedForVideo && !radioPausedForTop5) {
-                    setTimeout(function () { reconectar(true); }, 800);
-                }
+                if (!isPlaying || radioPausedForVideo || radioPausedForTop5) return;
+                if (!audio.paused) return; // sigue activo: no interferir
+                setTimeout(function () { reconectar(false); }, 1500);
             });
         });
 
         // --- Vigilante permanente: la radio nunca se queda muda ---
+        // Solo cuenta si el audio esta REALMENTE pausado (mudo). Mientras carga
+        // o suena, el elemento no esta pausado, asi que no interfiere. Se exigen
+        // 3 revisiones seguidas (~15 s de gracia) antes de reconectar.
+        let revisionesMudo = 0;
         setInterval(function () {
-            if (!isPlaying) return;
-            if (radioPausedForVideo || radioPausedForTop5) return;
-            if (audio.paused || audio.readyState === 0) {
-                reconectar(audio.readyState === 0);
+            if (!isPlaying || radioPausedForVideo || radioPausedForTop5) {
+                revisionesMudo = 0;
+                return;
             }
-        }, 10000);
+            if (!audio.paused) {
+                revisionesMudo = 0;   // sonando o cargando: todo bien
+                return;
+            }
+            revisionesMudo++;
+            if (revisionesMudo < 3) return;   // margen de gracia
+            revisionesMudo = 0;
+            reconectar(audio.readyState === 0);
+        }, 5000);
 
         // --- Cambio de red (Wi-Fi <-> datos) o vuelta de la conexion ---
         try {
