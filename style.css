@@ -3198,17 +3198,17 @@ body.tv-open .tv-modal {
     height: 76%;
     border-radius: 50%;
     object-fit: cover;
-    border: 3px solid rgba(168, 112, 224, 0.55);
-    box-shadow: 0 0 34px rgba(168, 112, 224, 0.45);
-    animation: curtainPulse 2.6s ease-in-out infinite;
+    border: 3px solid rgba(168, 240, 0, 0.55);
+    box-shadow: 0 0 34px rgba(168, 240, 0, 0.40);
+    animation: curtainPulse 3.6s ease-in-out infinite;
 }
 
-/* Anillo: 8 circulitos peque nos que giran mientras carga el contenido */
+/* Anillo: 8 circulitos peque nos que giran lento mientras carga el contenido */
 .tv-curtain-ring {
     position: absolute;
     inset: 0;
     z-index: 1;
-    animation: curtainSpin 2.8s linear infinite;
+    animation: curtainSpin 6.5s linear infinite;
     will-change: transform;
 }
 
@@ -3217,8 +3217,8 @@ body.tv-open .tv-modal {
     width: 9px;
     height: 9px;
     border-radius: 50%;
-    background: #7DF9FF;
-    box-shadow: 0 0 12px rgba(125, 249, 255, 0.85);
+    background: #A8F000;
+    box-shadow: 0 0 12px rgba(168, 240, 0, 0.85);
     transform: translate(-50%, -50%);
 }
 
