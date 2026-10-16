@@ -262,6 +262,68 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     })();
 
+    // ===== Arranque automatico al entrar a la web =====
+    // Se intenta reproducir de inmediato (y con la conexion ya pre-abierta por
+    // el preconnect, arranca en el primer segundo). Los navegadores NO permiten
+    // sonar sin un toque previo del usuario, asi que si lo bloquean, la radio
+    // arranca con el PRIMER toque, scroll o tecla en cualquier parte.
+    (function autoArranqueRadio() {
+        let arrancado = false;
+
+        function marcarAtencion(activo) {
+            try {
+                const b1 = document.getElementById('play-btn');
+                const b2 = document.getElementById('header-play-btn');
+                [b1, b2].forEach(function (b) {
+                    if (!b) return;
+                    if (activo) b.classList.add('pulse-attention');
+                    else b.classList.remove('pulse-attention');
+                });
+            } catch (e) { }
+        }
+
+        function quitarEscuchas() {
+            ['touchstart', 'click', 'keydown', 'scroll', 'pointerdown'].forEach(function (ev) {
+                document.removeEventListener(ev, intentar, true);
+            });
+        }
+
+        function intentar() {
+            if (arrancado) return;
+            if (isPlaying) { arrancado = true; quitarEscuchas(); marcarAtencion(false); return; }
+            const p = audio.play();
+            if (p && p.then) {
+                p.then(function () {
+                    arrancado = true;
+                    isPlaying = true;
+                    syncPlayState();
+                    persistPlayState();
+                    marcarAtencion(false);
+                    quitarEscuchas();
+                }).catch(function () {
+                    // Bloqueado por el navegador: esperamos al primer toque
+                    marcarAtencion(true);
+                });
+            } else {
+                arrancado = true;
+                isPlaying = true;
+                syncPlayState();
+                marcarAtencion(false);
+                quitarEscuchas();
+            }
+        }
+
+        // Intento inmediato al cargar
+        intentar();
+        // Y en el primer gesto del usuario, en cualquier parte de la pagina
+        ['touchstart', 'click', 'keydown', 'scroll', 'pointerdown'].forEach(function (ev) {
+            document.addEventListener(ev, intentar, true);
+        });
+        // Reintentos cortos por si el navegador concede el permiso despues
+        setTimeout(intentar, 600);
+        setTimeout(intentar, 1800);
+    })();
+
     // === Auto-reconexión: si la conexión se pierde o se vuelve inestable,
     // el reproductor se reconecta solo para que el oyente nunca quede sin música. ===
     function showReconnectStatus(show) {

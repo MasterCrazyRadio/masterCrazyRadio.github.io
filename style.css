@@ -3172,6 +3172,17 @@ body.tv-open .tv-modal {
     z-index: 30 !important;
 }
 
+/* Aviso visual: la radio espera el primer toque para poder sonar */
+@keyframes attentionPulse {
+    0%   { box-shadow: 0 0 0 0 rgba(168, 240, 0, 0.55); }
+    70%  { box-shadow: 0 0 0 16px rgba(168, 240, 0, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(168, 240, 0, 0); }
+}
+
+.pulse-attention {
+    animation: attentionPulse 1.8s ease-out infinite !important;
+}
+
 /* ===== Cortina con el logo (al conectar y al reconectar) =====
    Tapa por completo el reproductor: evita que se vea la imagen previa
    que trae el embed de OK.ru (el partido de futbol). */
