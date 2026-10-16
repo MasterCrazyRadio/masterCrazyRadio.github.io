@@ -3254,6 +3254,12 @@ body.tv-open .tv-modal {
     border-radius: 20px;
     background: #000000;
     box-shadow: 0 0 40px rgba(125, 249, 255, 0.15);
+    /* Recorrido tipo reposo de logo (screensaver): se pasea por toda la
+       pantalla sin salirse, visitando las cuatro esquinas. */
+    --tx: calc((100vw - 100%) / 2 - 12px);
+    --ty: calc((100vh - 100%) / 2 - 12px);
+    will-change: transform;
+    animation: paseoPantalla 48s ease-in-out infinite;
 }
 
 /* Balon emoji (el clasico blanco y negro): se ve igual en todo telefono */
@@ -3268,6 +3274,15 @@ body.tv-open .tv-modal {
 @keyframes balonGira {
     0%, 100% { transform: rotate(-8deg) scale(1); }
     50%      { transform: rotate(8deg) scale(1.06); }
+}
+
+/* Paseo por las cuatro esquinas (estilo reposo de logo) */
+@keyframes paseoPantalla {
+    0%   { transform: translate(calc(-1 * var(--tx)), var(--ty)); }
+    25%  { transform: translate(calc(-1 * var(--tx)), calc(-1 * var(--ty))); }
+    50%  { transform: translate(var(--tx), calc(-1 * var(--ty))); }
+    75%  { transform: translate(var(--tx), var(--ty)); }
+    100% { transform: translate(calc(-1 * var(--tx)), var(--ty)); }
 }
 
 .tv-offline-title {
