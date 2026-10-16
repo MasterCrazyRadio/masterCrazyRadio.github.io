@@ -3253,8 +3253,8 @@ body.tv-open .tv-modal {
     aspect-ratio: 1 / 1;
     border-radius: 50%;
     object-fit: cover;
-    border: 3px solid rgba(160, 240, 0, 0.60);
-    box-shadow: 0 0 34px rgba(160, 240, 0, 0.45), 0 0 70px rgba(240, 200, 80, 0.20);
+    border: 3px solid rgba(125, 249, 255, 0.60);
+    box-shadow: 0 0 34px rgba(125, 249, 255, 0.45), 0 0 70px rgba(125, 249, 255, 0.22);
     animation: curtainBreath 60s ease-in-out infinite;
     transform-origin: center center;
 }
