@@ -3230,7 +3230,7 @@ body.tv-open .tv-modal {
     height: 100%;
     border-radius: 50%;
     background: #F2F2F2;
-    box-shadow: 0 0 12px rgba(160, 240, 0, 0.75);
+    box-shadow: 0 0 12px rgba(242, 242, 242, 0.85);
     transform: scale(0.35);
     animation: curtainDotGrow 60s ease-in-out infinite;
 }
