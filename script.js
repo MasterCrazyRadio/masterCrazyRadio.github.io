@@ -908,8 +908,11 @@ document.addEventListener('DOMContentLoaded', () => {
     let tvLastReload = 0;
     let tvIsPartido = false;
 
-    // === Aviso en pantalla con conteo 3-2-1 GO mientras reconecta ===
+    // === Cortina con el logo mientras conecta / reconecta ===
     let tvReconnectTimer = null;
+    let tvCurtainTimer = null;
+    const TV_CURTAIN_AFTER_LOAD_MS = 4000;  // se mantiene tras cargar el embed
+    const TV_CURTAIN_MAX_MS = 15000;        // tope si el embed nunca carga
 
     function setReconnectNumber(text, isGo) {
         const countEl = document.getElementById('tv-reconnect-count');
@@ -922,23 +925,14 @@ document.addEventListener('DOMContentLoaded', () => {
         countEl.style.animation = 'reconnectPop 0.6s ease-in-out';
     }
 
+    // Cortina con el logo: se muestra ANTES de que arranque la transmision y
+    // mientras OK.ru se esta reconectando. Tapa por completo la imagen previa
+    // que trae el embed (el partido de futbol) para que nunca se vea.
     function showReconnectCountdown() {
         const overlay = document.getElementById('tv-reconnect-overlay');
         if (!overlay) return;
         overlay.style.display = 'flex';
-        let n = 3;
-        setReconnectNumber(String(n), false);
-        clearInterval(tvReconnectTimer);
-        tvReconnectTimer = setInterval(function () {
-            n--;
-            if (n >= 1) {
-                setReconnectNumber(String(n), false);
-            } else {
-                setReconnectNumber('GO', true);
-                clearInterval(tvReconnectTimer);
-                tvReconnectTimer = null;
-            }
-        }, 1000);
+        if (tvReconnectTimer) { clearInterval(tvReconnectTimer); tvReconnectTimer = null; }
     }
 
     function hideReconnectCountdown() {
@@ -996,7 +990,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (tvIframeEl) {
         tvIframeEl.addEventListener('load', function () {
             if (tvIframeLoadTimer) { clearTimeout(tvIframeLoadTimer); tvIframeLoadTimer = null; }
-            hideReconnectCountdown();
+            // La cortina con el logo sigue unos segundos mas: el embed carga su
+            // pagina antes de que el video arranque (asi no se ve el partido).
+            if (tvCurtainTimer) clearTimeout(tvCurtainTimer);
+            tvCurtainTimer = setTimeout(hideReconnectCountdown, TV_CURTAIN_AFTER_LOAD_MS);
         });
     }
 
@@ -1008,8 +1005,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const iframe = document.getElementById('tv-iframe');
         const title = document.getElementById('channel-name');
 
-        // Al abrir de nuevo, ocultar cualquier aviso de reconexión anterior
-        hideReconnectCountdown();
+        // Cortina con el logo desde el inicio: tapa la imagen previa del embed
+        // de OK.ru mientras la transmision arranca.
+        showReconnectCountdown();
+        if (tvCurtainTimer) clearTimeout(tvCurtainTimer);
+        tvCurtainTimer = setTimeout(hideReconnectCountdown, TV_CURTAIN_MAX_MS);
 
         // Detener HLS/video anterior si estaba activo
         if (window.hls) {

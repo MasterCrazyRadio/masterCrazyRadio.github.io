@@ -3172,6 +3172,29 @@ body.tv-open .tv-modal {
     z-index: 30 !important;
 }
 
+/* ===== Cortina con el logo (al conectar y al reconectar) =====
+   Tapa por completo el reproductor: evita que se vea la imagen previa
+   que trae el embed de OK.ru (el partido de futbol). */
+.tv-reconnect-overlay {
+    background: #050510 !important;
+    opacity: 1 !important;
+    z-index: 45 !important;
+}
+
+.tv-curtain-logo {
+    width: min(62vw, 320px);
+    height: auto;
+    max-height: 58vh;
+    object-fit: contain;
+    filter: drop-shadow(0 0 28px rgba(168, 112, 224, 0.55));
+    animation: curtainPulse 2.4s ease-in-out infinite;
+}
+
+@keyframes curtainPulse {
+    0%, 100% { transform: scale(1); opacity: .94; }
+    50% { transform: scale(1.045); opacity: 1; }
+}
+
 /* ===== Controles que se ocultan a los 5 segundos =====
    Desaparecen solos y vuelven con un toque en la pantalla. */
 .tv-modal .close-modal,
