@@ -1614,6 +1614,10 @@ document.addEventListener('DOMContentLoaded', () => {
             if (pin === PIN_CORRECTO) {
                 guardarAcceso();
                 cerrarPin();
+                // Reforzar pantalla completa dentro del mismo toque del usuario
+                if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+                    requestFullscreenVertical(document.documentElement);
+                }
                 if (typeof window.playPartido === 'function') window.playPartido();
             } else {
                 if (errorEl) {
@@ -1637,19 +1641,37 @@ document.addEventListener('DOMContentLoaded', () => {
             input.addEventListener('focus', function () { input.select(); });
         });
 
+        function cancelarPin() {
+            cerrarPin();
+            const tv = document.getElementById('tv-modal');
+            const tvAbierto = !!tv && tv.style.display === 'flex';
+            if (tvAbierto) return;
+            // Si el usuario cancela el PIN, se sale de pantalla completa
+            try {
+                if (document.fullscreenElement && document.exitFullscreen) {
+                    document.exitFullscreen().catch(function () { });
+                } else if (document.webkitFullscreenElement && document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                }
+            } catch (e) { }
+        }
+
         if (submitBtn) submitBtn.addEventListener('click', validarPin);
-        if (closeBtn) closeBtn.addEventListener('click', cerrarPin);
+        if (closeBtn) closeBtn.addEventListener('click', cancelarPin);
         if (pinModal) {
-            pinModal.addEventListener('click', function (e) { if (e.target === pinModal) cerrarPin(); });
+            pinModal.addEventListener('click', function (e) { if (e.target === pinModal) cancelarPin(); });
         }
         document.addEventListener('keydown', function (e) {
-            if (e.key === 'Escape' && pinModal && pinModal.classList.contains('open')) cerrarPin();
+            if (e.key === 'Escape' && pinModal && pinModal.classList.contains('open')) cancelarPin();
         });
 
         // Punto de entrada de la tarjeta Master Crazy TV.
         // SIEMPRE definido: si la ventana de PIN no esta disponible, reproduce
         // directamente para no perder nunca la transmision.
         window.requestMctvAccess = function () {
+            // Pantalla limpia desde el primer toque: se pide la pantalla completa
+            // nativa de inmediato para que NO se vea la barra de direcciones.
+            requestFullscreenVertical(document.documentElement);
             if (tieneAcceso() || !pinModal) {
                 if (typeof window.playPartido === 'function') window.playPartido();
                 return;
