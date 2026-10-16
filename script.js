@@ -792,6 +792,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Navegación: el botón "atrás" del teléfono cierra el reproductor
     // y vuelve a la página de inicio en vez de dejar pantalla negra.
     let tvModalHistoryPushed = false;
+    // Momento en que se abrio el modal: evita que un fallo al pedir pantalla
+    // completa cierre la transmision al instante (rebote a la pagina principal).
+    let tvOpenedAtMs = 0;
     // La radio se pausa al abrir la TV y se reanuda sola al cerrarla
     let radioWasPlayingBeforeTv = false;
 
@@ -818,6 +821,7 @@ document.addEventListener('DOMContentLoaded', () => {
             tvModalHistoryPushed = true;
             try { history.pushState({ tvModal: true }, ''); } catch (e) { }
         }
+        tvOpenedAtMs = Date.now();
     }
 
     // Al pulsar "atrás": cerrar el modal en vez de salir de la página
@@ -835,7 +839,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // cerrar el modal para no dejar pantalla negra
     document.addEventListener('fullscreenchange', function () {
         const modal = document.getElementById('tv-modal');
-        if (modal && modal.style.display === 'flex' && !document.fullscreenElement && !document.webkitFullscreenElement) {
+        if (!modal || modal.style.display !== 'flex') return;
+        // Margen de gracia: si el equipo rechaza o sale de pantalla completa
+        // JUSTO al abrir, no se cierra la transmision (evita el rebote).
+        if (Date.now() - tvOpenedAtMs < 2500) return;
+        if (!document.fullscreenElement && !document.webkitFullscreenElement) {
             closeTvModal();
         }
     });
@@ -1737,10 +1745,11 @@ document.addEventListener('DOMContentLoaded', () => {
         window.startTvControlsTimer = mostrarControles;
     })();
 
-    // ===== Salida sin boton "cerrar": boton/gesto ATRAS del telefono =====
-    // Al abrir la transmision se agrega una entrada al historial, de modo que
-    // ATRAS cierra el reproductor en vez de salir del sitio. En computador la
-    // tecla Escape tambien cierra.
+    // ===== Salida sin boton "cerrar" =====
+    // El boton/gesto ATRAS ya lo maneja el codigo original del sitio
+    // (tvModalHistoryPushed + popstate). Aqui solo se agrega la tecla Escape
+    // para computador. NO se duplica el manejo del historial: hacerlo hacia
+    // que el navegador rebotara de vuelta a la pagina principal.
     (function () {
         let pushed = false;
         function getModal() { return document.getElementById('tv-modal'); }
@@ -1751,23 +1760,7 @@ document.addEventListener('DOMContentLoaded', () => {
         function cerrar() {
             if (typeof window.closeTvModal === 'function') window.closeTvModal();
         }
-        const modal = getModal();
-        if (modal && window.MutationObserver) {
-            new MutationObserver(function () {
-                if (isOpen() && !pushed) {
-                    pushed = true;
-                    try { history.pushState({ tvModal: 1 }, ''); } catch (e) { }
-                } else if (!isOpen()) {
-                    pushed = false;
-                }
-            }).observe(modal, { attributes: true, attributeFilter: ['style'] });
-        }
-        window.addEventListener('popstate', function () {
-            if (isOpen()) {
-                pushed = false;
-                cerrar();
-            }
-        });
+        // El historial NO se toca aqui (ver nota de arriba)
         document.addEventListener('keydown', function (e) {
             if (e.key === 'Escape' && isOpen()) cerrar();
         });

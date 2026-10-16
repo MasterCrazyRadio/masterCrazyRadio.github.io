@@ -1,7 +1,7 @@
 /* Service Worker - Master Crazy Radio PWA
    Estrategia: cache-first para la app shell (carga instantánea y offline),
    network-first para datos dinámicos (news.json, status.json). */
-const CACHE_NAME = 'master-crazy-radio-v10';
+const CACHE_NAME = 'master-crazy-radio-v11';
 const APP_SHELL = [
   './',
   './index.html',
