@@ -728,21 +728,11 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!modal || modal.style.display !== 'flex') return;
         const landscape = window.innerWidth > window.innerHeight;
         modal.classList.toggle('is-landscape', landscape);
-        // Girar el telefono: al pasar a horizontal la transmision se expande
-        // sola a pantalla completa (reemplaza al antiguo boton "ampliar").
-        if (landscape) {
-            if (!document.fullscreenElement && !document.webkitFullscreenElement) {
-                requestFullscreenVertical(modal);
-            }
-        } else {
-            // Al volver a vertical se sale de pantalla completa
-            try {
-                if (document.fullscreenElement && document.exitFullscreen) {
-                    document.exitFullscreen().catch(function () { });
-                } else if (document.webkitFullscreenElement && document.webkitExitFullscreen) {
-                    document.webkitExitFullscreen();
-                }
-            } catch (e) { }
+        // La pantalla completa se mantiene en CUALQUIER orientación: vertical u
+        // horizontal se comportan igual. Si se perdió (p. ej. al girar), se
+        // vuelve a pedir.
+        if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+            requestFullscreenVertical(document.documentElement);
         }
     }
 
