@@ -1,7 +1,7 @@
 /* Service Worker - Master Crazy Radio PWA
-   Estrategia: cache-first para la app shell (carga instantánea y offline),
-   network-first para datos dinámicos (news.json, status.json). */
-const CACHE_NAME = 'master-crazy-radio-v14';
+   Estrategia: red primero para TODO lo propio del sitio (asi los cambios llegan
+   al instante) con la cache como respaldo cuando no hay conexion. */
+const CACHE_NAME = 'master-crazy-radio-v15';
 const APP_SHELL = [
   './',
   './index.html',
@@ -60,10 +60,11 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // App shell y assets: red primero (los cambios llegan al instante),
-  // caché como respaldo cuando no hay conexión.
+  // App shell y assets: red primero, SIN cache HTTP para los archivos de
+  // codigo (asi los cambios llegan SIEMPRE), cache como respaldo sin conexion.
+  const esCodigo = /\.(html|js|css|json)$/i.test(url.pathname) || url.pathname === '/' || url.pathname.slice(-1) === '/';
   event.respondWith(
-    fetch(request)
+    fetch(request, esCodigo ? { cache: 'no-store' } : undefined)
       .then((response) => {
         if (response && response.status === 200) {
           const copy = response.clone();
@@ -71,6 +72,6 @@ self.addEventListener('fetch', (event) => {
         }
         return response;
       })
-      .catch(() => cached)
+      .catch(() => caches.match(request))
   );
 });

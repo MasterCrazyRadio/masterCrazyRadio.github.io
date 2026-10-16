@@ -45,11 +45,23 @@ if ('serviceWorker' in navigator) {
     window.addEventListener('load', function () {
         navigator.serviceWorker.register('sw.js')
             .then(function (reg) {
-                console.log('Service Worker registrado:', reg.scope);
+                // Buscar version nueva en cada carga y cada 30 minutos
+                try { reg.update(); } catch (e) { }
+                setInterval(function () { try { reg.update(); } catch (e) { } }, 30 * 60 * 1000);
             })
             .catch(function (err) {
                 console.error('Error registrando Service Worker:', err);
             });
+    });
+
+    // Cuando la version nueva toma el control, recargar UNA sola vez para que
+    // el usuario reciba los cambios sin hacer nada (y sin bucles).
+    navigator.serviceWorker.addEventListener('controllerchange', function () {
+        try {
+            if (sessionStorage.getItem('***') === '1') return;
+            sessionStorage.setItem('***', '1');
+            window.location.reload();
+        } catch (e) { }
     });
 }
 
@@ -1619,15 +1631,9 @@ document.addEventListener('DOMContentLoaded', () => {
             if (pin === PIN_CORRECTO) {
                 guardarAcceso();
                 pinValido = true;
-                if (auto) {
-                    if (errorEl) {
-                        errorEl.style.color = '#7DF9FF';
-                        errorEl.textContent = 'PIN correcto. Toca “Ver transmisi\u00f3n”.';
-                        errorEl.style.display = 'block';
-                    }
-                    if (submitBtn) submitBtn.classList.add('pin-listo');
-                    return;
-                }
+                // Abrir de inmediato apenas se completa el PIN (como pidio el
+                // usuario). abrirTransmision cierra el teclado y luego pide la
+                // pantalla completa.
                 abrirTransmision();
             } else {
                 pinValido = false;
