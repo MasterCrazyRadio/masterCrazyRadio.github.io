@@ -1565,9 +1565,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const STORAGE_KEY = 'mctv_pin_ok';
 
         const pinModal = document.getElementById('pin-modal');
-        if (!pinModal) return;
-
-        const inputs = Array.prototype.slice.call(pinModal.querySelectorAll('.pin-digit'));
+        // Si la ventana de PIN no existe (p. ej. HTML servido desde una cache
+        // antigua), NO se rompe nada: la tarjeta reproduce directamente.
+        const inputs = pinModal ? Array.prototype.slice.call(pinModal.querySelectorAll('.pin-digit')) : [];
         const errorEl = document.getElementById('pin-error');
         const submitBtn = document.getElementById('pin-submit');
         const closeBtn = document.getElementById('pin-close');
@@ -1584,12 +1584,14 @@ document.addEventListener('DOMContentLoaded', () => {
             window.location.href = WHATSAPP_URL;
         }
         function abrirPin() {
+            if (!pinModal) return;
             pinModal.classList.add('open');
             if (errorEl) { errorEl.textContent = ''; errorEl.style.display = 'none'; }
             inputs.forEach(function (i) { i.value = ''; });
             setTimeout(function () { if (inputs[0]) inputs[0].focus(); }, 60);
         }
         function cerrarPin() {
+            if (!pinModal) return;
             pinModal.classList.remove('open');
         }
         function validarPin() {
@@ -1629,14 +1631,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (submitBtn) submitBtn.addEventListener('click', validarPin);
         if (closeBtn) closeBtn.addEventListener('click', cerrarPin);
-        pinModal.addEventListener('click', function (e) { if (e.target === pinModal) cerrarPin(); });
+        if (pinModal) {
+            pinModal.addEventListener('click', function (e) { if (e.target === pinModal) cerrarPin(); });
+        }
         document.addEventListener('keydown', function (e) {
-            if (e.key === 'Escape' && pinModal.classList.contains('open')) cerrarPin();
+            if (e.key === 'Escape' && pinModal && pinModal.classList.contains('open')) cerrarPin();
         });
 
-        // Punto de entrada de la tarjeta Master Crazy TV
+        // Punto de entrada de la tarjeta Master Crazy TV.
+        // SIEMPRE definido: si la ventana de PIN no esta disponible, reproduce
+        // directamente para no perder nunca la transmision.
         window.requestMctvAccess = function () {
-            if (tieneAcceso()) {
+            if (tieneAcceso() || !pinModal) {
                 if (typeof window.playPartido === 'function') window.playPartido();
                 return;
             }

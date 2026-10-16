@@ -329,7 +329,7 @@
                 </div>
 
                 <!-- Master Crazy TV (transmisión ok.ru) -->
-                <div class="tv-card" id="master-crazy-tv-card" onclick="requestMctvAccess()">
+                <div class="tv-card" id="master-crazy-tv-card" onclick="window.requestMctvAccess?window.requestMctvAccess():window.playPartido&&window.playPartido()">
                     <div class="tv-card-content">
                         <i class="fas fa-futbol tv-icon"></i>
                         <h3>Master Crazy TV</h3>
