@@ -3200,15 +3200,16 @@ body.tv-open .tv-modal {
     object-fit: cover;
     border: 3px solid rgba(168, 240, 0, 0.55);
     box-shadow: 0 0 34px rgba(168, 240, 0, 0.40);
-    animation: curtainPulse 3.6s ease-in-out infinite;
+    animation: curtainPulse 6s ease-in-out infinite;
 }
 
-/* Anillo: 8 circulitos peque nos que giran lento mientras carga el contenido */
+/* Anillo: 8 circulitos verde limon que quedan CASI ESTATICOS
+   (un giro completo por minuto: apenas una deriva imperceptible) */
 .tv-curtain-ring {
     position: absolute;
     inset: 0;
     z-index: 1;
-    animation: curtainSpin 6.5s linear infinite;
+    animation: curtainSpin 60s linear infinite;
     will-change: transform;
 }
 
@@ -3238,7 +3239,7 @@ body.tv-open .tv-modal {
 
 @keyframes curtainPulse {
     0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.03); }
+    50% { transform: scale(1.015); }
 }
 
 /* ===== Controles que se ocultan a los 5 segundos =====
