@@ -3227,6 +3227,50 @@ body.tv-open .tv-modal {
     50%      { opacity: .35; }
 }
 
+/* ===== Aviso "FUERA DE LA CANCHA" (OBS apagado) =====
+   Pantalla negra total con el mensaje para los usuarios. */
+.tv-offline {
+    position: fixed;
+    inset: 0;
+    z-index: 10050;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: #000000;
+    text-align: center;
+}
+
+.tv-offline-inner {
+    max-width: 900px;
+}
+
+.tv-offline-title {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 900;
+    font-size: clamp(1.6rem, 7vw, 3.4rem);
+    line-height: 1.15;
+    letter-spacing: 2px;
+    color: #7DF9FF;
+    text-shadow: 0 0 22px rgba(125, 249, 255, 0.55), 0 0 60px rgba(125, 249, 255, 0.25);
+    animation: offlinePulse 3.4s ease-in-out infinite;
+}
+
+.tv-offline-sub {
+    margin-top: 18px;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700;
+    font-size: clamp(1.05rem, 4.4vw, 2rem);
+    letter-spacing: 3px;
+    color: #ffffff;
+    text-shadow: 0 0 18px rgba(255, 255, 255, 0.35);
+}
+
+@keyframes offlinePulse {
+    0%, 100% { opacity: 1; }
+    50%      { opacity: .55; }
+}
+
 /* ===== Cortina con el logo (al conectar y al reconectar) =====
    Tapa por completo el reproductor: evita que se vea la imagen previa
    que trae el embed de OK.ru (el partido de futbol). */

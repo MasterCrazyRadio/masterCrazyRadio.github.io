@@ -1690,6 +1690,49 @@ document.addEventListener('DOMContentLoaded', () => {
     // Vista horizontal automatica (igual que Master Crazy TV): intenta bloquear
     // la pantalla en horizontal y, si el equipo no lo permite, gira el
     // contenido con la rotacion por CSS.
+    // ===== Aviso "FUERA DE LA CANCHA" cuando no hay transmision (OBS apagado) =====
+    window.consultarEstadoEmision = function (cb) {
+        fetch('status.json?ts=' + Date.now(), { cache: 'no-store' })
+            .then(function (r) { return r.json(); })
+            .then(function (data) { cb(!!(data && data.online === false), data); })
+            .catch(function () { cb(false, null); }); // sin archivo: se asume en vivo
+    };
+
+    window.mostrarAvisoOffline = function () {
+        const modal = document.getElementById('tv-modal');
+        const aviso = document.getElementById('tv-offline');
+        const iframe = document.getElementById('tv-iframe');
+        const video = document.getElementById('tv-player');
+        try { if (iframe) iframe.src = ''; } catch (e) { }
+        try { if (video) { video.pause(); video.src = ''; } } catch (e) { }
+        if (window.hls) { try { window.hls.destroy(); } catch (e) { } window.hls = null; }
+        stopTvWatchdog();
+        tvIsPartido = false;
+        hideReconnectCountdown();
+        if (aviso) aviso.style.display = 'flex';
+        if (modal) {
+            modal.style.display = 'flex';
+            modal.classList.add('deep-link-mode');
+            document.body.classList.add('tv-open');
+        }
+    };
+
+    window.ocultarAvisoOffline = function () {
+        const aviso = document.getElementById('tv-offline');
+        if (aviso) aviso.style.display = 'none';
+    };
+
+    // Mientras el usuario ve TV: si la transmision se cae, aparece el aviso
+    setInterval(function () {
+        const modal = document.getElementById('tv-modal');
+        if (!modal || modal.style.display !== 'flex') return;
+        window.consultarEstadoEmision(function (offline) {
+            const aviso = document.getElementById('tv-offline');
+            const visible = aviso && aviso.style.display !== 'none';
+            if (offline && !visible) window.mostrarAvisoOffline();
+        });
+    }, 45000);
+
     function vistaHorizontalAutomatica() {
         try {
             if (typeof applyForcedLandscape === 'function') applyForcedLandscape();
@@ -1846,15 +1889,28 @@ document.addEventListener('DOMContentLoaded', () => {
         // SIEMPRE definido: si la ventana de PIN no esta disponible, reproduce
         // directamente para no perder nunca la transmision.
         window.requestMctvAccess = function () {
-            // NO se pide pantalla completa aqui: si se activa y luego se abre el
-            // teclado del PIN, el navegador sale de pantalla completa y ya no la
-            // vuelve a conceder. Se pide al abrir la transmision, con un toque real.
+            // Primero se comprueba si hay transmision: si no la hay (OBS
+            // apagado), se muestra el aviso de pantalla negra.
+            if (typeof window.consultarEstadoEmision === 'function') {
+                window.consultarEstadoEmision(function (offline) {
+                    if (offline) { window.mostrarAvisoOffline(); return; }
+                    accesoOPin();
+                });
+                return;
+            }
+            accesoOPin();
+        };
+
+        // NO se pide pantalla completa aqui: si se activa y luego se abre el
+        // teclado del PIN, el navegador sale de pantalla completa y ya no la
+        // vuelve a conceder. Se pide al abrir la transmision, con un toque real.
+        function accesoOPin() {
             if (tieneAcceso() || !pinModal) {
                 if (typeof window.playPartido === 'function') window.playPartido();
                 return;
             }
             abrirPin();
-        };
+        }
     })();
 
     // ===== Ajuste de imagen del reproductor de TV (Llenar / Completo) =====
