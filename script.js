@@ -693,6 +693,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         openTvModal(modal);
         modal.classList.remove('partido-mode');
+        // Mismos ajustes que Master Crazy TV: pantalla completa limpia y la
+        // imagen llenando la pantalla (sin recortes ni barras).
+        modal.classList.add('deep-link-mode');
+        if (typeof applyTvFitMode === 'function') applyTvFitMode();
         // Pantalla completa nativa en cualquier dispositivo
         requestFullscreenVertical(modal);
         title.innerHTML = channelId.toUpperCase() + " TV <br><span style='font-size:0.8rem; color:#aaa;'>Cargando stream...</span>";
@@ -1166,6 +1170,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (iframe) iframe.src = 'https://www.youtube.com/embed/vGNglKWqwcQ?autoplay=1&rel=0';
         openTvModal(modal);
         modal.classList.remove('partido-mode');
+        // Mismos ajustes que Master Crazy TV: pantalla completa limpia y la
+        // imagen llenando la pantalla (sin recortes ni barras).
+        modal.classList.add('deep-link-mode');
+        if (typeof applyTvFitMode === 'function') applyTvFitMode();
         title.innerHTML = "Quiero <span style='color:#7DF9FF;'>TV</span> <br><span style='font-size:0.8rem; color:#aaa;'>Señal en vivo</span>";
 
         // Pantalla completa nativa en cualquier dispositivo
