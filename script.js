@@ -577,9 +577,21 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!modal || modal.style.display !== 'flex') return;
         const landscape = window.innerWidth > window.innerHeight;
         modal.classList.toggle('is-landscape', landscape);
-        // Si aún no está en fullscreen nativo, pedirlo (para llenar la pantalla)
-        if (landscape && !document.fullscreenElement && !document.webkitFullscreenElement) {
-            requestFullscreenVertical(modal);
+        // Girar el telefono: al pasar a horizontal la transmision se expande
+        // sola a pantalla completa (reemplaza al antiguo boton "ampliar").
+        if (landscape) {
+            if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+                requestFullscreenVertical(modal);
+            }
+        } else {
+            // Al volver a vertical se sale de pantalla completa
+            try {
+                if (document.fullscreenElement && document.exitFullscreen) {
+                    document.exitFullscreen().catch(function () { });
+                } else if (document.webkitFullscreenElement && document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                }
+            } catch (e) { }
         }
     }
 
@@ -1598,6 +1610,42 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         window.startTvControlsTimer = mostrarControles;
+    })();
+
+    // ===== Salida sin boton "cerrar": boton/gesto ATRAS del telefono =====
+    // Al abrir la transmision se agrega una entrada al historial, de modo que
+    // ATRAS cierra el reproductor en vez de salir del sitio. En computador la
+    // tecla Escape tambien cierra.
+    (function () {
+        let pushed = false;
+        function getModal() { return document.getElementById('tv-modal'); }
+        function isOpen() {
+            const m = getModal();
+            return !!m && m.style.display === 'flex';
+        }
+        function cerrar() {
+            if (typeof window.closeTvModal === 'function') window.closeTvModal();
+        }
+        const modal = getModal();
+        if (modal && window.MutationObserver) {
+            new MutationObserver(function () {
+                if (isOpen() && !pushed) {
+                    pushed = true;
+                    try { history.pushState({ tvModal: 1 }, ''); } catch (e) { }
+                } else if (!isOpen()) {
+                    pushed = false;
+                }
+            }).observe(modal, { attributes: true, attributeFilter: ['style'] });
+        }
+        window.addEventListener('popstate', function () {
+            if (isOpen()) {
+                pushed = false;
+                cerrar();
+            }
+        });
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && isOpen()) cerrar();
+        });
     })();
 
     window.addEventListener('hashchange', handleMctvDeepLink);
