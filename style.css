@@ -3194,8 +3194,8 @@ body.tv-open .tv-modal {
 .tv-curtain-logo {
     position: relative;
     z-index: 2;
-    width: 76%;
-    height: 76%;
+    width: 68%;
+    height: 68%;
     border-radius: 50%;
     object-fit: cover;
     border: 3px solid rgba(160, 240, 0, 0.60);
@@ -3216,8 +3216,8 @@ body.tv-open .tv-modal {
 
 .tv-curtain-ring span {
     position: absolute;
-    width: 12px;
-    height: 12px;
+    width: 16px;
+    height: 16px;
     transform: translate(-50%, -50%);
 }
 
@@ -3240,14 +3240,14 @@ body.tv-open .tv-modal {
     50%      { transform: scale(1.25); opacity: 1; }
 }
 
-.tv-curtain-ring span:nth-child(1) { top: 2%;  left: 50%; opacity: 1; }
-.tv-curtain-ring span:nth-child(2) { top: 15%; left: 85%; opacity: .85; }
-.tv-curtain-ring span:nth-child(3) { top: 50%; left: 98%; opacity: .7; }
-.tv-curtain-ring span:nth-child(4) { top: 85%; left: 85%; opacity: .55; }
-.tv-curtain-ring span:nth-child(5) { top: 98%; left: 50%; opacity: .45; }
-.tv-curtain-ring span:nth-child(6) { top: 85%; left: 15%; opacity: .55; }
-.tv-curtain-ring span:nth-child(7) { top: 50%; left: 2%;  opacity: .7; }
-.tv-curtain-ring span:nth-child(8) { top: 15%; left: 15%; opacity: .85; }
+.tv-curtain-ring span:nth-child(1) { top: 6%;    left: 50%;   opacity: 1; }
+.tv-curtain-ring span:nth-child(2) { top: 18.9%; left: 81.1%; opacity: .85; }
+.tv-curtain-ring span:nth-child(3) { top: 50%;   left: 94%;   opacity: .7; }
+.tv-curtain-ring span:nth-child(4) { top: 81.1%; left: 81.1%; opacity: .55; }
+.tv-curtain-ring span:nth-child(5) { top: 94%;   left: 50%;   opacity: .45; }
+.tv-curtain-ring span:nth-child(6) { top: 81.1%; left: 18.9%; opacity: .55; }
+.tv-curtain-ring span:nth-child(7) { top: 50%;   left: 6%;    opacity: .7; }
+.tv-curtain-ring span:nth-child(8) { top: 18.9%; left: 18.9%; opacity: .85; }
 
 @keyframes curtainSpin {
     from { transform: rotate(0deg); }
