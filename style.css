@@ -3183,6 +3183,50 @@ body.tv-open .tv-modal {
     animation: attentionPulse 1.8s ease-out infinite !important;
 }
 
+/* ===== Barra de carga estilo PlayStation (reemplaza los circulitos) =====
+   Una linea que se va llenando mientras el contenido carga. */
+.tv-loading {
+    position: relative;
+    width: min(62vw, 260px);
+    height: 9px;
+    margin-top: 26px;
+    border: 2px solid rgba(242, 242, 242, 0.55);
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.06);
+    overflow: hidden;
+    box-shadow: 0 0 14px rgba(242, 242, 242, 0.12);
+}
+
+.tv-loading-bar {
+    width: 0%;
+    height: 100%;
+    background: #F2F2F2;
+    box-shadow: 0 0 14px rgba(242, 242, 242, 0.85);
+    animation: psLoad 2.8s ease-in-out infinite;
+}
+
+@keyframes psLoad {
+    0%   { width: 0%; }
+    75%  { width: 100%; }
+    100% { width: 100%; }
+}
+
+.tv-loading-text {
+    margin-top: 12px;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: #F2F2F2;
+    opacity: .9;
+    animation: psBlink 1.6s steps(2, end) infinite;
+}
+
+@keyframes psBlink {
+    0%, 100% { opacity: .9; }
+    50%      { opacity: .35; }
+}
+
 /* ===== Cortina con el logo (al conectar y al reconectar) =====
    Tapa por completo el reproductor: evita que se vea la imagen previa
    que trae el embed de OK.ru (el partido de futbol). */
@@ -3195,9 +3239,8 @@ body.tv-open .tv-modal {
 /* Caja de la cortina: logo circular + anillo de circulitos girando */
 .tv-curtain-box {
     position: relative;
-    width: min(62vw, 300px);
-    aspect-ratio: 1 / 1;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
 }
@@ -3205,8 +3248,9 @@ body.tv-open .tv-modal {
 .tv-curtain-logo {
     position: relative;
     z-index: 2;
-    width: 68%;
-    height: 68%;
+    width: min(46vw, 210px);
+    height: auto;
+    aspect-ratio: 1 / 1;
     border-radius: 50%;
     object-fit: cover;
     border: 3px solid rgba(160, 240, 0, 0.60);
