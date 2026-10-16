@@ -3229,8 +3229,8 @@ body.tv-open .tv-modal {
     width: 100%;
     height: 100%;
     border-radius: 50%;
-    background: #A0F000;
-    box-shadow: 0 0 12px rgba(160, 240, 0, 0.90);
+    background: #F2F2F2;
+    box-shadow: 0 0 12px rgba(160, 240, 0, 0.75);
     transform: scale(0.35);
     animation: curtainDotGrow 60s ease-in-out infinite;
 }
