@@ -1745,29 +1745,48 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // Revision del estado con ritmo adaptativo:
-    //  - Con el aviso visible: cada 5 s (para que desaparezca AL INSTANTE cuando
-    //    usted arranca la transmision en OBS).
-    //  - Sin aviso: cada 20 s (para detectar si la transmision se cae).
+    //  - Con el aviso visible: cada 3 s (para que desaparezca AL INSTANTE).
+    //  - Sin aviso: cada 20 s.
+    function revisarEstadoYActuar() {
+        window.consultarEstadoEmision(function (offline) {
+            const aviso = document.getElementById('tv-offline');
+            const v = !!aviso && aviso.style.display !== 'none';
+            const modal = document.getElementById('tv-modal');
+            const abierto = !!modal && modal.style.display === 'flex';
+            if (!offline && v) {
+                // Volvio la transmision: quitar el aviso y reconectar
+                window.ocultarAvisoOffline();
+                if (typeof window.playPartido === 'function' && tvCanalActual === 'partido') {
+                    window.playPartido();
+                }
+            } else if (offline && abierto && tvCanalActual === 'partido' && !v) {
+                window.mostrarAvisoOffline();
+            }
+        });
+    }
+
     (function vigilarEstadoEmision() {
         const modal = document.getElementById('tv-modal');
         const aviso = document.getElementById('tv-offline');
         const avisoVisible = !!aviso && aviso.style.display !== 'none';
         const tvAbierto = !!modal && modal.style.display === 'flex';
 
-        if (tvAbierto || avisoVisible) {
-            window.consultarEstadoEmision(function (offline) {
-                const v = !!aviso && aviso.style.display !== 'none';
-                if (offline && tvAbierto && tvCanalActual === 'partido' && !v) {
-                    window.mostrarAvisoOffline();
-                } else if (!offline && v) {
-                    // Volvio la transmision: quitar el aviso y reconectar
-                    window.ocultarAvisoOffline();
-                    if (typeof window.playPartido === 'function') window.playPartido();
-                }
-            });
-        }
-        setTimeout(vigilarEstadoEmision, avisoVisible ? 5000 : 20000);
+        if (tvAbierto || avisoVisible) revisarEstadoYActuar();
+        setTimeout(vigilarEstadoEmision, avisoVisible ? 3000 : 20000);
     })();
+
+    // IMPORTANTE: los navegadores CONGELAN los temporizadores cuando la pestaña
+    // queda en segundo plano (por eso el aviso podia quedarse pegado). Al volver
+    // a la pagina se comprueba el estado de inmediato.
+    ['visibilitychange', 'focus', 'pageshow', 'online'].forEach(function (ev) {
+        window.addEventListener(ev, function () {
+            if (ev === 'visibilitychange' && document.hidden) return;
+            revisarEstadoYActuar();
+        });
+    });
+
+    // Red de seguridad: cada 10 s, pase lo que pase
+    setInterval(revisarEstadoYActuar, 10000);
 
     function vistaHorizontalAutomatica() {
         try {
