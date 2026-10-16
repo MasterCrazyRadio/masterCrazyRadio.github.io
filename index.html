@@ -398,7 +398,13 @@
                     </div>
                     <!-- Cortina con el logo: tapa el reproductor al conectar y al reconectar -->
                     <div id="tv-reconnect-overlay" class="tv-reconnect-overlay" style="display:none;">
-                        <img id="tv-curtain-logo" class="tv-curtain-logo" src="logo-transmision.jpg" alt="Master Crazy TV">
+                        <div class="tv-curtain-box">
+                            <div class="tv-curtain-ring" aria-hidden="true">
+                                <span></span><span></span><span></span><span></span>
+                                <span></span><span></span><span></span><span></span>
+                            </div>
+                            <img id="tv-curtain-logo" class="tv-curtain-logo" src="logo-transmision.jpg" alt="Master Crazy TV">
+                        </div>
                     </div>
                     <!-- Overlay de activación de audio (autoplay bloqueado por el navegador) -->
                     <div id="tv-audio-overlay" class="tv-audio-overlay" style="display:none;" onclick="activateTvAudio()">
