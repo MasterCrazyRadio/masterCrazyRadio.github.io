@@ -3193,44 +3193,10 @@ body.tv-open .tv-modal {
     display: none !important;
 }
 
-/* ===== ANDROID TV / SMART TV: vista MAS PEQUENA Y ORDENADA =====
-   Se reduce la pagina un 15% y se centra el contenido. NO afecta a los
-   reproductores ni a las ventanas emergentes (esas siguen a pantalla completa). */
-.is-tv body > header,
-.is-tv main > section,
-.is-tv body > footer {
-    zoom: 0.85;
-}
-
 /* El reproductor conserva su tamano natural: SIN zoom ni ampliaciones */
 .is-tv #tv-modal,
 .is-tv #tv-modal .modal-content {
     zoom: 1 !important;
-}
-
-.is-tv main {
-    max-width: 1600px;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.is-tv .section-title {
-    font-size: 1.65rem;
-    margin-bottom: 18px;
-}
-
-.is-tv .hero-logo-wrap {
-    width: 104px;
-    height: 104px;
-}
-
-.is-tv .hero-section {
-    padding-top: 14px;
-    padding-bottom: 10px;
-}
-
-.is-tv .tv-grid {
-    gap: 18px;
 }
 
 /* Salida de emergencia: SOLO en autorradios Android (se activa con la clase
