@@ -3193,6 +3193,40 @@ body.tv-open .tv-modal {
     display: none !important;
 }
 
+/* ===== ANDROID TV / SMART TV: vista MAS PEQUENA Y ORDENADA =====
+   Se reduce la pagina un 15% y se centra el contenido. NO afecta a los
+   reproductores ni a las ventanas emergentes (esas siguen a pantalla completa). */
+.is-tv body > header,
+.is-tv body > main,
+.is-tv body > footer {
+    zoom: 0.85;
+}
+
+.is-tv main {
+    max-width: 1600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.is-tv .section-title {
+    font-size: 1.65rem;
+    margin-bottom: 18px;
+}
+
+.is-tv .hero-logo-wrap {
+    width: 104px;
+    height: 104px;
+}
+
+.is-tv .hero-section {
+    padding-top: 14px;
+    padding-bottom: 10px;
+}
+
+.is-tv .tv-grid {
+    gap: 18px;
+}
+
 /* ===== Barra de carga estilo PlayStation (reemplaza los circulitos) =====
    Una linea que se va llenando mientras el contenido carga. */
 .tv-loading {
