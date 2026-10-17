@@ -3197,9 +3197,15 @@ body.tv-open .tv-modal {
    Se reduce la pagina un 15% y se centra el contenido. NO afecta a los
    reproductores ni a las ventanas emergentes (esas siguen a pantalla completa). */
 .is-tv body > header,
-.is-tv body > main,
+.is-tv main > section,
 .is-tv body > footer {
     zoom: 0.85;
+}
+
+/* El reproductor de TV NUNCA debe encogerse: queda a pantalla completa */
+.is-tv #tv-modal,
+.is-tv #tv-modal .modal-content {
+    zoom: 1.1765 !important;
 }
 
 .is-tv main {
@@ -3227,21 +3233,21 @@ body.tv-open .tv-modal {
     gap: 18px;
 }
 
-/* Salida de emergencia si el equipo no reproduce el embed (autorradios viejos) */
+/* Salida de emergencia si el equipo no reproduce el embed (discreta, abajo a la izquierda) */
 .tv-fallback {
     position: fixed;
-    left: 50%;
-    bottom: 14px;
-    transform: translateX(-50%);
+    left: 12px;
+    bottom: 12px;
     z-index: 9999;
-    padding: 8px 14px;
+    padding: 5px 10px;
     border-radius: 999px;
-    background: rgba(0, 0, 0, 0.6);
-    border: 1px solid rgba(125, 249, 255, 0.5);
-    color: #7DF9FF;
-    font-size: 0.8rem;
+    background: rgba(0, 0, 0, 0.45);
+    border: 1px solid rgba(125, 249, 255, 0.28);
+    color: rgba(125, 249, 255, 0.75);
+    font-size: 0.68rem;
     text-decoration: none;
     white-space: nowrap;
+    opacity: 0.75;
     transition: opacity .35s ease;
 }
 
