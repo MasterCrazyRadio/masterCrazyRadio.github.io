@@ -3233,8 +3233,10 @@ body.tv-open .tv-modal {
     gap: 18px;
 }
 
-/* Salida de emergencia si el equipo no reproduce el embed (discreta, abajo a la izquierda) */
+/* Salida de emergencia: SOLO en autorradios Android (se activa con la clase
+   .es-autorradio que agrega el JS segun el equipo). En el resto NO se muestra. */
 .tv-fallback {
+    display: none;
     position: fixed;
     left: 12px;
     bottom: 12px;
@@ -3249,6 +3251,10 @@ body.tv-open .tv-modal {
     white-space: nowrap;
     opacity: 0.75;
     transition: opacity .35s ease;
+}
+
+.es-autorradio .tv-fallback {
+    display: inline-block !important;
 }
 
 .tv-fallback:hover { background: rgba(0, 0, 0, 0.8); }

@@ -1886,6 +1886,23 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('resize', function () { setTimeout(ajustarIframeCover, 250); });
     window.addEventListener('orientationchange', function () { setTimeout(ajustarIframeCover, 350); });
 
+    // El aviso "¿Pantalla negra? Abrir aquí" se muestra SOLO en autorradios
+    // Android (pantalla ancha, Android, sin identificarse como TV ni como movil).
+    (function detectarAutorradio() {
+        try {
+            const ua = navigator.userAgent || '';
+            const esAndroid = /Android/i.test(ua);
+            const esMovil = /Mobile/i.test(ua);
+            const esTV = document.documentElement.classList.contains('is-tv') ||
+                (document.body && document.body.classList.contains('is-tv'));
+            const ancho = window.innerWidth || 0;
+            const horizontal = ancho > (window.innerHeight || 0);
+            if (esAndroid && !esMovil && !esTV && horizontal && ancho >= 800) {
+                document.documentElement.classList.add('es-autorradio');
+            }
+        } catch (e) { }
+    })();
+
     function vistaHorizontalAutomatica() {
         try {
             if (typeof applyForcedLandscape === 'function') applyForcedLandscape();
