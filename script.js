@@ -1705,15 +1705,34 @@ document.addEventListener('DOMContentLoaded', () => {
     // Fuente RAPIDA: GitHub raw se actualiza en segundos (sin esperar el
     // rebuild de GitHub Pages). Si falla, se usa el archivo local del sitio.
     const STATUS_RAW = 'https://raw.githubusercontent.com/MasterCrazyRadio/masterCrazyRadio.github.io/ia/status.json';
+    // CDN rapido (jsDelivr). El vigilante lo purga al instante tras cada cambio.
+    const STATUS_CDN = 'https://cdn.jsdelivr.net/gh/MasterCrazyRadio/masterCrazyRadio.github.io@ia/status.json';
     window.consultarEstadoEmision = function (cb) {
         const ts = Date.now();
-        fetch(STATUS_RAW + '?ts=' + ts, { cache: 'no-store' })
-            .then(function (r) { if (!r.ok) throw new Error('bad'); return r.json(); })
-            .catch(function () {
-                return fetch('status.json?ts=' + ts, { cache: 'no-store' }).then(function (r) { return r.json(); });
-            })
-            .then(function (data) { cb(!!(data && data.online === false), data); })
-            .catch(function () { cb(false, null); }); // sin datos: se asume en vivo
+        function pedir(url) {
+            return fetch(url, { cache: 'no-store' }).then(function (r) {
+                if (!r.ok) throw new Error('bad');
+                return r.json();
+            });
+        }
+        // Se consultan las TRES fuentes y se elige la MAS RECIENTE (asi, si un
+        // CDN va atrasado, se usa el que ya tenga el dato nuevo).
+        Promise.all([
+            pedir(STATUS_CDN).catch(function () { return null; }),
+            pedir(STATUS_RAW + '?ts=' + ts).catch(function () { return null; }),
+            pedir('status.json?ts=' + ts).catch(function () { return null; })
+        ]).then(function (res) {
+            let mejor = null;
+            res.forEach(function (d) {
+                if (!d) return;
+                if (!mejor) { mejor = d; return; }
+                const t1 = Date.parse(mejor.updatedAt || 0) || 0;
+                const t2 = Date.parse(d.updatedAt || 0) || 0;
+                if (t2 > t1) mejor = d;
+            });
+            if (!mejor) { cb(false, null); return; } // sin datos: se asume en vivo
+            cb(mejor.online === false, mejor);
+        });
     };
 
     window.mostrarAvisoOffline = function () {
