@@ -3255,6 +3255,57 @@ body.tv-open .tv-modal {
 
 .tv-modal.tv-mini .tv-fallback { display: none !important; }
 
+/* ===== TV / DISPOSITIVOS INTELIGENTES: la transmision ocupa TODA la pantalla =====
+   Se adapta a cualquier relacion de aspecto del panel (16:9, 4:3, 21:9...)
+   sin barras negras y sin marcos. Aplica a Android TV, Fire TV, ONN Watch,
+   Google TV, Smart TV de cualquier marca y TV boxes. */
+.is-tv .tv-modal,
+.is-tv .tv-modal.deep-link-mode {
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    height: 100dvh !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background: #000 !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+
+.is-tv .tv-modal .modal-content,
+.is-tv .tv-modal.deep-link-mode .modal-content {
+    width: 100vw !important;
+    height: 100vh !important;
+    height: 100dvh !important;
+    max-width: none !important;
+    max-height: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: none !important;
+    border-radius: 0 !important;
+    aspect-ratio: auto !important;
+    box-shadow: none !important;
+}
+
+.is-tv .tv-modal .video-container,
+.is-tv .tv-modal.deep-link-mode .video-container {
+    width: 100% !important;
+    height: 100% !important;
+    flex: 1 1 100% !important;
+    min-height: 0 !important;
+    aspect-ratio: auto !important;
+    border-radius: 0 !important;
+    overflow: hidden !important;
+}
+
+/* Evita cualquier scroll o borde blanco alrededor del video en la TV */
+.is-tv body.tv-open {
+    overflow: hidden !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
 /* ===== Barra de carga estilo PlayStation (reemplaza los circulitos) =====
    Una linea que se va llenando mientras el contenido carga. */
 .tv-loading {
