@@ -3237,6 +3237,51 @@ body.tv-open .tv-modal {
     50%      { opacity: .35; }
 }
 
+/* ===== FLYERS en formato ACHATADO / CUADRADO (TV y computador) =====
+   La tarjeta es cuadrada: el flyer completo se ve centrado y los costados se
+   rellenan con el mismo flyer difuminado. Asi luce parejo y no se pierde texto. */
+.flyer-card {
+    position: relative !important;
+    aspect-ratio: 1 / 1 !important;
+    width: 100% !important;
+    max-width: 420px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    overflow: hidden !important;
+    padding: 10px !important;
+    border-radius: 20px !important;
+}
+
+.flyer-bg {
+    position: absolute;
+    inset: -24px;
+    z-index: 0;
+    background-size: cover;
+    background-position: center;
+    filter: blur(24px) brightness(0.45) saturate(1.25);
+    transform: scale(1.12);
+    pointer-events: none;
+}
+
+.flyer-card .flyer-image {
+    position: relative !important;
+    z-index: 1 !important;
+    height: 100% !important;
+    width: auto !important;
+    max-height: 100% !important;
+    max-width: 100% !important;
+    object-fit: contain !important;
+    border-radius: 12px !important;
+    box-shadow: 0 8px 26px rgba(0, 0, 0, 0.55);
+}
+
+/* Los efectos de brillo deben quedar por encima del fondo difuminado */
+.flyer-card .flyer-glow,
+.flyer-card .flyer-shine {
+    z-index: 2 !important;
+}
+
 /* ===== Aviso "FUERA DE LA CANCHA" (OBS apagado) =====
    Pantalla negra total con el mensaje para los usuarios. */
 .tv-offline {
