@@ -3227,6 +3227,34 @@ body.tv-open .tv-modal {
     gap: 18px;
 }
 
+/* Salida de emergencia si el equipo no reproduce el embed (autorradios viejos) */
+.tv-fallback {
+    position: fixed;
+    left: 50%;
+    bottom: 14px;
+    transform: translateX(-50%);
+    z-index: 9999;
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(125, 249, 255, 0.5);
+    color: #7DF9FF;
+    font-size: 0.8rem;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: opacity .35s ease;
+}
+
+.tv-fallback:hover { background: rgba(0, 0, 0, 0.8); }
+
+/* Se oculta junto con los demas controles (pantalla limpia) */
+.tv-modal.controls-hidden .tv-fallback {
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+.tv-modal.tv-mini .tv-fallback { display: none !important; }
+
 /* ===== Barra de carga estilo PlayStation (reemplaza los circulitos) =====
    Una linea que se va llenando mientras el contenido carga. */
 .tv-loading {

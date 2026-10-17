@@ -1014,7 +1014,7 @@ document.addEventListener('DOMContentLoaded', () => {
     //    micro-pausas visibles en la página,
     //  - recarga al volver a la pestaña (los navegadores congelan el iframe),
     //  - recarga si el embed no termina de cargar en 45s.
-    const TV_PARTIDO_EMBED = '//ok.ru/videoembed/13981676805705?autoplay=1&nochat=1';
+    const TV_PARTIDO_EMBED = 'https://ok.ru/videoembed/13981676805705?autoplay=1&nochat=1';
     const TV_WATCHDOG_MS = 15000;
     const TV_RELOAD_INTERVAL_MS = 1800000; // 30 min: red de seguridad sin pausas molestas
     const TV_LOAD_TIMEOUT_MS = 45000;
