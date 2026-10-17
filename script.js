@@ -1024,8 +1024,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // === Cortina con el logo mientras conecta / reconecta ===
     let tvReconnectTimer = null;
     let tvCurtainTimer = null;
-    const TV_CURTAIN_AFTER_LOAD_MS = 4000;  // se mantiene tras cargar el embed
-    const TV_CURTAIN_MAX_MS = 15000;        // tope si el embed nunca carga
+    // Tiempos de la cortina (logo + LOADING). En TV el reproductor de OK.ru
+    // tarda mucho mas en arrancar, asi que la cortina se queda MAS tiempo
+    // (se oculta cuando el embed carga + una espera extra, con tope maximo).
+    const TV_ES_MODO_TV = (function () {
+        try { return document.documentElement.classList.contains('is-tv'); } catch (e) { return false; }
+    })();
+    const TV_CURTAIN_AFTER_LOAD_MS = TV_ES_MODO_TV ? 14000 : 4000;   // tras cargar el embed
+    const TV_CURTAIN_MAX_MS = TV_ES_MODO_TV ? 40000 : 15000;         // tope si nunca carga
 
     function setReconnectNumber(text, isGo) {
         const countEl = document.getElementById('tv-reconnect-count');
