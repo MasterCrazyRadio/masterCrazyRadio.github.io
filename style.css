@@ -3306,6 +3306,56 @@ body.tv-open .tv-modal {
     padding: 0 !important;
 }
 
+/* ===== TRANSMISION A PANTALLA COMPLETA EN CUALQUIER EQUIPO =====
+   NO depende del detector de TV: aplica a Android TV, Fire TV, ONN Watch,
+   Google TV, autorradios, Smart TV de cualquier marca y TV boxes. */
+.tv-modal:not(.tv-mini) {
+    position: fixed !important;
+    inset: 0 !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    height: 100dvh !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background: #000 !important;
+}
+
+.tv-modal:not(.tv-mini) .modal-content {
+    width: 100vw !important;
+    height: 100vh !important;
+    height: 100dvh !important;
+    max-width: none !important;
+    max-height: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: none !important;
+    border-radius: 0 !important;
+    aspect-ratio: auto !important;
+    box-shadow: none !important;
+}
+
+.tv-modal:not(.tv-mini) .video-container {
+    width: 100% !important;
+    height: 100% !important;
+    flex: 1 1 100% !important;
+    min-height: 0 !important;
+    aspect-ratio: auto !important;
+    border-radius: 0 !important;
+    overflow: hidden !important;
+    position: relative !important;
+}
+
+/* El video nativo tambien llena todo el espacio */
+.tv-modal:not(.tv-mini) .video-container video {
+    width: 100% !important;
+    height: 100% !important;
+    max-width: none !important;
+    max-height: none !important;
+    object-fit: contain !important;
+}
+
 /* ===== Barra de carga estilo PlayStation (reemplaza los circulitos) =====
    Una linea que se va llenando mientras el contenido carga. */
 .tv-loading {

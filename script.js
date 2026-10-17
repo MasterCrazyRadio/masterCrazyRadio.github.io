@@ -1173,6 +1173,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // ajusta SIN recortar, aunque la API Fullscreen no exista en el equipo.
         modal.classList.add('deep-link-mode');
         applyTvFitMode();
+        ajustarIframeCover();
         title.innerHTML = "Master Crazy <span style='color:#7DF9FF;'>TV</span>";
 
         // Pantalla completa nativa en cualquier dispositivo
@@ -1847,6 +1848,42 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Red de seguridad: cada 10 s, pase lo que pase
     setInterval(revisarEstadoYActuar, 10000);
+
+    // ===== Ajuste del iframe para LLENAR la pantalla (sin depender de CSS max()) =====
+    // Se calcula en JS el tamano tipo "cover" 16:9: funciona en navegadores
+    // viejos (ONN Watch, autorradios, TV boxes) donde max() no existe.
+    function ajustarIframeCover() {
+        try {
+            const modal = document.getElementById('tv-modal');
+            const iframe = document.getElementById('tv-iframe');
+            if (!modal || !iframe) return;
+            if (modal.style.display !== 'flex') return;
+            const cont = iframe.parentElement && iframe.parentElement.parentElement;
+            const contenedor = document.querySelector('.tv-modal .video-container');
+            const caja = contenedor || cont;
+            if (!caja) return;
+            const w = caja.clientWidth || window.innerWidth;
+            const h = caja.clientHeight || window.innerHeight;
+            if (!w || !h) return;
+            const ratio = 16 / 9;
+            let nw = w, nh = w / ratio;
+            if (nh < h) { nh = h; nw = h * ratio; }
+            iframe.style.position = 'absolute';
+            iframe.style.left = '50%';
+            iframe.style.top = '50%';
+            iframe.style.transform = 'translate(-50%, -50%)';
+            iframe.style.width = Math.ceil(nw) + 'px';
+            iframe.style.height = Math.ceil(nh) + 'px';
+            iframe.style.maxWidth = 'none';
+            iframe.style.maxHeight = 'none';
+            iframe.style.minWidth = '0';
+            iframe.style.minHeight = '0';
+        } catch (e) { }
+    }
+    window.ajustarIframeCover = ajustarIframeCover;
+
+    window.addEventListener('resize', function () { setTimeout(ajustarIframeCover, 250); });
+    window.addEventListener('orientationchange', function () { setTimeout(ajustarIframeCover, 350); });
 
     function vistaHorizontalAutomatica() {
         try {
