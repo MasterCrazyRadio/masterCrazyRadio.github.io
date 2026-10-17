@@ -1856,36 +1856,28 @@ document.addEventListener('DOMContentLoaded', () => {
     // ===== Ajuste del iframe para LLENAR la pantalla (sin depender de CSS max()) =====
     // Se calcula en JS el tamano tipo "cover" 16:9: funciona en navegadores
     // viejos (ONN Watch, autorradios, TV boxes) donde max() no existe.
-    const TV_COVER_ZOOM = 1.05; // empuja la imagen hasta los bordes (quita franjas finas)
+    const TV_COVER_ZOOM = 1; // sin ampliacion: se respeta el recuadro original
     function ajustarIframeCover() {
         try {
             const modal = document.getElementById('tv-modal');
             const iframe = document.getElementById('tv-iframe');
             if (!modal || !iframe) return;
             if (modal.style.display !== 'flex') return;
-            const caja = document.querySelector('.tv-modal .video-container');
-            const w = (caja && caja.clientWidth) || window.innerWidth;
-            const h = (caja && caja.clientHeight) || window.innerHeight;
-            if (!w || !h) return;
-            const ratio = 16 / 9;
-            let nw = w, nh = w / ratio;
-            if (nh < h) { nh = h; nw = h * ratio; }
-            nw = Math.ceil(nw * TV_COVER_ZOOM);
-            nh = Math.ceil(nh * TV_COVER_ZOOM);
             // setProperty con 'important': gana incluso a las reglas CSS !important
             const imp = function (prop, val) { try { iframe.style.setProperty(prop, val, 'important'); } catch (e) { } };
+            // Ocupa el 100% del area: el reproductor muestra el video en su
+            // proporcion ORIGINAL, sin recortes ni ampliaciones.
             imp('position', 'absolute');
-            imp('left', '50%');
-            imp('top', '50%');
-            imp('transform', 'translate(-50%, -50%)');
-            imp('width', nw + 'px');
-            imp('height', nh + 'px');
+            imp('left', '0');
+            imp('top', '0');
+            imp('transform', 'none');
+            imp('width', '100%');
+            imp('height', '100%');
             imp('min-width', '0');
             imp('min-height', '0');
             imp('max-width', 'none');
             imp('max-height', 'none');
             imp('aspect-ratio', 'auto');
-            imp('object-fit', 'fill');
             imp('border', 'none');
         } catch (e) { }
     }
@@ -2081,9 +2073,9 @@ document.addEventListener('DOMContentLoaded', () => {
     function applyTvFitMode() {
         const modal = document.getElementById('tv-modal');
         if (!modal) return;
-        let mode = 'cover';
-        try { mode = localStorage.getItem('mctv_fit_mode') || 'cover'; } catch (e) { }
-        modal.classList.toggle('tv-fit-cover', mode === 'cover');
+        // Se conserva SIEMPRE el recuadro original de la transmision: imagen
+        // completa, proporcion natural, centrada. Sin recortes ni ampliaciones.
+        modal.classList.remove('tv-fit-cover');
     }
     window.toggleTvFitMode = function () {
         const modal = document.getElementById('tv-modal');

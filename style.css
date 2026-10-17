@@ -3202,10 +3202,10 @@ body.tv-open .tv-modal {
     zoom: 0.85;
 }
 
-/* El reproductor de TV NUNCA debe encogerse: queda a pantalla completa */
+/* El reproductor conserva su tamano natural: SIN zoom ni ampliaciones */
 .is-tv #tv-modal,
 .is-tv #tv-modal .modal-content {
-    zoom: 1.1765 !important;
+    zoom: 1 !important;
 }
 
 .is-tv main {
