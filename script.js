@@ -1174,6 +1174,10 @@ document.addEventListener('DOMContentLoaded', () => {
         modal.classList.add('deep-link-mode');
         applyTvFitMode();
         ajustarIframeCover();
+        // Se recalcula varias veces: algunos televisores tardan en definir el area
+        setTimeout(ajustarIframeCover, 300);
+        setTimeout(ajustarIframeCover, 900);
+        setTimeout(ajustarIframeCover, 2000);
         title.innerHTML = "Master Crazy <span style='color:#7DF9FF;'>TV</span>";
 
         // Pantalla completa nativa en cualquier dispositivo
@@ -1852,32 +1856,37 @@ document.addEventListener('DOMContentLoaded', () => {
     // ===== Ajuste del iframe para LLENAR la pantalla (sin depender de CSS max()) =====
     // Se calcula en JS el tamano tipo "cover" 16:9: funciona en navegadores
     // viejos (ONN Watch, autorradios, TV boxes) donde max() no existe.
+    const TV_COVER_ZOOM = 1.05; // empuja la imagen hasta los bordes (quita franjas finas)
     function ajustarIframeCover() {
         try {
             const modal = document.getElementById('tv-modal');
             const iframe = document.getElementById('tv-iframe');
             if (!modal || !iframe) return;
             if (modal.style.display !== 'flex') return;
-            const cont = iframe.parentElement && iframe.parentElement.parentElement;
-            const contenedor = document.querySelector('.tv-modal .video-container');
-            const caja = contenedor || cont;
-            if (!caja) return;
-            const w = caja.clientWidth || window.innerWidth;
-            const h = caja.clientHeight || window.innerHeight;
+            const caja = document.querySelector('.tv-modal .video-container');
+            const w = (caja && caja.clientWidth) || window.innerWidth;
+            const h = (caja && caja.clientHeight) || window.innerHeight;
             if (!w || !h) return;
             const ratio = 16 / 9;
             let nw = w, nh = w / ratio;
             if (nh < h) { nh = h; nw = h * ratio; }
-            iframe.style.position = 'absolute';
-            iframe.style.left = '50%';
-            iframe.style.top = '50%';
-            iframe.style.transform = 'translate(-50%, -50%)';
-            iframe.style.width = Math.ceil(nw) + 'px';
-            iframe.style.height = Math.ceil(nh) + 'px';
-            iframe.style.maxWidth = 'none';
-            iframe.style.maxHeight = 'none';
-            iframe.style.minWidth = '0';
-            iframe.style.minHeight = '0';
+            nw = Math.ceil(nw * TV_COVER_ZOOM);
+            nh = Math.ceil(nh * TV_COVER_ZOOM);
+            // setProperty con 'important': gana incluso a las reglas CSS !important
+            const imp = function (prop, val) { try { iframe.style.setProperty(prop, val, 'important'); } catch (e) { } };
+            imp('position', 'absolute');
+            imp('left', '50%');
+            imp('top', '50%');
+            imp('transform', 'translate(-50%, -50%)');
+            imp('width', nw + 'px');
+            imp('height', nh + 'px');
+            imp('min-width', '0');
+            imp('min-height', '0');
+            imp('max-width', 'none');
+            imp('max-height', 'none');
+            imp('aspect-ratio', 'auto');
+            imp('object-fit', 'fill');
+            imp('border', 'none');
         } catch (e) { }
     }
     window.ajustarIframeCover = ajustarIframeCover;
