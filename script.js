@@ -2196,6 +2196,28 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     })();
 
+    // ===== Flyers cuadrados: si la imagen es 1:1, llena todo el slider =====
+    (function flyersCuadrados() {
+        try {
+            const imgs = document.querySelectorAll('.flyer-image');
+            for (let i = 0; i < imgs.length; i++) {
+                (function (img) {
+                    function marcar() {
+                        try {
+                            if (!img.naturalWidth || !img.naturalHeight) return;
+                            const r = img.naturalWidth / img.naturalHeight;
+                            const card = img.closest ? img.closest('.flyer-card') : img.parentElement;
+                            if (!card) return;
+                            card.classList.toggle('flyer-cuadrado', Math.abs(r - 1) < 0.06);
+                        } catch (e) { }
+                    }
+                    if (img.complete && img.naturalWidth) marcar();
+                    img.addEventListener('load', marcar);
+                })(imgs[i]);
+            }
+        } catch (e) { }
+    })();
+
     window.addEventListener('hashchange', handleMctvDeepLink);
     // Al cargar la página ya con #mctv (después del DOMContentLoaded)
     setTimeout(handleMctvDeepLink, 1200);

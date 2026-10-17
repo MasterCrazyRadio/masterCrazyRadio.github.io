@@ -3223,6 +3223,26 @@ body.tv-open .tv-modal {
     display: inline-block !important;
 }
 
+/* ===== Flyer CUADRADO: llena TODO el espacio del slider =====
+   El JS marca la tarjeta con .flyer-cuadrado cuando la imagen es 1:1.
+   Asi, en cuanto suba los flyers cuadrados, ocupan el 100% sin bordes. */
+.flyer-card.flyer-cuadrado {
+    padding: 0 !important;
+}
+
+.flyer-card.flyer-cuadrado .flyer-bg {
+    display: none !important;
+}
+
+.flyer-card.flyer-cuadrado .flyer-image {
+    width: 100% !important;
+    height: 100% !important;
+    max-width: none !important;
+    max-height: none !important;
+    object-fit: cover !important;
+    border-radius: 20px !important;
+}
+
 .tv-fallback:hover { background: rgba(0, 0, 0, 0.8); }
 
 /* Se oculta junto con los demas controles (pantalla limpia) */
