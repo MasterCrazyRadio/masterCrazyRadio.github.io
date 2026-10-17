@@ -117,6 +117,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function resumeRadioIfPaused() {
         try {
+            // Si hay TV en pantalla (o se acaba de salir de ella), la radio NO se
+            // reanuda sola: el usuario decide cuando volver a escucharla.
+            if (tvBloqueaRadio) return;
+            const tvM = document.getElementById('tv-modal');
+            if (tvM && tvM.style.display === 'flex') return;
             if (sessionStorage.getItem(RADIO_STATE_KEY) !== '1') return;
             if (!audio.paused) return; // ya está sonando
             isPlaying = true;
@@ -317,6 +322,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         function intentar() {
             if (arrancado) return;
+            // No arrancar la radio si hay una tarjeta de TV reproduciendo
+            if (tvBloqueaRadio) return;
+            const tvM = document.getElementById('tv-modal');
+            if (tvM && tvM.style.display === 'flex') return;
             if (isPlaying) { arrancado = true; quitarEscuchas(); marcarAtencion(false); return; }
             const p = audio.play();
             if (p && p.then) {
@@ -689,6 +698,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         tvIsPartido = false;
         tvCanalActual = 'hls';
+        tvBloqueaRadio = true;
         if (typeof window.ocultarAvisoOffline === 'function') window.ocultarAvisoOffline();
         stopTvWatchdog();
         if (video) video.style.display = '';
@@ -910,6 +920,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // completa cierre la transmision al instante (rebote a la pagina principal).
     let tvOpenedAtMs = 0;
     // La radio se pausa al abrir la TV y se reanuda sola al cerrarla
+    var tvBloqueaRadio = false; // Con TV en pantalla la radio NO suena ni se reanuda sola
     let radioWasPlayingBeforeTv = false;
 
     function openTvModal(modal) {
@@ -1137,6 +1148,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (iframe) {
             tvIsPartido = true;
             tvCanalActual = 'partido';
+            tvBloqueaRadio = true;
             iframe.src = TV_PARTIDO_EMBED;
             armTvLoadWatchdog();
             startTvWatchdog();
@@ -1184,6 +1196,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Cargar la señal en vivo del canal Quiero TV (YouTube embed)
         tvIsPartido = false; // el watchdog de reconexión es solo para la transmisión de OK.ru
         tvCanalActual = 'youtube';
+        tvBloqueaRadio = true;
         if (typeof window.ocultarAvisoOffline === 'function') window.ocultarAvisoOffline();
         stopTvWatchdog();
         if (iframeContainer) iframeContainer.style.display = 'block';
@@ -1221,6 +1234,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (iframe) iframe.src = '';
         tvIsPartido = false;
         tvCanalActual = null;
+        tvBloqueaRadio = false;
         stopTvWatchdog();
         hideReconnectCountdown();
 
@@ -1237,10 +1251,9 @@ document.addEventListener('DOMContentLoaded', () => {
         exitFullscreen();
 
         // Al cerrar la TV (atrás, X o clic fuera), la radio vuelve a sonar
-        if (radioWasPlayingBeforeTv) {
-            radioWasPlayingBeforeTv = false;
-            togglePlay();
-        }
+        // La radio NO se reanuda sola al cerrar la TV: queda detenida hasta que
+        // el usuario decida volver a escucharla (toca el boton de play).
+        radioWasPlayingBeforeTv = false;
     };
 
     // Close modal on click outside
