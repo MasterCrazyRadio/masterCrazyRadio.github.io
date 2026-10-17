@@ -137,7 +137,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Al volver a esta pestaña (atrás del teléfono, cambio de pestaña, etc.)
     document.addEventListener('visibilitychange', function () {
         if (!document.hidden) {
-            resumeRadioIfPaused();
+            // NOTA: la radio NO se reanuda sola al volver a la pagina. Si otra
+            // aplicacion esta sonando (YouTube, WhatsApp...), arrancarla aqui
+            // provocaria que se mezclen los dos audios.
             // Si se estaba viendo la transmisión de Master Crazy TV (OK.ru),
             // reconectar: los navegadores congelan el iframe en segundo plano
             const modal = document.getElementById('tv-modal');
@@ -230,10 +232,9 @@ document.addEventListener('DOMContentLoaded', () => {
             try {
                 if ('mediaSession' in navigator) navigator.mediaSession.playbackState = 'paused';
             } catch (e) { }
-            // Si el sistema la pauso por su cuenta, se retoma sola
-            if (isPlaying && !radioPausedForVideo && !radioPausedForTop5) {
-                setTimeout(function () { reconectar(false); }, 1200);
-            }
+            // IMPORTANTE: NO se reanuda sola. Si el sistema la pauso porque otra
+            // aplicacion tomo el audio (YouTube, WhatsApp, cualquier app), debe
+            // quedarse EN PAUSA para no mezclarse con ese audio.
         });
 
         // --- Cortes tipicos de red en 2G / 3G / H+ ---
@@ -260,6 +261,12 @@ document.addEventListener('DOMContentLoaded', () => {
         let revisionesMudo = 0;
         setInterval(function () {
             if (!isPlaying || radioPausedForVideo || radioPausedForTop5) {
+                revisionesMudo = 0;
+                return;
+            }
+            // Si la pagina esta en segundo plano (otra app abierta: YouTube,
+            // WhatsApp...) NO se reanuda: el audio lo tiene otra aplicacion.
+            if (document.hidden) {
                 revisionesMudo = 0;
                 return;
             }
