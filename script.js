@@ -287,6 +287,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // sonar sin un toque previo del usuario, asi que si lo bloquean, la radio
     // arranca con el PRIMER toque, scroll o tecla en cualquier parte.
     (function autoArranqueRadio() {
+        // En TV (Android TV, Smart TV, TV boxes) NO se arranca la radio sola:
+        // no tiene sentido y su indicador circular de "Reconectando..." se veia
+        // encima de la pantalla. Ahi la transmision debe quedar limpia.
+        try {
+            if (document.documentElement.classList.contains('is-tv') ||
+                document.body.classList.contains('is-tv')) return;
+        } catch (e) { }
+
         let arrancado = false;
 
         function marcarAtencion(activo) {

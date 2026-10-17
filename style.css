@@ -3183,6 +3183,15 @@ body.tv-open .tv-modal {
     animation: attentionPulse 1.8s ease-out infinite !important;
 }
 
+/* ===== Pantalla LIMPIA en TV: se ocultan los avisos de la radio =====
+   En Android TV / Smart TV / TV boxes el circulo de "Reconectando..." de la
+   radio quedaba encima y ensuciaba la transmision. */
+.is-tv .reconnect-status,
+.is-tv .song-info-container,
+.is-tv .visualizer-container {
+    display: none !important;
+}
+
 /* ===== Barra de carga estilo PlayStation (reemplaza los circulitos) =====
    Una linea que se va llenando mientras el contenido carga. */
 .tv-loading {
