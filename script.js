@@ -1249,7 +1249,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // actualiza) y dice offline. Si el archivo está viejo o no existe, se asume
     // que la transmisión está EN VIVO (evita avisos falsos de pausa).
     function refreshPartidoStatus() {
-        fetch('status.json?ts=' + Date.now(), { cache: 'no-store' })
+        fetch('https://cdn.jsdelivr.net/gh/MasterCrazyRadio/masterCrazyRadio.github.io@ia/status.json', { cache: 'no-store' })
             .then(function (r) { return r.json(); })
             .then(function (data) {
                 const badge = document.getElementById('partido-badge');
@@ -1261,7 +1261,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const edad = Date.now() - new Date(data.updatedAt).getTime();
                     esReciente = edad < 30 * 60 * 1000;
                 }
-                if (data && data.status === 'ONLINE') {
+                if (data && data.online === true) {
                     badge.textContent = 'EN VIVO';
                     badge.classList.remove('offline');
                     if (statusMsg) statusMsg.style.display = 'none';
@@ -1283,7 +1283,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     refreshPartidoStatus();
-    setInterval(refreshPartidoStatus, 45000);
+    setInterval(refreshPartidoStatus, 15000);
 
     // Contact Form Handler
     const contactForm = document.getElementById('contactForm');
