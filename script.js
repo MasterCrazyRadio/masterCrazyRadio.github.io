@@ -1016,8 +1016,8 @@ document.addEventListener('DOMContentLoaded', () => {
     //  - recarga si el embed no termina de cargar en 45s.
     const TV_PARTIDO_EMBED = 'https://ok.ru/videoembed/13981676805705?autoplay=1&nochat=1';
     const TV_WATCHDOG_MS = 15000;
-    const TV_RELOAD_INTERVAL_MS = 1800000; // 30 min: red de seguridad sin pausas molestas
-    const TV_LOAD_TIMEOUT_MS = 45000;
+    const TV_RELOAD_INTERVAL_MS = 3600000; // 60 min: red de seguridad, sin interrupciones
+    const TV_LOAD_TIMEOUT_MS = 60000;
     let tvWatchdogTimer = null;
     let tvIframeLoadTimer = null;
     let tvLastReload = 0;
@@ -1075,12 +1075,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const now = Date.now();
         if (now - tvLastReload < 10000) return; // anti-bucle
         tvLastReload = now;
-        // Aviso en pantalla: conteo 3-2-1 GO mientras reconecta
-        showReconnectCountdown();
-        // Recarga real del embed (vaciar y volver a poner la URL)
+        // Recarga SILENCIOSA: NO se muestra la cortina (logo + LOADING) para no
+        // interrumpir la vista. Antes el aviso aparecia en cada reconexion.
         iframe.src = '';
         iframe.src = TV_PARTIDO_EMBED;
-        armTvLoadWatchdog();
+        // No se re-arma el vigilante de carga: evita el bucle de recargas.
     }
 
     function armTvLoadWatchdog() {
