@@ -3227,7 +3227,7 @@ body.tv-open .tv-modal {
    El JS marca la tarjeta con .flyer-cuadrado cuando la imagen es 1:1.
    Asi, en cuanto suba los flyers cuadrados, ocupan el 100% sin bordes. */
 .flyer-card.flyer-cuadrado {
-    padding: 0 !important;
+    padding: 10px !important;   /* margen para que se perciba el marco del slider */
 }
 
 .flyer-card.flyer-cuadrado .flyer-bg {
@@ -3240,7 +3240,7 @@ body.tv-open .tv-modal {
     max-width: none !important;
     max-height: none !important;
     object-fit: cover !important;
-    border-radius: 20px !important;
+    border-radius: 14px !important;
 }
 
 .tv-fallback:hover { background: rgba(0, 0, 0, 0.8); }
