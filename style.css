@@ -3243,6 +3243,41 @@ body.tv-open .tv-modal {
     border-radius: 14px !important;
 }
 
+/* ===== CENTRADO GLOBAL DE LA PAGINA =====
+   Evita que el contenido quede corrido hacia un lado en Android TV, Fire TV,
+   ONN Watch y cualquier pantalla. Todo se centra y no hay desbordes. */
+html {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+body {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+    align-items: center !important;   /* flex en columna: centra el contenido */
+    overflow-x: hidden;
+}
+
+body > header,
+body > main,
+body > footer {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    box-sizing: border-box !important;
+}
+
+main > section {
+    margin-left: auto;
+    margin-right: auto;
+    box-sizing: border-box;
+    max-width: 100%;
+}
+
 .tv-fallback:hover { background: rgba(0, 0, 0, 0.8); }
 
 /* Se oculta junto con los demas controles (pantalla limpia) */
