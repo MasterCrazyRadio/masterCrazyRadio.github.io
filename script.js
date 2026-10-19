@@ -227,6 +227,18 @@ document.addEventListener('DOMContentLoaded', () => {
             try {
                 if ('mediaSession' in navigator) navigator.mediaSession.playbackState = 'playing';
             } catch (e) { }
+            // CAPA DEFINITIVA: si hay una TV en pantalla, la radio se aborta en
+            // el mismo instante en que intenta sonar (0 ms de mezcla).
+            try {
+                const tvM = document.getElementById('tv-modal');
+                const abierto = !!tvM && tvM.style.display === 'flex';
+                if (tvBloqueaRadio || abierto) {
+                    isPlaying = false;
+                    audio.pause();
+                    syncPlayState();
+                    persistPlayState();
+                }
+            } catch (e) { }
         });
         audio.addEventListener('pause', function () {
             try {
@@ -292,6 +304,17 @@ document.addEventListener('DOMContentLoaded', () => {
             if (isPlaying) setTimeout(function () { reconectar(true); }, 800);
         });
     })();
+
+    // Detiene la radio de inmediato (se usa al abrir cualquier tarjeta de TV)
+    function detenerRadioParaTv() {
+        try {
+            isPlaying = false;
+            try { audio.pause(); } catch (e) { }
+            try { audio.currentTime = 0; } catch (e) { }
+            syncPlayState();
+            persistPlayState();
+        } catch (e) { }
+    }
 
     // ===== RED DE SEGURIDAD: la radio NUNCA suena junto al video =====
     // Cada tarjeta de TV marca tvBloqueaRadio, pero el arranque automatico de
@@ -723,6 +746,7 @@ document.addEventListener('DOMContentLoaded', () => {
         tvIsPartido = false;
         tvCanalActual = 'hls';
         tvBloqueaRadio = true;
+        detenerRadioParaTv();
         if (typeof window.ocultarAvisoOffline === 'function') window.ocultarAvisoOffline();
         stopTvWatchdog();
         if (video) video.style.display = '';
@@ -1178,6 +1202,7 @@ document.addEventListener('DOMContentLoaded', () => {
             tvIsPartido = true;
             tvCanalActual = 'partido';
             tvBloqueaRadio = true;
+            detenerRadioParaTv();
             iframe.src = TV_PARTIDO_EMBED;
             armTvLoadWatchdog();
             startTvWatchdog();
@@ -1231,6 +1256,7 @@ document.addEventListener('DOMContentLoaded', () => {
         tvIsPartido = false; // el watchdog de reconexión es solo para la transmisión de OK.ru
         tvCanalActual = 'youtube';
         tvBloqueaRadio = true;
+        detenerRadioParaTv();
         if (typeof window.ocultarAvisoOffline === 'function') window.ocultarAvisoOffline();
         stopTvWatchdog();
         if (iframeContainer) iframeContainer.style.display = 'block';
