@@ -293,6 +293,23 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     })();
 
+    // ===== RED DE SEGURIDAD: la radio NUNCA suena junto al video =====
+    // Cada tarjeta de TV marca tvBloqueaRadio, pero el arranque automatico de
+    // la radio es asincrono y podia terminar sonando despues de abrir la TV.
+    // Este vigilante la detiene al instante si eso ocurre.
+    setInterval(function () {
+        try {
+            const modal = document.getElementById('tv-modal');
+            const tvAbierto = !!modal && modal.style.display === 'flex';
+            if ((tvBloqueaRadio || tvAbierto) && !audio.paused) {
+                isPlaying = false;
+                try { audio.pause(); } catch (e) { }
+                syncPlayState();
+                persistPlayState();
+            }
+        } catch (e) { }
+    }, 700);
+
     // ===== Arranque automatico al entrar a la web =====
     // Se intenta reproducir de inmediato (y con la conexion ya pre-abierta por
     // el preconnect, arranca en el primer segundo). Los navegadores NO permiten
