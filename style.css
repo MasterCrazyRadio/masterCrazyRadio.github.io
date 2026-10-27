@@ -4031,3 +4031,49 @@ main > section {
         -webkit-text-stroke: 4px #FFFFFF !important;
     }
 }
+/* ===== CORRECCION: relleno TRANSPARENTE real (toma el fondo tal cual) + contorno NEGRO =====
+   Sustituye el relleno rojo solido por transparencia verdadera.
+   paint-order dibuja el contorno negro por detras y el interior queda vacio => se ve el fondo. */
+.brand-sky,
+.section-title .highlight,
+.tv-card h3,
+.tv-card .tv-icon,
+.top5-play i {
+    background: none !important;
+    background-image: none !important;
+    -webkit-background-clip: border-box !important;
+    background-clip: border-box !important;
+    color: transparent !important;
+    -webkit-text-fill-color: transparent !important;
+    text-shadow: none !important;
+    filter: none !important;
+    -webkit-text-stroke: 3px #000000 !important;
+    paint-order: stroke fill !important;
+    stroke-linejoin: round;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* El circulo del Play del Top tambien con borde negro */
+.top5-play {
+    background: transparent !important;
+    background-image: none !important;
+    border: 2px solid #000000 !important;
+    box-shadow: none !important;
+}
+.top5-play:hover,
+.top5-play:focus,
+.top5-play:active {
+    border-color: #000000 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+@media (pointer: coarse) {
+    .brand-sky,
+    .section-title .highlight,
+    .tv-card h3,
+    .tv-card .tv-icon,
+    .top5-play i {
+        -webkit-text-stroke: 3.6px #000000 !important;
+    }
+}
