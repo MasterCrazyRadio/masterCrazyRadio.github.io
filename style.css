@@ -4246,3 +4246,19 @@ main > section {
 .header-play-btn::after {
     z-index: -1;
 }
+/* ===== Logo del sitio en la tarjeta MASTER CRAZY TV ===== */
+.tv-icon-logo {
+    width: 72px;
+    height: 72px;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto 10px auto;
+    filter: drop-shadow(0 0 14px rgba(0, 168, 225, 0.45));
+    border-radius: 50%;
+}
+@media (max-width: 640px) {
+    .tv-icon-logo { width: 60px; height: 60px; }
+}
+@media (pointer: coarse) {
+    .tv-icon-logo { width: 80px; height: 80px; }
+}
