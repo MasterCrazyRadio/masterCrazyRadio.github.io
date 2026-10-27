@@ -3932,3 +3932,51 @@ main > section {
     .play-btn::after,
     .header-play-btn::after { animation: none !important; }
 }
+/* ===== Sin amarillo: relleno TRANSPARENTE (la letra toma el color del fondo) =====
+   Aplicado solo a: "Mas que radio!!", "En Vivo", "Crazy", logos de tarjetas de canales.
+   El reproductor de audio NO se toca: conserva su verde-amarillo. */
+.brand-sky,
+.section-title .highlight,
+.tv-card h3,
+.tv-card .tv-icon {
+    background: none !important;
+    background-image: none !important;
+    -webkit-background-clip: border-box !important;
+    background-clip: border-box !important;
+    color: transparent !important;
+    -webkit-text-fill-color: transparent !important;
+    text-shadow: none !important;
+    filter: none !important;
+    -webkit-text-stroke: 1.2px rgba(255, 255, 255, 0.92);
+}
+
+/* Play de las tarjetas del Top Crazy: circulo transparente, icono hueco */
+.top5-play {
+    background: transparent !important;
+    background-image: none !important;
+    border: 2px solid rgba(255, 255, 255, 0.85) !important;
+    box-shadow: none !important;
+}
+.top5-play i {
+    color: transparent !important;
+    -webkit-text-fill-color: transparent !important;
+    -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.95);
+    text-shadow: none !important;
+}
+.top5-play:hover,
+.top5-play:focus,
+.top5-play:active {
+    background: transparent !important;
+    box-shadow: none !important;
+    border-color: rgba(255, 255, 255, 1) !important;
+}
+
+/* En pantallas tactiles el trazo un poco mas grueso para que se lea */
+@media (pointer: coarse) {
+    .brand-sky,
+    .section-title .highlight,
+    .tv-card h3,
+    .tv-card .tv-icon {
+        -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.95);
+    }
+}
