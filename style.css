@@ -4199,3 +4199,50 @@ main > section {
         -1px 1px 0 #FFFFFF,
         0 0 3px rgba(255, 255, 255, 0.90) !important;
 }
+/* ===== FIX Play/Pausa: el icono SIEMPRE visible =====
+   El boton se rellenaba de azul y el icono tambien era azul -> desaparecia.
+   Ahora el icono es blanco con sombra oscura, sobre fondo azul o transparente. */
+.play-btn,
+.header-play-btn {
+    background: rgba(0, 168, 225, 0.14) !important;
+    border: 2px solid #00A8E1 !important;
+    color: #FFFFFF !important;
+}
+
+.play-btn i,
+.header-play-btn i,
+.play-btn .fas,
+.header-play-btn .fas {
+    color: #FFFFFF !important;
+    -webkit-text-fill-color: #FFFFFF !important;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.95), 0 0 8px rgba(0, 0, 0, 0.65);
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* Estados presionado / hover / reproduciendo: fondo azul lleno, icono blanco */
+.play-btn:hover,
+.play-btn:active,
+.play-btn:focus,
+.header-play-btn:hover,
+.header-play-btn:active,
+.header-play-btn:focus {
+    background: linear-gradient(135deg, #00A8E1, #0089BA) !important;
+    color: #FFFFFF !important;
+}
+
+.play-btn:hover i,
+.play-btn:active i,
+.play-btn:focus i,
+.header-play-btn:hover i,
+.header-play-btn:active i,
+.header-play-btn:focus i {
+    color: #FFFFFF !important;
+    -webkit-text-fill-color: #FFFFFF !important;
+}
+
+/* El aro pulsante no debe tapar el icono */
+.play-btn::after,
+.header-play-btn::after {
+    z-index: -1;
+}
