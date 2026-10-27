@@ -2397,3 +2397,70 @@ document.addEventListener('DOMContentLoaded', () => {
         crearNieve();
     }
 })();
+
+/* ===== Chat de peticiones: "Pide tu canción" ===== */
+(function () {
+  var WA = '573117307017';
+  var TG = 'frank2020_bot';
+
+  function listo() {
+    var btn = document.getElementById('pide-btn');
+    var panel = document.getElementById('pide-panel');
+    var cerrar = document.getElementById('pide-cerrar');
+    var enviar = document.getElementById('pide-enviar');
+    var telegram = document.getElementById('pide-telegram');
+    var campo = document.getElementById('pide-texto');
+    var aviso = document.getElementById('pide-aviso');
+    if (!btn || !panel || !campo) return;
+
+    function abrir(v) {
+      panel.classList.toggle('abierto', v);
+      if (v) { try { campo.focus(); } catch (e) {} }
+    }
+
+    btn.addEventListener('click', function (e) {
+      e.preventDefault();
+      abrir(!panel.classList.contains('abierto'));
+    });
+    if (cerrar) cerrar.addEventListener('click', function (e) { e.preventDefault(); abrir(false); });
+
+    function textoUsuario() {
+      var t = (campo.value || '').trim();
+      return t;
+    }
+
+    if (enviar) enviar.addEventListener('click', function (e) {
+      e.preventDefault();
+      var t = textoUsuario();
+      if (t.length < 3) {
+        if (aviso) aviso.textContent = 'Escribe el nombre de la canción y el artista.';
+        return;
+      }
+      if (aviso) aviso.textContent = '';
+      var mensaje = 'Hola Master Crazy Radio, quiero programar esta canción: ' + t;
+      window.open('https://wa.me/' + WA + '?text=' + encodeURIComponent(mensaje), '_blank');
+      abrir(false);
+    });
+
+    if (telegram) telegram.addEventListener('click', function (e) {
+      e.preventDefault();
+      var t = textoUsuario();
+      var mensaje = t ? ('Quiero programar: ' + t) : 'Quiero programar una canción';
+      window.open('https://t.me/' + TG + '?text=' + encodeURIComponent(mensaje), '_blank');
+      abrir(false);
+    });
+
+    campo.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        if (enviar) enviar.click();
+      }
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', listo);
+  } else {
+    listo();
+  }
+})();

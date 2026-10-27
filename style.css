@@ -4246,3 +4246,39 @@ main > section {
 .header-play-btn::after {
     z-index: -1;
 }
+/* ===== Chat de peticiones: Pide tu cancion ===== */
+.pide-btn {
+    position: fixed; right: 24px; bottom: 112px; z-index: 9999;
+    display: flex; align-items: center; gap: 8px;
+    padding: 12px 16px; border-radius: 999px;
+    border: 2px solid #00A8E1; background: rgba(0, 168, 225, 0.18);
+    color: #fff; font-weight: 700; font-size: 0.9rem; cursor: pointer;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+}
+.pide-btn:hover { background: #00A8E1; color: #04121a; }
+.pide-panel {
+    position: fixed; right: 24px; bottom: 176px; z-index: 10000;
+    width: min(340px, 92vw); padding: 14px; border-radius: 16px;
+    background: linear-gradient(160deg, rgba(30, 4, 10, 0.97), rgba(60, 6, 16, 0.97));
+    border: 2px solid #00A8E1; box-shadow: 0 18px 50px rgba(0, 0, 0, 0.6);
+    display: none;
+}
+.pide-panel.abierto { display: block; }
+.pide-head { display: flex; justify-content: space-between; align-items: center; color: #fff; font-size: 1rem; margin-bottom: 6px; }
+.pide-cerrar { background: none; border: none; color: #fff; font-size: 1.4rem; line-height: 1; cursor: pointer; }
+.pide-sub { color: rgba(255, 255, 255, 0.85); font-size: 0.78rem; margin: 0 0 8px; }
+.pide-texto {
+    width: 100%; resize: vertical; border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.25); background: rgba(0, 0, 0, 0.35);
+    color: #fff; padding: 9px; font-family: inherit; font-size: 0.9rem;
+}
+.pide-texto:focus { outline: 2px solid #00A8E1; }
+.pide-aviso { color: #ffd1d1; font-size: 0.75rem; min-height: 14px; margin: 4px 0; }
+.pide-acciones { display: flex; gap: 8px; }
+.pide-enviar, .pide-telegram { flex: 1; padding: 9px 10px; border-radius: 10px; border: none; font-weight: 700; font-size: 0.82rem; cursor: pointer; }
+.pide-enviar { background: #25D366; color: #06210f; }
+.pide-telegram { background: #00A8E1; color: #04121a; }
+@media (max-width: 640px) {
+    .pide-btn { bottom: 96px; right: 14px; padding: 10px 13px; font-size: 0.8rem; }
+    .pide-panel { right: 14px; bottom: 150px; }
+}
