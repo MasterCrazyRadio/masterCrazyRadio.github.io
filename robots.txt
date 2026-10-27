@@ -1,4 +1,10 @@
 User-agent: *
 Allow: /
 
+# Imagenes y archivos necesarios para que Google muestre el sitio completo
+Allow: /*.png$
+Allow: /*.jpg$
+Allow: /*.js$
+Allow: /*.css$
+
 Sitemap: https://mastercrazyradio.github.io/sitemap.xml
