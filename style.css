@@ -3723,39 +3723,3 @@ main > section {
 .tv-modal .tv-audio-overlay {
     z-index: 20 !important;
 }
-
-/* ===== Papa Noel y reno: figura unica extraida de la imagen del usuario ===== */
-.navidad-santa {
-    position: fixed;
-    right: 14px;
-    bottom: 92px;
-    width: 170px;
-    height: auto;
-    z-index: 4;
-    pointer-events: none;
-    user-select: none;
-    filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.55));
-    animation: santaFlota 6s ease-in-out infinite;
-}
-
-@keyframes santaFlota {
-    0%, 100% { transform: translateY(0) rotate(-1deg); }
-    50%      { transform: translateY(-7px) rotate(1deg); }
-}
-
-@media (max-width: 640px) {
-    .navidad-santa {
-        width: 112px;
-        bottom: 78px;
-        right: 8px;
-    }
-}
-
-.is-tv .navidad-santa {
-    width: 150px;
-    bottom: 44px;
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .navidad-santa { animation: none; }
-}
