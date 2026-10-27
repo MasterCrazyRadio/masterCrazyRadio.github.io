@@ -822,7 +822,23 @@ document.addEventListener('DOMContentLoaded', () => {
             if (window.hls) {
                 window.hls.destroy();
             }
-            const hls = new Hls();
+            const hls = new Hls({
+                // Afinado para TV boxes, Fire TV, ONN y telefonos:
+                enableWorker: true,            // decodifica en un hilo aparte
+                lowLatencyMode: true,          // arranca con menos buffer
+                capLevelToPlayerSize: true,    // nunca pide mas calidad que el tamano en pantalla
+                startLevel: -1,                // empieza en la calidad que la red aguante
+                maxBufferLength: 12,           // 12 s de colchon: estable sin esperar de mas
+                maxMaxBufferLength: 30,
+                backBufferLength: 30,
+                liveSyncDurationCount: 3,
+                manifestLoadingMaxRetry: 4,
+                levelLoadingMaxRetry: 4,
+                fragLoadingMaxRetry: 4,
+                manifestLoadingTimeOut: 8000,
+                levelLoadingTimeOut: 8000,
+                fragLoadingTimeOut: 12000
+            });
             hls.loadSource(streamUrl);
             hls.attachMedia(video);
             hls.on(Hls.Events.MANIFEST_PARSED, function () {
@@ -1153,7 +1169,11 @@ document.addEventListener('DOMContentLoaded', () => {
         // Recarga SILENCIOSA: NO se muestra la cortina (logo + LOADING) para no
         // interrumpir la vista. Antes el aviso aparecia en cada reconexion.
         iframe.src = '';
-        iframe.src = TV_PARTIDO_EMBED;
+        if (iframe.src && iframe.src.indexOf('ok.ru') !== -1) {
+                // ya estaba cargado: no se recarga (entrada instantanea)
+            } else {
+                iframe.src = TV_PARTIDO_EMBED;
+            }
         // No se re-arma el vigilante de carga: evita el bucle de recargas.
     }
 
