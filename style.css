@@ -4282,3 +4282,25 @@ main > section {
     .pide-btn { bottom: 96px; right: 14px; padding: 10px 13px; font-size: 0.8rem; }
     .pide-panel { right: 14px; bottom: 150px; }
 }
+/* ===== Logo y aviso "Pide una cancion" en el encabezado ===== */
+.header-logo-mini {
+    width: 44px; height: 44px; border-radius: 50%;
+    object-fit: contain; flex-shrink: 0;
+    filter: drop-shadow(0 0 10px rgba(0, 168, 225, 0.45));
+}
+.pide-top-btn {
+    display: inline-flex; align-items: center; gap: 7px;
+    margin-left: 16px; padding: 8px 14px; border-radius: 999px;
+    border: 2px solid #00A8E1; background: rgba(0, 168, 225, 0.16);
+    color: #fff; font-weight: 700; font-size: 0.82rem;
+    cursor: pointer; white-space: nowrap;
+}
+.pide-top-btn:hover { background: #00A8E1; color: #04121a; }
+@media (max-width: 900px) {
+    .header-logo-mini { width: 34px; height: 34px; }
+    .pide-top-btn { margin-left: 8px; padding: 7px 10px; font-size: 0.72rem; }
+}
+@media (max-width: 520px) {
+    .pide-top-btn span { display: none; }
+    .pide-top-btn { padding: 8px 10px; }
+}
