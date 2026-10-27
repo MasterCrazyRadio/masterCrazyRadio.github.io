@@ -3980,3 +3980,54 @@ main > section {
         -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.95);
     }
 }
+/* ===== ACABADO LIMPIO: letra rellena del rojo del fondo + contorno blanco por DETRAS =====
+   Sustituye el text-stroke fino (que dejaba bordes sucios).
+   paint-order: stroke fill dibuja primero el contorno y luego el relleno => bordes nitidos. */
+.brand-sky,
+.section-title .highlight,
+.tv-card h3,
+.tv-card .tv-icon {
+    background: none !important;
+    background-image: none !important;
+    -webkit-background-clip: border-box !important;
+    background-clip: border-box !important;
+    color: #D6001C !important;
+    -webkit-text-fill-color: #D6001C !important;
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.35) !important;
+    filter: none !important;
+    -webkit-text-stroke: 3.5px #FFFFFF !important;
+    paint-order: stroke fill !important;
+    stroke-linejoin: round;
+    letter-spacing: 0.4px;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* El Play de las tarjetas del Top, con el mismo acabado */
+.top5-play i {
+    color: #D6001C !important;
+    -webkit-text-fill-color: #D6001C !important;
+    -webkit-text-stroke: 2.4px #FFFFFF !important;
+    paint-order: stroke fill !important;
+    text-shadow: none !important;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* En pantallas grandes el contorno puede ser un poco mas fino para que no engorde */
+@media (min-width: 1400px) {
+    .brand-sky,
+    .section-title .highlight,
+    .tv-card h3,
+    .tv-card .tv-icon {
+        -webkit-text-stroke: 3px #FFFFFF !important;
+    }
+}
+
+/* En tactiles / TV el contorno se mantiene firme para que se lea a distancia */
+@media (pointer: coarse) {
+    .brand-sky,
+    .section-title .highlight,
+    .tv-card h3,
+    .tv-card .tv-icon {
+        -webkit-text-stroke: 4px #FFFFFF !important;
+    }
+}
