@@ -311,6 +311,7 @@ document.addEventListener('DOMContentLoaded', () => {
             isPlaying = false;
             try { audio.pause(); } catch (e) { }
             try { audio.currentTime = 0; } catch (e) { }
+            if (typeof window.musesDetener === 'function') window.musesDetener();
             syncPlayState();
             persistPlayState();
         } catch (e) { }
@@ -346,6 +347,10 @@ document.addEventListener('DOMContentLoaded', () => {
             if (document.documentElement.classList.contains('is-tv') ||
                 document.body.classList.contains('is-tv')) return;
         } catch (e) { }
+
+        // La radio la reproduce ahora el reproductor de Muses (radio-player.html).
+        // La nativa queda desactivada: NUNCA deben sonar dos audios a la vez.
+        return;
 
         let arrancado = false;
 
@@ -1314,6 +1319,8 @@ document.addEventListener('DOMContentLoaded', () => {
         // La radio NO se reanuda sola al cerrar la TV: queda detenida hasta que
         // el usuario decida volver a escucharla (toca el boton de play).
         radioWasPlayingBeforeTv = false;
+        // El reproductor de Muses vuelve a cargarse (autoplay, volumen 50%)
+        if (typeof window.musesCargar === 'function') window.musesCargar();
     };
 
     // Close modal on click outside
@@ -1943,6 +1950,55 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.documentElement.classList.add('es-autorradio');
             }
         } catch (e) { }
+    })();
+
+    // ===== Reproductor de Muses (hosted.muses.org) en su propio archivo =====
+    // Se controla desde aqui: si la senal se cae, se recarga solo; y se detiene
+    // cuando hay una tarjeta de TV en pantalla (anti-mezcla).
+    function musesFrame() { return document.getElementById('muses-frame'); }
+
+    function musesCargar() {
+        const f = musesFrame();
+        if (!f) return;
+        try { f.src = 'radio-player.html?t=' + Date.now(); } catch (e) { }
+    }
+    window.musesCargar = musesCargar;
+
+    function musesDetener() {
+        const f = musesFrame();
+        if (!f) return;
+        try { f.src = 'about:blank'; } catch (e) { }
+    }
+    window.musesDetener = musesDetener;
+
+    // Reconexion al volver la senal de datos (SIM / Wi-Fi)
+    window.addEventListener('online', function () {
+        setTimeout(musesCargar, 1200);
+    });
+
+    // Vigilante: si el audio se detiene, recarga el reproductor solo
+    (function vigilarMuses() {
+        let ultimoOk = Date.now();
+        setInterval(function () {
+            const f = musesFrame();
+            if (!f) return;
+            if (f.src.indexOf('radio-player') < 0) { ultimoOk = Date.now(); return; }
+            let sonando = false;
+            try {
+                const doc = f.contentDocument;
+                if (doc) {
+                    const audios = doc.querySelectorAll('audio');
+                    for (let i = 0; i < audios.length; i++) {
+                        if (!audios[i].paused && audios[i].readyState > 1) { sonando = true; break; }
+                    }
+                }
+            } catch (e) { }
+            if (sonando) { ultimoOk = Date.now(); return; }
+            if (Date.now() - ultimoOk > 25000) {
+                musesCargar();
+                ultimoOk = Date.now();
+            }
+        }, 7000);
     })();
 
     function vistaHorizontalAutomatica() {
