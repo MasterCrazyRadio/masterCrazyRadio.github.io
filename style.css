@@ -50,8 +50,60 @@ body {
     overflow: hidden;
     background:
         linear-gradient(rgba(5, 5, 16, 0.30), rgba(5, 5, 16, 0.62)),
-        url('telegram-doodles.png?v=85') center/620px auto repeat,
         radial-gradient(circle at 50% 50%, #1a1a2e 0%, #050510 100%);
+}
+
+/* Iconos navidenos en movimiento: capa propia con deriva continua */
+.bg-doodles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -2;
+    pointer-events: none;
+    background-image: url('telegram-doodles.png?v=86');
+    background-repeat: repeat;
+    background-size: 620px auto;
+    background-position: 0 0;
+    animation: doodlesDeriva 160s linear infinite;
+    will-change: background-position;
+}
+
+@keyframes doodlesDeriva {
+    from { background-position: 0 0; }
+    to   { background-position: 620px 620px; }
+}
+
+/* Nieve cayendo por toda la pagina */
+.snowfall {
+    position: fixed;
+    inset: 0;
+    z-index: 3;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.snowfall span {
+    position: absolute;
+    top: -8vh;
+    color: #ffffff;
+    line-height: 1;
+    text-shadow: 0 0 6px rgba(190, 225, 255, 0.75);
+    animation-name: nieveCae;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    will-change: transform;
+}
+
+@keyframes nieveCae {
+    0%   { transform: translate3d(0, -10vh, 0) rotate(0deg); }
+    100% { transform: translate3d(var(--deriva, 20px), 112vh, 0) rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .bg-doodles { animation: none; }
+    .snowfall { display: none; }
 }
 
 .mesh-gradient {

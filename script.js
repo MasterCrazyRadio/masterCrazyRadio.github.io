@@ -2318,3 +2318,38 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(handleMctvDeepLink, 1200);
 
 });
+
+/* ===== Nieve cayendo por toda la pagina (navidad) ===== */
+(function () {
+    function crearNieve() {
+        var cont = document.getElementById('snowfall');
+        if (!cont) { return; }
+        try {
+            if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) { return; }
+        } catch (e) {}
+
+        var ancho = window.innerWidth || 1024;
+        var cantidad = ancho < 640 ? 26 : (ancho < 1200 ? 40 : 54);
+        var copos = ['\u2744', '\u2745', '\u2746', '\u2022', '\u00b7', '*'];
+        var html = '';
+        for (var i = 0; i < cantidad; i++) {
+            var dur = (7 + Math.random() * 11).toFixed(2);
+            var delay = (-Math.random() * 18).toFixed(2);
+            var tam = Math.round(8 + Math.random() * 14);
+            var der = Math.round(Math.random() * 140 - 70);
+            var op = (0.25 + Math.random() * 0.55).toFixed(2);
+            var izq = (Math.random() * 100).toFixed(2);
+            var copo = copos[Math.floor(Math.random() * copos.length)];
+            html += '<span style="left:' + izq + '%;font-size:' + tam + 'px;opacity:' + op +
+                    ';--deriva:' + der + 'px;animation-duration:' + dur + 's;animation-delay:' + delay + 's">' +
+                    copo + '</span>';
+        }
+        cont.innerHTML = html;
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', crearNieve);
+    } else {
+        crearNieve();
+    }
+})();
