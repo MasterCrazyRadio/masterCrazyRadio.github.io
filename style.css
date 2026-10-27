@@ -4128,3 +4128,40 @@ main > section {
         -webkit-text-stroke: 2.4px #FFFFFF !important;
     }
 }
+/* ===== LETRAS EN AZUL #00A8E1 con la misma sombra negra del logo =====
+   Aplica a: "Mas que radio!!", "En Vivo" / "Crazy", y nombres de canales
+   (La Kalle, Quiero TV, Master Crazy TV...). Se elimina el hueco transparente. */
+.brand-sky,
+.section-title .highlight,
+.tv-card h3,
+.tv-card .tv-icon,
+.top5-play i {
+    background: none !important;
+    background-image: none !important;
+    -webkit-background-clip: border-box !important;
+    background-clip: border-box !important;
+    color: #00A8E1 !important;
+    -webkit-text-fill-color: #00A8E1 !important;
+    -webkit-text-stroke: 0 !important;
+    paint-order: normal !important;
+    filter: none !important;
+    text-shadow:
+        2px 2px 0 rgba(0, 0, 0, 0.95),
+        -1px -1px 0 rgba(0, 0, 0, 0.85),
+        1px -1px 0 rgba(0, 0, 0, 0.85),
+        -1px 1px 0 rgba(0, 0, 0, 0.85),
+        0 3px 8px rgba(0, 0, 0, 0.75) !important;
+}
+
+/* El circulo del Play del Top: borde azul y icono azul con la misma sombra */
+.top5-play {
+    background: transparent !important;
+    border: 2px solid #00A8E1 !important;
+    box-shadow: 0 0 10px rgba(0, 168, 225, 0.35) !important;
+}
+.top5-play:hover,
+.top5-play:focus,
+.top5-play:active {
+    border-color: #00A8E1 !important;
+    box-shadow: 0 0 16px rgba(0, 168, 225, 0.55) !important;
+}
