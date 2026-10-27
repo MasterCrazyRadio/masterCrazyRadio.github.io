@@ -49,30 +49,18 @@ body {
     z-index: -1;
     overflow: hidden;
     background:
-        linear-gradient(rgba(5, 5, 16, 0.30), rgba(5, 5, 16, 0.62)),
+        linear-gradient(rgba(5, 5, 16, 0.18), rgba(5, 5, 16, 0.52)),
+        url('telegram-doodles.png?v=87') center/620px auto repeat,
         radial-gradient(circle at 50% 50%, #1a1a2e 0%, #050510 100%);
-}
-
-/* Iconos navidenos en movimiento: capa propia con deriva continua */
-.bg-doodles {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -2;
-    pointer-events: none;
-    background-image: url('telegram-doodles.png?v=86');
-    background-repeat: repeat;
-    background-size: 620px auto;
-    background-position: 0 0;
-    animation: doodlesDeriva 160s linear infinite;
+    background-position: 0 0, 0 0, center center;
+    animation: fondoDeriva 160s linear infinite;
     will-change: background-position;
 }
 
-@keyframes doodlesDeriva {
-    from { background-position: 0 0; }
-    to   { background-position: 620px 620px; }
+/* Deriva continua del mosaico de iconos (bucle perfecto de un mosaico) */
+@keyframes fondoDeriva {
+    from { background-position: 0 0, 0 0, center center; }
+    to   { background-position: 0 0, 620px 620px, center center; }
 }
 
 /* Nieve cayendo por toda la pagina */
@@ -102,7 +90,7 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .bg-doodles { animation: none; }
+    .background-animation { animation: none; }
     .snowfall { display: none; }
 }
 
