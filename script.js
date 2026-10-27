@@ -1998,6 +1998,27 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 7000);
     })();
 
+    // ===== Nieve cayendo (animacion navidena) =====
+    (function crearNieve() {
+        try {
+            const cont = document.getElementById('snowfall');
+            if (!cont) return;
+            const cuantos = (window.innerWidth < 700) ? 22 : 38;
+            const glifos = ['\u2744', '\u2745', '\u2746', '\u2022'];
+            for (let i = 0; i < cuantos; i++) {
+                const s = document.createElement('span');
+                s.textContent = glifos[Math.floor(Math.random() * glifos.length)];
+                s.style.left = (Math.random() * 100).toFixed(2) + 'vw';
+                s.style.fontSize = (8 + Math.random() * 12).toFixed(0) + 'px';
+                s.style.animationDuration = (8 + Math.random() * 10).toFixed(1) + 's';
+                s.style.animationDelay = (-Math.random() * 16).toFixed(1) + 's';
+                s.style.opacity = (0.30 + Math.random() * 0.45).toFixed(2);
+                s.style.setProperty('--deriva', ((Math.random() * 80) - 40).toFixed(0) + 'px');
+                cont.appendChild(s);
+            }
+        } catch (e) { }
+    })();
+
     function vistaHorizontalAutomatica() {
         try {
             if (typeof applyForcedLandscape === 'function') applyForcedLandscape();

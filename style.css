@@ -50,7 +50,7 @@ body {
     overflow: hidden;
     background:
         linear-gradient(rgba(5, 5, 16, 0.60), rgba(5, 5, 16, 0.60)),
-        url('radio_background.png?v=77') center/400px repeat,
+        url('radio_background.png?v=78') center/400px repeat,
         radial-gradient(circle at 50% 50%, #1a1a2e 0%, #050510 100%);
 }
 
@@ -3436,6 +3436,32 @@ main > section {
 @keyframes psBlink {
     0%, 100% { opacity: .9; }
     50%      { opacity: .35; }
+}
+
+/* ===== NIEVE CAYENDO (animacion navidena) ===== */
+.snowfall {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 2;
+    overflow: hidden;
+}
+
+.snowfall span {
+    position: absolute;
+    top: -12vh;
+    color: #ffffff;
+    line-height: 1;
+    will-change: transform;
+    animation-name: nieveCae;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    text-shadow: 0 0 8px rgba(165, 228, 255, 0.55);
+}
+
+@keyframes nieveCae {
+    0%   { transform: translate3d(0, -12vh, 0) rotate(0deg); }
+    100% { transform: translate3d(var(--deriva, 20px), 112vh, 0) rotate(360deg); }
 }
 
 /* ===== FLYERS en formato ACHATADO / CUADRADO (TV y computador) =====
