@@ -49,8 +49,8 @@ body {
     z-index: -1;
     overflow: hidden;
     background:
-        linear-gradient(rgba(5, 5, 16, 0.42), rgba(5, 5, 16, 0.70)),
-        url('fondo-navidad-letras.png?v=81') center/430px auto repeat,
+        linear-gradient(rgba(5, 5, 16, 0.30), rgba(5, 5, 16, 0.62)),
+        url('telegram-doodles.png?v=82') center/620px auto repeat,
         radial-gradient(circle at 50% 50%, #1a1a2e 0%, #050510 100%);
 }
 
