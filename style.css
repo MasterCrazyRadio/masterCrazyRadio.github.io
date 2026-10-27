@@ -3844,3 +3844,91 @@ main > section {
 .tv-modal .tv-audio-overlay {
     z-index: 20 !important;
 }
+
+/* ===== REPRODUCTOR DE AUDIO: verde-amarillo #A8F000 permanente + efecto y animacion ===== */
+:root {
+    --player-accent: #A8F000;
+}
+
+/* 1) El color del reproductor queda fijado al verde-amarillo del logo */
+.header-play-btn,
+.play-btn {
+    border-color: var(--player-accent) !important;
+    color: var(--player-accent) !important;
+}
+.header-play-btn i,
+.play-btn i {
+    color: var(--player-accent) !important;
+}
+.status-indicator {
+    color: var(--player-accent) !important;
+    text-shadow: 0 0 12px rgba(168, 240, 0, 0.45);
+}
+
+/* 2) Aro pulsante alrededor del boton de play */
+.play-btn,
+.header-play-btn {
+    position: relative;
+}
+.play-btn::after,
+.header-play-btn::after {
+    content: "";
+    position: absolute;
+    inset: -6px;
+    border-radius: 50%;
+    border: 2px solid rgba(168, 240, 0, 0.55);
+    animation: playerRingPulso 2.6s ease-out infinite;
+    pointer-events: none;
+}
+@keyframes playerRingPulso {
+    0%   { transform: scale(0.86); opacity: 0.9; }
+    70%  { transform: scale(1.28); opacity: 0; }
+    100% { transform: scale(1.28); opacity: 0; }
+}
+
+/* 3) Halo del reproductor: pulso suave (solo transform + opacity = GPU) */
+.player-glow {
+    background: radial-gradient(circle, rgba(168, 240, 0, 0.40) 0%, rgba(168, 240, 0, 0) 70%) !important;
+    animation: playerGlowPulso 3.6s ease-in-out infinite alternate !important;
+    filter: none !important;
+    opacity: 0.55;
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+}
+@keyframes playerGlowPulso {
+    from { transform: scale(0.94) translateZ(0); opacity: 0.35; }
+    to   { transform: scale(1.06) translateZ(0); opacity: 0.75; }
+}
+
+/* 4) Ecualizador: siempre animado y en verde-amarillo */
+.visualizer-container .bar {
+    background: linear-gradient(to top, #A8F000, rgba(168, 240, 0, 0.12)) !important;
+    box-shadow: 0 0 10px rgba(168, 240, 0, 0.35);
+    animation-name: equalize !important;
+    animation-duration: 1.1s !important;
+    animation-iteration-count: infinite !important;
+    animation-timing-function: ease-in-out !important;
+    will-change: transform;
+}
+
+/* 5) En TV / bajo consumo el efecto se mantiene, solo que mas lento y sin costo */
+.is-low-power .player-glow,
+.is-tv .player-glow {
+    animation-duration: 5s !important;
+}
+.is-low-power .visualizer-container .bar,
+.is-tv .visualizer-container .bar {
+    animation-duration: 1.6s !important;
+}
+.is-low-power .play-btn::after,
+.is-low-power .header-play-btn::after,
+.is-tv .play-btn::after,
+.is-tv .header-play-btn::after {
+    animation-duration: 4s !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .player-glow,
+    .play-btn::after,
+    .header-play-btn::after { animation: none !important; }
+}
