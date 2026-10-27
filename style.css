@@ -49,8 +49,8 @@ body {
     z-index: -1;
     overflow: hidden;
     background:
-        linear-gradient(rgba(5, 5, 16, 0.75), rgba(5, 5, 16, 0.75)),
-        url('radio_background.png?v=76') center/400px repeat,
+        linear-gradient(rgba(5, 5, 16, 0.60), rgba(5, 5, 16, 0.60)),
+        url('radio_background.png?v=77') center/400px repeat,
         radial-gradient(circle at 50% 50%, #1a1a2e 0%, #050510 100%);
 }
 
