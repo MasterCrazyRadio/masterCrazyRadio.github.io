@@ -4077,3 +4077,54 @@ main > section {
         -webkit-text-stroke: 3.6px #000000 !important;
     }
 }
+/* ===== ACABADO DEFINITIVO: hueco con contorno BLANCO fino y limpio =====
+   Relleno transparente (se ve el fondo real) + trazo blanco de 2px dibujado por detras.
+   Se elimina cualquier halo/sombra que ensuciaba el entorno de la letra. */
+.brand-sky,
+.section-title .highlight,
+.tv-card h3,
+.tv-card .tv-icon,
+.top5-play i {
+    background: none !important;
+    background-image: none !important;
+    -webkit-background-clip: border-box !important;
+    background-clip: border-box !important;
+    color: transparent !important;
+    -webkit-text-fill-color: transparent !important;
+    text-shadow: none !important;
+    box-shadow: none !important;
+    filter: none !important;
+    -webkit-text-stroke: 2px #FFFFFF !important;
+    paint-order: stroke fill !important;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+    letter-spacing: 0.2px;
+    text-rendering: geometricPrecision;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Circulo del Play del Top en blanco y fino */
+.top5-play {
+    background: transparent !important;
+    background-image: none !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.9) !important;
+    box-shadow: none !important;
+}
+.top5-play:hover,
+.top5-play:focus,
+.top5-play:active {
+    border-color: #FFFFFF !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+/* TV / tactiles: apenas un poco mas de trazo para leerse a distancia, sin engordar */
+@media (pointer: coarse) {
+    .brand-sky,
+    .section-title .highlight,
+    .tv-card h3,
+    .tv-card .tv-icon,
+    .top5-play i {
+        -webkit-text-stroke: 2.4px #FFFFFF !important;
+    }
+}
