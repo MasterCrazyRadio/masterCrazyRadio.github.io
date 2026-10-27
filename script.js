@@ -2405,6 +2405,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function listo() {
     var btn = document.getElementById('pide-btn');
+    var btnFlotante = document.getElementById('pide-btn-float');
     var panel = document.getElementById('pide-panel');
     var cerrar = document.getElementById('pide-cerrar');
     var enviar = document.getElementById('pide-enviar');
@@ -2418,10 +2419,12 @@ document.addEventListener('DOMContentLoaded', () => {
       if (v) { try { campo.focus(); } catch (e) {} }
     }
 
-    btn.addEventListener('click', function (e) {
-      e.preventDefault();
+    function alternar(e) {
+      if (e) e.preventDefault();
       abrir(!panel.classList.contains('abierto'));
-    });
+    }
+    btn.addEventListener('click', alternar);
+    if (btnFlotante) btnFlotante.addEventListener('click', alternar);
     if (cerrar) cerrar.addEventListener('click', function (e) { e.preventDefault(); abrir(false); });
 
     function textoUsuario() {

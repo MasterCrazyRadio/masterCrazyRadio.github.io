@@ -4304,3 +4304,20 @@ main > section {
     .pide-top-btn span { display: none; }
     .pide-top-btn { padding: 8px 10px; }
 }
+/* ===== Aviso "Pide una canción": SOLO en telefonos (Android/iPhone) y computadores =====
+   En TV (Android TV, Fire TV, ONN, Smart TV) se oculta por completo. */
+.pide-btn {
+    position: fixed; right: 24px; bottom: 112px; z-index: 9999;
+    display: flex; align-items: center; gap: 8px;
+    padding: 12px 16px; border-radius: 999px;
+    border: 2px solid #00A8E1; background: rgba(0, 168, 225, 0.18);
+    color: #fff; font-weight: 700; font-size: 0.9rem; cursor: pointer;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+}
+.pide-btn:hover { background: #00A8E1; color: #04121a; }
+.is-tv .pide-btn,
+.is-tv .pide-top-btn,
+.is-tv .pide-panel { display: none !important; }
+@media (max-width: 640px) {
+    .pide-btn { right: 14px; bottom: 96px; padding: 10px 13px; font-size: 0.8rem; }
+}
