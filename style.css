@@ -9,14 +9,14 @@
 :root {
     --bg-color: #4a0410;
     --text-color: #FFFFFF;
-    --primary-neon: #A8F000;
-    /* Verde ca├â┬▒a del logo */
-    --secondary-neon: #A8F000;
-    /* Blanco azul ne├│n */
-    --tertiary-neon: #A8F000;
-    /* Blanco azul ne├│n */
-    --glass-bg: rgba(168, 240, 0, 0.05);
-    --glass-border: rgba(168, 240, 0, 0.04);
+    --primary-neon: #FFFFFF;
+    /* Verde caâ”œÃ¢â”¬â–’a del logo */
+    --secondary-neon: #FFFFFF;
+    /* Blanco azul neâ”œâ”‚n */
+    --tertiary-neon: #FFFFFF;
+    /* Blanco azul neâ”œâ”‚n */
+    --glass-bg: rgba(255, 255, 255, 0.05);
+    --glass-border: rgba(255, 255, 255, 0.04);
     --font-main: 'Outfit', sans-serif;
 }
 
@@ -36,7 +36,7 @@ body {
     flex-direction: column;
     perspective: 1000px;
     /* For 3D effects */
-    text-shadow: 0 0 10px rgba(168, 240, 0, 0.05);
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
 }
 
 /* Advanced Background */
@@ -182,10 +182,10 @@ body {
     top: -25%;
     left: -25%;
     background:
-        radial-gradient(at 0% 0%, rgba(168, 240, 0, 0.04) 0px, transparent 50%),
-        radial-gradient(at 100% 0%, rgba(168, 240, 0, 0.04) 0px, transparent 50%),
-        radial-gradient(at 100% 100%, rgba(168, 240, 0, 0.04) 0px, transparent 50%),
-        radial-gradient(at 0% 100%, rgba(168, 240, 0, 0.04) 0px, transparent 50%);
+        radial-gradient(at 0% 0%, rgba(255, 255, 255, 0.04) 0px, transparent 50%),
+        radial-gradient(at 100% 0%, rgba(255, 255, 255, 0.04) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(255, 255, 255, 0.04) 0px, transparent 50%),
+        radial-gradient(at 0% 100%, rgba(255, 255, 255, 0.04) 0px, transparent 50%);
     filter: blur(60px);
     animation: meshRotate 20s linear infinite;
 }
@@ -205,7 +205,7 @@ body {
     position: fixed;
     width: 600px;
     height: 600px;
-    background: radial-gradient(circle, rgba(168, 240, 0, 0.04) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.04) 0%, transparent 70%);
     border-radius: 50%;
     pointer-events: none;
     transform: translate(-50%, -50%);
@@ -224,16 +224,16 @@ body {
     width: 44px;
     height: 44px;
     border-radius: 50%;
-    border: 2px solid #A8F000;
-    background: rgba(168, 240, 0, 0.06);
-    color: #A8F000;
+    border: 2px solid #FFFFFF;
+    background: rgba(255, 255, 255, 0.06);
+    color: #FFFFFF;
     font-size: 1.1rem;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    box-shadow: 0 0 14px rgba(168, 240, 0, 0.18);
+    box-shadow: 0 0 14px rgba(255, 255, 255, 0.18);
     transition: all 0.3s ease;
     /* Sin cuadro al tocar: redondeado y sin resaltado de tap */
     outline: none;
@@ -244,9 +244,9 @@ body {
 }
 
 .header-play-btn:hover {
-    background: linear-gradient(135deg, #A8F000, #A8F000);
+    background: linear-gradient(135deg, #FFFFFF, #FFFFFF);
     color: #000;
-    box-shadow: 0 0 24px rgba(168, 240, 0, 0.18);
+    box-shadow: 0 0 24px rgba(255, 255, 255, 0.18);
     transform: scale(1.1);
 }
 
@@ -254,10 +254,10 @@ body {
     outline: none;
 }
 
-/* Efecto push: al presionar se hunde como bot├│n f├¡sico */
+/* Efecto push: al presionar se hunde como botâ”œâ”‚n fâ”œÂ¡sico */
 .header-play-btn:active {
     transform: scale(0.85);
-    box-shadow: 0 0 10px rgba(168, 240, 0, 0.25);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.25);
     transition: transform 0.08s ease-in, box-shadow 0.08s ease-in;
 }
 
@@ -294,16 +294,16 @@ body {
 .brand-green {
     color: #FFFFFF;
     -webkit-text-fill-color: #FFFFFF;
-    text-shadow: 0 0 15px rgba(168, 240, 0, 0.25);
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.25);
 }
 
 .brand-sky {
-    background: linear-gradient(135deg, #A8F000, #A8F000);
+    background: linear-gradient(135deg, #FFFFFF, #FFFFFF);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
     color: #FFFFFF;
-    filter: drop-shadow(0 0 12px rgba(168, 240, 0, 0.25));
+    filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.25));
 }
 
 .neon-text::before {
@@ -342,7 +342,7 @@ body {
 
 .main-nav a {
     text-decoration: none;
-    color: rgba(168, 240, 0, 0.45);
+    color: rgba(255, 255, 255, 0.45);
     font-weight: 500;
     font-size: 1.1rem;
     padding: 8px 16px;
@@ -371,7 +371,7 @@ body {
 .main-nav a:hover,
 .main-nav a.active {
     color: #FFFFFF;
-    text-shadow: 0 0 5px rgba(168, 240, 0, 0.28);
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.28);
 }
 
 .main-nav a:hover::before {
@@ -404,17 +404,17 @@ body {
     margin-top: -8px;
 }
 
-/* Aurora: gradiente c├│nico girando con blur, detr├ís del logo */
+/* Aurora: gradiente câ”œâ”‚nico girando con blur, detrâ”œÃ­s del logo */
 .hero-logo-aurora {
     position: absolute;
     inset: -26px;
     border-radius: 50%;
     background: conic-gradient(from 0deg,
-        #A8F000 0deg,
+        #FFFFFF 0deg,
         #FFFFFF 90deg,
-        #A8F000 180deg,
+        #FFFFFF 180deg,
         #FFFFFF 270deg,
-        #A8F000 360deg);
+        #FFFFFF 360deg);
     filter: blur(18px);
     opacity: 0.5;
     z-index: 0;
@@ -422,16 +422,16 @@ body {
     animation: aurora-spin 6s linear infinite, aurora-pulse 3s ease-in-out infinite;
 }
 
-/* Segunda capa de aurora, m├ís amplia y lenta, para dar profundidad */
+/* Segunda capa de aurora, mâ”œÃ­s amplia y lenta, para dar profundidad */
 .hero-logo-wrap::after {
     content: "";
     position: absolute;
     inset: -40px;
     border-radius: 50%;
     background: radial-gradient(circle,
-        rgba(168, 240, 0, 0.18) 0%,
+        rgba(255, 255, 255, 0.18) 0%,
         rgba(255, 255, 255, 0.12) 35%,
-        rgba(168, 240, 0, 0.15) 65%,
+        rgba(255, 255, 255, 0.15) 65%,
         transparent 100%);
     filter: blur(12px);
     opacity: 0.45;
@@ -476,7 +476,7 @@ body {
     flex-shrink: 0;
     margin-top: 0;
     border: 3px solid var(--primary-neon);
-    box-shadow: 0 0 30px rgba(168, 240, 0, 0.05), 0 10px 30px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.05), 0 10px 30px rgba(0, 0, 0, 0.5);
     cursor: pointer;
     /* Sin cuadro al tocar: quita el resaltado de foco/tap y el arrastre */
     outline: none;
@@ -484,27 +484,27 @@ body {
     -webkit-user-drag: none;
     user-select: none;
     -webkit-user-select: none;
-    /* Transici├│n base: al soltar, sale con rebote (punch) */
+    /* Transiciâ”œâ”‚n base: al soltar, sale con rebote (punch) */
     transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
 }
 
 .hero-logo:hover {
     transform: scale(1.06);
-    box-shadow: 0 0 34px rgba(168, 240, 0, 0.35), 0 10px 30px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 34px rgba(255, 255, 255, 0.35), 0 10px 30px rgba(0, 0, 0, 0.5);
 }
 
 .hero-logo:focus {
     outline: none;
 }
 
-/* Efecto punch: al presionar el logo entra (se hunde) como bot├│n f├¡sico */
+/* Efecto punch: al presionar el logo entra (se hunde) como botâ”œâ”‚n fâ”œÂ¡sico */
 .hero-logo:active {
     transform: scale(0.85);
-    box-shadow: 0 0 18px rgba(168, 240, 0, 0.5), 0 4px 12px rgba(0, 0, 0, 0.6);
+    box-shadow: 0 0 18px rgba(255, 255, 255, 0.5), 0 4px 12px rgba(0, 0, 0, 0.6);
     transition: transform 0.08s ease-in, box-shadow 0.08s ease-in;
 }
 
-/* Animaci├│n de punch completa al tocar: entra, sale con rebote y da la sensaci├│n de activaci├│n */
+/* Animaciâ”œâ”‚n de punch completa al tocar: entra, sale con rebote y da la sensaciâ”œâ”‚n de activaciâ”œâ”‚n */
 .hero-logo.logo-punch {
     animation: logo-punch 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
@@ -512,15 +512,15 @@ body {
 @keyframes logo-punch {
     0% {
         transform: scale(0.85);
-        box-shadow: 0 0 18px rgba(168, 240, 0, 0.5), 0 4px 12px rgba(0, 0, 0, 0.6);
+        box-shadow: 0 0 18px rgba(255, 255, 255, 0.5), 0 4px 12px rgba(0, 0, 0, 0.6);
     }
     55% {
         transform: scale(1.09);
-        box-shadow: 0 0 40px rgba(168, 240, 0, 0.55), 0 10px 30px rgba(0, 0, 0, 0.5);
+        box-shadow: 0 0 40px rgba(255, 255, 255, 0.55), 0 10px 30px rgba(0, 0, 0, 0.5);
     }
     100% {
         transform: scale(1);
-        box-shadow: 0 0 30px rgba(168, 240, 0, 0.05), 0 10px 30px rgba(0, 0, 0, 0.5);
+        box-shadow: 0 0 30px rgba(255, 255, 255, 0.05), 0 10px 30px rgba(0, 0, 0, 0.5);
     }
 }
 
@@ -529,16 +529,16 @@ body {
     font-weight: 900;
     margin-bottom: 20px;
     line-height: 1.1;
-    background: linear-gradient(to right, #A8F000, #A8F000);
+    background: linear-gradient(to right, #FFFFFF, #FFFFFF);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    filter: drop-shadow(0 0 20px rgba(168, 240, 0, 0.15));
+    filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.15));
 }
 
 .hero-brand-text p {
     font-size: 1.3rem;
     margin-bottom: 0;
-    color: rgba(168, 240, 0, 0.05);
+    color: rgba(255, 255, 255, 0.05);
     max-width: 600px;
     margin-left: 0;
     margin-right: 0;
@@ -566,10 +566,10 @@ body {
     font-weight: 900;
     margin-bottom: 20px;
     line-height: 1.1;
-    background: linear-gradient(to right, #A8F000, #A8F000);
+    background: linear-gradient(to right, #FFFFFF, #FFFFFF);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    filter: drop-shadow(0 0 20px rgba(168, 240, 0, 0.15));
+    filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.15));
 }
 
 .electric {
@@ -584,7 +584,7 @@ body {
 .hero-content p {
     font-size: 1.3rem;
     margin-bottom: 50px;
-    color: rgba(168, 240, 0, 0.05);
+    color: rgba(255, 255, 255, 0.05);
     max-width: 600px;
     margin-left: auto;
     margin-right: auto;
@@ -612,12 +612,12 @@ body {
     position: relative;
     border-radius: 20px;
     overflow: hidden;
-    background: rgba(168, 240, 0, 0.04);
+    background: rgba(255, 255, 255, 0.04);
     backdrop-filter: blur(20px);
-    border: 1px solid rgba(168, 240, 0, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.04);
     box-shadow:
         0 20px 50px rgba(0, 0, 0, 0.5),
-        0 0 0 1px rgba(168, 240, 0, 0.05) inset;
+        0 0 0 1px rgba(255, 255, 255, 0.05) inset;
     transition: transform 0.1s ease, box-shadow 0.3s ease;
     transform-style: preserve-3d;
     width: 400px;
@@ -631,7 +631,7 @@ body {
 .player-container:hover {
     box-shadow:
         0 30px 60px rgba(0, 0, 0, 0.6),
-        0 0 30px rgba(168, 240, 0, 0.12);
+        0 0 30px rgba(255, 255, 255, 0.12);
 }
 
 .player-glow {
@@ -657,8 +657,8 @@ body {
 .status-indicator {
     font-size: 0.9rem;
     font-weight: 700;
-    color: #A8F000;
-    text-shadow: 0 0 12px rgba(168, 240, 0, 0.35);
+    color: #FFFFFF;
+    text-shadow: 0 0 12px rgba(255, 255, 255, 0.35);
     margin-bottom: 15px;
     display: flex;
     align-items: center;
@@ -667,7 +667,7 @@ body {
     letter-spacing: 2px;
 }
 
-/* Aviso de reconexi├│n autom├ítica del reproductor */
+/* Aviso de reconexiâ”œâ”‚n automâ”œÃ­tica del reproductor */
 .reconnect-status {
     font-size: 0.85rem;
     font-weight: 600;
@@ -693,9 +693,9 @@ body {
 .live-dot {
     width: 10px;
     height: 10px;
-    background: #A8F000;
+    background: #FFFFFF;
     border-radius: 50%;
-    box-shadow: 0 0 10px #A8F000;
+    box-shadow: 0 0 10px #FFFFFF;
     animation: pulse 1s infinite;
 }
 
@@ -753,9 +753,9 @@ body {
     width: 80px;
     height: 80px;
     border-radius: 50%;
-    background: rgba(168, 240, 0, 0.04);
-    border: 2px solid #A8F000;
-    color: #A8F000;
+    background: rgba(255, 255, 255, 0.04);
+    border: 2px solid #FFFFFF;
+    color: #FFFFFF;
     font-size: 2rem;
     cursor: pointer;
     transition: 0.3s;
@@ -763,7 +763,7 @@ body {
     align-items: center;
     justify-content: center;
     margin: 0 auto 30px;
-    box-shadow: 0 0 20px rgba(168, 240, 0, 0.12);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.12);
     transform-style: preserve-3d;
     will-change: transform;
     animation: play3D 5s ease-in-out infinite;
@@ -777,9 +777,9 @@ body {
 
 .play-btn:hover {
     animation-play-state: paused;
-    background: linear-gradient(135deg, #A8F000, #A8F000);
+    background: linear-gradient(135deg, #FFFFFF, #FFFFFF);
     color: #000;
-    box-shadow: 0 0 40px rgba(168, 240, 0, 0.28);
+    box-shadow: 0 0 40px rgba(255, 255, 255, 0.28);
     transform: scale(1.15);
 }
 
@@ -787,30 +787,30 @@ body {
     outline: none;
 }
 
-/* Efecto push: al presionar se hunde como bot├│n f├¡sico */
+/* Efecto push: al presionar se hunde como botâ”œâ”‚n fâ”œÂ¡sico */
 .play-btn:active {
     animation-play-state: paused;
     transform: scale(0.85);
-    box-shadow: 0 0 12px rgba(168, 240, 0, 0.25);
+    box-shadow: 0 0 12px rgba(255, 255, 255, 0.25);
     transition: transform 0.08s ease-in, box-shadow 0.08s ease-in;
 }
 
 @keyframes play3D {
     0%, 100% {
         transform: perspective(600px) rotateY(0deg) translateZ(0);
-        box-shadow: 0 0 20px rgba(168, 240, 0, 0.12);
+        box-shadow: 0 0 20px rgba(255, 255, 255, 0.12);
     }
     30% {
         transform: perspective(600px) rotateY(18deg) translateZ(22px);
-        box-shadow: 0 0 35px rgba(168, 240, 0, 0.28), 0 0 60px rgba(168, 240, 0, 0.12);
+        box-shadow: 0 0 35px rgba(255, 255, 255, 0.28), 0 0 60px rgba(255, 255, 255, 0.12);
     }
     50% {
         transform: perspective(600px) rotateY(0deg) translateZ(35px);
-        box-shadow: 0 0 45px rgba(168, 240, 0, 0.18), 0 0 80px rgba(168, 240, 0, 0.18);
+        box-shadow: 0 0 45px rgba(255, 255, 255, 0.18), 0 0 80px rgba(255, 255, 255, 0.18);
     }
     70% {
         transform: perspective(600px) rotateY(-18deg) translateZ(22px);
-        box-shadow: 0 0 35px rgba(168, 240, 0, 0.28), 0 0 60px rgba(168, 240, 0, 0.12);
+        box-shadow: 0 0 35px rgba(255, 255, 255, 0.28), 0 0 60px rgba(255, 255, 255, 0.12);
     }
 }
 
@@ -819,19 +819,19 @@ body {
     align-items: center;
     justify-content: center;
     gap: 15px;
-    color: #A8F000;
+    color: #FFFFFF;
 }
 
 #volume-icon {
-    color: #A8F000;
-    text-shadow: 0 0 10px rgba(168, 240, 0, 0.5);
+    color: #FFFFFF;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
 }
 
 input[type="range"] {
     -webkit-appearance: none;
     width: 100px;
     height: 4px;
-    background: rgba(168, 240, 0, 0.25);
+    background: rgba(255, 255, 255, 0.25);
     border-radius: 2px;
     outline: none;
 }
@@ -840,10 +840,10 @@ input[type="range"]::-webkit-slider-thumb {
     -webkit-appearance: none;
     width: 15px;
     height: 15px;
-    background: #A8F000;
+    background: #FFFFFF;
     border-radius: 50%;
     cursor: pointer;
-    box-shadow: 0 0 10px rgba(168, 240, 0, 0.5);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
     transition: 0.2s;
 }
 
@@ -851,7 +851,7 @@ input[type="range"]::-webkit-slider-thumb:hover {
     transform: scale(1.2);
 }
 
-/* Ecualizador gr├ífico */
+/* Ecualizador grâ”œÃ­fico */
 .visualizer-container {
     display: flex;
     justify-content: center;
@@ -866,34 +866,34 @@ input[type="range"]::-webkit-slider-thumb:hover {
 .bar {
     width: 6px;
     border-radius: 4px 4px 2px 2px;
-    background: linear-gradient(to top, #A8F000, rgba(168, 240, 0, 0.04));
-    box-shadow: 0 0 10px rgba(168, 240, 0, 0.15);
+    background: linear-gradient(to top, #FFFFFF, rgba(255, 255, 255, 0.04));
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.15);
     animation: equalize 1.1s infinite ease-in-out;
     transform-origin: bottom;
 }
 
-/* Variaci├│n pastel por barra */
+/* Variaciâ”œâ”‚n pastel por barra */
 .bar:nth-child(4n+1) {
-    background: linear-gradient(to top, #A8F000, rgba(168, 240, 0, 0.04));
-    box-shadow: 0 0 10px rgba(168, 240, 0, 0.15);
+    background: linear-gradient(to top, #FFFFFF, rgba(255, 255, 255, 0.04));
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.15);
 }
 
 .bar:nth-child(4n+2) {
-    background: linear-gradient(to top, #A8F000, rgba(168, 240, 0, 0.04));
-    box-shadow: 0 0 10px rgba(168, 240, 0, 0.15);
+    background: linear-gradient(to top, #FFFFFF, rgba(255, 255, 255, 0.04));
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.15);
 }
 
 .bar:nth-child(4n+3) {
-    background: linear-gradient(to top, #A8F000, rgba(168, 240, 0, 0.04));
-    box-shadow: 0 0 10px rgba(168, 240, 0, 0.15);
+    background: linear-gradient(to top, #FFFFFF, rgba(255, 255, 255, 0.04));
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.15);
 }
 
 .bar:nth-child(4n) {
-    background: linear-gradient(to top, #A8F000, rgba(168, 240, 0, 0.04));
-    box-shadow: 0 0 10px rgba(168, 240, 0, 0.15);
+    background: linear-gradient(to top, #FFFFFF, rgba(255, 255, 255, 0.04));
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.15);
 }
 
-/* Escalonado de la animaci├│n tipo ecualizador */
+/* Escalonado de la animaciâ”œâ”‚n tipo ecualizador */
 .bar:nth-child(1) { animation-delay: 0s; }
 .bar:nth-child(2) { animation-delay: 0.1s; }
 .bar:nth-child(3) { animation-delay: 0.2s; }
@@ -1012,7 +1012,7 @@ input[type="range"]::-webkit-slider-thumb:hover {
     width: 44px;
     height: 44px;
     border-radius: 50%;
-    border: 1px solid rgba(168, 240, 0, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.05);
     background: rgba(0, 0, 0, 0.45);
     color: #FFFFFF;
     font-size: 1rem;
@@ -1025,7 +1025,7 @@ input[type="range"]::-webkit-slider-thumb:hover {
 }
 
 .flyer-slider-btn:hover {
-    background: rgba(168, 240, 0, 0.12);
+    background: rgba(255, 255, 255, 0.12);
 }
 
 .flyer-slider-prev {
@@ -1051,7 +1051,7 @@ input[type="range"]::-webkit-slider-thumb:hover {
     height: 10px;
     border-radius: 50%;
     border: none;
-    background: rgba(168, 240, 0, 0.18);
+    background: rgba(255, 255, 255, 0.18);
     cursor: pointer;
     padding: 0;
     transition: background 0.3s ease, transform 0.3s ease;
@@ -1066,22 +1066,22 @@ input[type="range"]::-webkit-slider-thumb:hover {
     position: relative;
     border-radius: 24px;
     padding: 12px;
-    background: rgba(168, 240, 0, 0.04);
+    background: rgba(255, 255, 255, 0.04);
     backdrop-filter: blur(20px);
-    border: 1px solid rgba(168, 240, 0, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.04);
     transform-style: preserve-3d;
     transition: transform 0.15s ease, box-shadow 0.3s ease;
     box-shadow:
         0 30px 60px rgba(0, 0, 0, 0.6),
-        0 0 0 1px rgba(168, 240, 0, 0.05) inset,
-        0 0 60px rgba(168, 240, 0, 0.04);
+        0 0 0 1px rgba(255, 255, 255, 0.05) inset,
+        0 0 60px rgba(255, 255, 255, 0.04);
 }
 
 .flyer-card:hover {
     box-shadow:
         0 40px 80px rgba(0, 0, 0, 0.7),
-        0 0 0 1px rgba(168, 240, 0, 0.04) inset,
-        0 0 80px rgba(168, 240, 0, 0.15);
+        0 0 0 1px rgba(255, 255, 255, 0.04) inset,
+        0 0 80px rgba(255, 255, 255, 0.15);
 }
 
 .flyer-glow {
@@ -1116,7 +1116,7 @@ input[type="range"]::-webkit-slider-thumb:hover {
     background: linear-gradient(
         90deg,
         transparent,
-        rgba(168, 240, 0, 0.18),
+        rgba(255, 255, 255, 0.18),
         transparent
     );
     transform: skewX(-25deg);
@@ -1185,9 +1185,9 @@ input[type="range"]::-webkit-slider-thumb:hover {
     padding: 30px;
     background: rgba(0, 0, 0, 0.4);
     backdrop-filter: blur(10px);
-    border-top: 1px solid rgba(168, 240, 0, 0.05);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
     font-size: 0.9rem;
-    color: rgba(168, 240, 0, 0.28);
+    color: rgba(255, 255, 255, 0.28);
     margin-top: auto;
 }
 
@@ -1418,8 +1418,8 @@ input[type="range"]::-webkit-slider-thumb:hover {
 }
 
 .tv-card {
-    background: rgba(168, 240, 0, 0.05);
-    border: 1px solid rgba(168, 240, 0, 0.04);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.04);
     border-radius: 20px;
     padding: 30px;
     cursor: pointer;
@@ -1437,8 +1437,8 @@ input[type="range"]::-webkit-slider-thumb:hover {
 
 .tv-card:hover {
     transform: translateY(-10px);
-    background: rgba(168, 240, 0, 0.04);
-    box-shadow: 0 10px 30px rgba(168, 240, 0, 0.05);
+    background: rgba(255, 255, 255, 0.04);
+    box-shadow: 0 10px 30px rgba(255, 255, 255, 0.05);
     border-color: var(--primary-neon);
 }
 
@@ -1446,7 +1446,7 @@ input[type="range"]::-webkit-slider-thumb:hover {
     outline: none;
 }
 
-/* Efecto push: al presionar la tarjeta se hunde como bot├│n f├¡sico */
+/* Efecto push: al presionar la tarjeta se hunde como botâ”œâ”‚n fâ”œÂ¡sico */
 .tv-card:active {
     transform: translateY(-2px) scale(0.96);
     transition: transform 0.08s ease-in, box-shadow 0.08s ease-in;
@@ -1461,8 +1461,8 @@ input[type="range"]::-webkit-slider-thumb:hover {
 
 .tv-icon {
     font-size: 3rem;
-    color: #A8F000;
-    text-shadow: 0 0 20px rgba(168, 240, 0, 0.25);
+    color: #FFFFFF;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.25);
     margin-bottom: 10px;
 }
 
@@ -1472,7 +1472,7 @@ input[type="range"]::-webkit-slider-thumb:hover {
 }
 
 .live-badge {
-    background: #A8F000;
+    background: #FFFFFF;
     color: #FFFFFF;
     padding: 5px 10px;
     border-radius: 5px;
@@ -1481,7 +1481,7 @@ input[type="range"]::-webkit-slider-thumb:hover {
     animation: pulse 2s infinite;
 }
 
-/* Estado del Partido En Vivo: cuando OK.ru est├í en pausa/ca├¡do */
+/* Estado del Partido En Vivo: cuando OK.ru estâ”œÃ­ en pausa/caâ”œÂ¡do */
 .live-badge.offline {
     background: #ff5252;
     color: #fff;
@@ -1522,7 +1522,7 @@ input[type="range"]::-webkit-slider-thumb:hover {
     transition: transform 0.3s ease;
 }
 
-/* Bot├│n compartir en tarjetas TV: toque sostenido o clic copia el enlace directo */
+/* Botâ”œâ”‚n compartir en tarjetas TV: toque sostenido o clic copia el enlace directo */
 .tv-share-btn {
     position: absolute;
     top: 12px;
@@ -1547,9 +1547,9 @@ input[type="range"]::-webkit-slider-thumb:hover {
 
 .tv-share-btn:hover,
 .tv-share-btn:focus {
-    background: linear-gradient(135deg, #A8F000, #A8F000);
+    background: linear-gradient(135deg, #FFFFFF, #FFFFFF);
     color: #000;
-    border-color: #A8F000;
+    border-color: #FFFFFF;
     opacity: 1;
     transform: scale(1.08);
 }
@@ -1559,9 +1559,9 @@ input[type="range"]::-webkit-slider-thumb:hover {
 }
 
 .tv-share-btn.copied {
-    background: #A8F000;
+    background: #FFFFFF;
     color: #000;
-    border-color: #A8F000;
+    border-color: #FFFFFF;
     opacity: 1;
 }
 
@@ -1572,8 +1572,8 @@ input[type="range"]::-webkit-slider-thumb:hover {
     bottom: 90px;
     transform: translateX(-50%) translateY(20px);
     background: rgba(10, 14, 25, 0.92);
-    border: 1px solid rgba(168, 240, 0, 0.6);
-    color: #A8F000;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    color: #FFFFFF;
     padding: 12px 22px;
     border-radius: 30px;
     font-size: 0.95rem;
@@ -1592,7 +1592,7 @@ input[type="range"]::-webkit-slider-thumb:hover {
     transform: translateX(-50%) translateY(0);
 }
 
-/* En TV el bot├│n compartir se ve m├ís grande y siempre visible */
+/* En TV el botâ”œâ”‚n compartir se ve mâ”œÃ­s grande y siempre visible */
 .is-tv .tv-share-btn {
     width: 52px;
     height: 52px;
@@ -1636,7 +1636,7 @@ input[type="range"]::-webkit-slider-thumb:hover {
     padding: 10px;
     position: relative;
     border: 1px solid var(--primary-neon);
-    box-shadow: 0 0 50px rgba(168, 240, 0, 0.05);
+    box-shadow: 0 0 50px rgba(255, 255, 255, 0.05);
     display: flex;
     flex-direction: column;
 }
@@ -1656,7 +1656,7 @@ input[type="range"]::-webkit-slider-thumb:hover {
     color: var(--primary-neon);
 }
 
-/* Bot├│n "Ampliar pantalla": pantalla completa + modo horizontal */
+/* Botâ”œâ”‚n "Ampliar pantalla": pantalla completa + modo horizontal */
 .expand-tv-btn {
     position: absolute;
     bottom: 14px;
@@ -1677,9 +1677,9 @@ input[type="range"]::-webkit-slider-thumb:hover {
 }
 
 .expand-tv-btn:hover {
-    background: linear-gradient(135deg, #A8F000, #A8F000);
+    background: linear-gradient(135deg, #FFFFFF, #FFFFFF);
     color: #000;
-    box-shadow: 0 0 20px rgba(168, 240, 0, 0.4);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
     transform: scale(1.1);
 }
 
@@ -1722,7 +1722,7 @@ input[type="range"]::-webkit-slider-thumb:hover {
     }
 }
 
-/* M├│viles peque├▒os: el reproductor ocupa casi toda la pantalla */
+/* Mâ”œâ”‚viles pequeâ”œâ–’os: el reproductor ocupa casi toda la pantalla */
 @media (max-width: 480px) {
     .tv-modal {
         padding: 6px;
@@ -1745,9 +1745,9 @@ input[type="range"]::-webkit-slider-thumb:hover {
     }
 }
 
-/* TEL├ëFONOS REALES: el viewport est├í forzado a 1024, as├¡ que estas reglas
-   se activan por la clase .is-mobile (detecci├│n por device-width en JS).
-   El reproductor se ampl├¡a a pantalla completa vertical. */
+/* TELâ”œÃ«FONOS REALES: el viewport estâ”œÃ­ forzado a 1024, asâ”œÂ¡ que estas reglas
+   se activan por la clase .is-mobile (detecciâ”œâ”‚n por device-width en JS).
+   El reproductor se amplâ”œÂ¡a a pantalla completa vertical. */
 .is-mobile .tv-modal {
     padding: 0;
 }
@@ -1791,9 +1791,9 @@ input[type="range"]::-webkit-slider-thumb:hover {
     font-size: 0.95rem;
 }
 
-/* Pantalla completa NATIVA (API Fullscreen) en tel├®fonos:
+/* Pantalla completa NATIVA (API Fullscreen) en telâ”œÂ®fonos:
    al tocar la tarjeta el modal entra en fullscreen real del navegador
-   (oculta la barra del navegador) en orientaci├│n vertical. */
+   (oculta la barra del navegador) en orientaciâ”œâ”‚n vertical. */
 .tv-modal:fullscreen,
 .tv-modal:-webkit-full-screen {
     padding: 0 !important;
@@ -1858,8 +1858,8 @@ input[type="range"]::-webkit-slider-thumb:hover {
     padding: 6px 0 2px !important;
 }
 
-/* MODO HORIZONTAL (giroscopio): al voltear el tel├®fono mientras se ve un
-   canal de TV, la transmisi├│n ocupa TODA la pantalla. */
+/* MODO HORIZONTAL (giroscopio): al voltear el telâ”œÂ®fono mientras se ve un
+   canal de TV, la transmisiâ”œâ”‚n ocupa TODA la pantalla. */
 .is-mobile .tv-modal.is-landscape .modal-content,
 .tv-modal:fullscreen.is-landscape .modal-content {
     flex-direction: row;
@@ -1884,7 +1884,7 @@ input[type="range"]::-webkit-slider-thumb:hover {
     height: 100% !important;
 }
 
-/* Landscape: estirado 100% tambi´┐¢n en m´┐¢viles en horizontal */
+/* Landscape: estirado 100% tambiÂ´â”Â¢n en mÂ´â”Â¢viles en horizontal */
 .is-mobile .tv-modal.is-landscape .video-container iframe,
 .tv-modal:fullscreen.is-landscape .video-container iframe {
     position: absolute;
@@ -1970,14 +1970,14 @@ input[type="range"]::-webkit-slider-thumb:hover {
 .top5-item:hover {
     transform: translateY(-4px) scale(1.02);
     border-color: var(--primary-neon);
-    box-shadow: 0 10px 40px rgba(168, 240, 0, 0.05);
+    box-shadow: 0 10px 40px rgba(255, 255, 255, 0.05);
 }
 
 .top5-item:focus {
     outline: none;
 }
 
-/* Efecto push: al presionar la fila se hunde como bot├│n f├¡sico */
+/* Efecto push: al presionar la fila se hunde como botâ”œâ”‚n fâ”œÂ¡sico */
 .top5-item:active {
     transform: translateY(-1px) scale(0.97);
     transition: transform 0.08s ease-in, box-shadow 0.08s ease-in;
@@ -1989,23 +1989,23 @@ input[type="range"]::-webkit-slider-thumb:hover {
     min-width: 64px;
     text-align: center;
     color: #FFFFFF;
-    text-shadow: 0 0 20px rgba(168, 240, 0, 0.25);
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.25);
     font-style: italic;
 }
 
 .top5-item:nth-child(1) .top5-rank {
     color: #FFFFFF;
-    text-shadow: 0 0 20px rgba(168, 240, 0, 0.18);
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.18);
 }
 
 .top5-item:nth-child(2) .top5-rank {
     color: #FFFFFF;
-    text-shadow: 0 0 20px rgba(168, 240, 0, 0.15);
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.15);
 }
 
 .top5-item:nth-child(3) .top5-rank {
     color: #FFFFFF;
-    text-shadow: 0 0 20px rgba(168, 240, 0, 0.15);
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.15);
 }
 
 .top5-info {
@@ -2019,7 +2019,7 @@ input[type="range"]::-webkit-slider-thumb:hover {
     border-radius: 10px;
     object-fit: cover;
     flex-shrink: 0;
-    border: 2px solid rgba(168, 240, 0, 0.12);
+    border: 2px solid rgba(255, 255, 255, 0.12);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
 }
 
@@ -2028,7 +2028,7 @@ input[type="range"]::-webkit-slider-thumb:hover {
     height: 44px;
     border-radius: 50%;
     border: none;
-    background: linear-gradient(135deg, #A8F000, #A8F000);
+    background: linear-gradient(135deg, #FFFFFF, #FFFFFF);
     color: #050510;
     font-size: 1rem;
     cursor: pointer;
@@ -2037,7 +2037,7 @@ input[type="range"]::-webkit-slider-thumb:hover {
     justify-content: center;
     flex-shrink: 0;
     transition: all 0.3s ease;
-    box-shadow: 0 0 15px rgba(168, 240, 0, 0.05);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.05);
     /* Sin cuadro al tocar: redondeado y sin resaltado de tap */
     outline: none;
     -webkit-tap-highlight-color: transparent;
@@ -2048,30 +2048,30 @@ input[type="range"]::-webkit-slider-thumb:hover {
 
 .top5-play:hover {
     transform: scale(1.1);
-    box-shadow: 0 0 25px rgba(168, 240, 0, 0.18);
+    box-shadow: 0 0 25px rgba(255, 255, 255, 0.18);
 }
 
 .top5-play:focus {
     outline: none;
 }
 
-/* Efecto push: al presionar se hunde como bot├│n f├¡sico */
+/* Efecto push: al presionar se hunde como botâ”œâ”‚n fâ”œÂ¡sico */
 .top5-play:active {
     transform: scale(0.85);
-    box-shadow: 0 0 8px rgba(168, 240, 0, 0.2);
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
     transition: transform 0.08s ease-in, box-shadow 0.08s ease-in;
 }
 
 /* Estado reproduciendo */
 .top5-item.playing {
     border-color: var(--primary-neon);
-    background: rgba(168, 240, 0, 0.04);
-    box-shadow: 0 0 25px rgba(168, 240, 0, 0.12);
+    background: rgba(255, 255, 255, 0.04);
+    box-shadow: 0 0 25px rgba(255, 255, 255, 0.12);
 }
 
 .top5-item.playing .top5-play {
-    background: #A8F000;
-    box-shadow: 0 0 20px rgba(168, 240, 0, 0.15);
+    background: #FFFFFF;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.15);
 }
 
 .top5-item.playing .top5-thumb {
@@ -2151,8 +2151,8 @@ input[type="range"]::-webkit-slider-thumb:hover {
     max-width: 605px;
     margin: 0 auto 40px;
     padding: 25px;
-    background: rgba(168, 240, 0, 0.04);
-    border: 1px solid rgba(168, 240, 0, 0.04);
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.04);
     border-radius: 24px;
     backdrop-filter: blur(20px);
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
@@ -2179,7 +2179,7 @@ input[type="range"]::-webkit-slider-thumb:hover {
     max-width: 480px;
     margin: 0 auto;
     border-radius: 16px;
-    border: 2px solid rgba(168, 240, 0, 0.12);
+    border: 2px solid rgba(255, 255, 255, 0.12);
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
     background: #000;
 }
@@ -2194,8 +2194,8 @@ input[type="range"]::-webkit-slider-thumb:hover {
 }
 
 .news-card {
-    background: rgba(168, 240, 0, 0.05);
-    border: 2px solid rgba(168, 240, 0, 0.05);
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid rgba(255, 255, 255, 0.05);
     border-radius: 20px;
     overflow: hidden;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
@@ -2208,7 +2208,7 @@ input[type="range"]::-webkit-slider-thumb:hover {
 .news-card:hover {
     transform: translateY(-5px);
     border-color: var(--primary-neon);
-    box-shadow: 0 15px 50px rgba(168, 240, 0, 0.05);
+    box-shadow: 0 15px 50px rgba(255, 255, 255, 0.05);
 }
 
 .news-card img {
@@ -2253,7 +2253,7 @@ input[type="range"]::-webkit-slider-thumb:hover {
 
 .news-loading,
 .news-error {
-    color: rgba(168, 240, 0, 0.05);
+    color: rgba(255, 255, 255, 0.05);
     font-size: 1.1rem;
     padding: 40px;
     grid-column: 1 / -1;
@@ -2295,8 +2295,8 @@ input[type="range"]::-webkit-slider-thumb:hover {
 }
 
 .contact-form {
-    background: rgba(168, 240, 0, 0.05);
-    border: 1px solid rgba(168, 240, 0, 0.04);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.04);
     border-radius: 20px;
     padding: 40px;
     backdrop-filter: blur(10px);
@@ -2320,8 +2320,8 @@ input[type="range"]::-webkit-slider-thumb:hover {
 .form-group textarea {
     width: 100%;
     padding: 12px 15px;
-    background: rgba(168, 240, 0, 0.05);
-    border: 1px solid rgba(168, 240, 0, 0.15);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: 10px;
     color: #FFFFFF;
     font-size: 1rem;
@@ -2333,13 +2333,13 @@ input[type="range"]::-webkit-slider-thumb:hover {
 .form-group textarea:focus {
     outline: none;
     border-color: var(--primary-neon);
-    background: rgba(168, 240, 0, 0.04);
-    box-shadow: 0 0 15px rgba(168, 240, 0, 0.15);
+    background: rgba(255, 255, 255, 0.04);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.15);
 }
 
 .form-group input::placeholder,
 .form-group textarea::placeholder {
-    color: rgba(168, 240, 0, 0.22);
+    color: rgba(255, 255, 255, 0.22);
 }
 
 .form-group textarea {
@@ -2360,12 +2360,12 @@ input[type="range"]::-webkit-slider-thumb:hover {
     display: inline-flex;
     align-items: center;
     gap: 10px;
-    box-shadow: 0 5px 20px rgba(168, 240, 0, 0.15);
+    box-shadow: 0 5px 20px rgba(255, 255, 255, 0.15);
 }
 
 .submit-btn:hover {
     transform: translateY(-3px);
-    box-shadow: 0 8px 30px rgba(168, 240, 0, 0.25);
+    box-shadow: 0 8px 30px rgba(255, 255, 255, 0.25);
 }
 
 .submit-btn:active {
@@ -2378,9 +2378,9 @@ input[type="range"]::-webkit-slider-thumb:hover {
 
 /* ===== Modo TV: rendimiento para Smart TV y TV boxes (ONN Watch TV, Google TV, Android TV) ===== */
 
-/* Mientras se ve TV se apagan los efectos pesados de la p├ígina para que el
+/* Mientras se ve TV se apagan los efectos pesados de la pâ”œÃ­gina para que el
    video no se congele en dispositivos con hardware limitado (TV boxes,
-   m├│viles gama baja). Se reactivan al cerrar el modal. */
+   mâ”œâ”‚viles gama baja). Se reactivan al cerrar el modal. */
 body.tv-open .mesh-gradient {
     animation: none;
     filter: none;
@@ -2490,18 +2490,18 @@ body.tv-open .tv-modal {
     font-size: 1.2rem;
 }
 
-/* ===== Modo bajo consumo: ONN Watch TV, Fire TV, Smart TV y m├│viles gama baja =====
-   Se activa autom├íticamente con la clase .is-low-power (detectada en JS por
-   user-agent + n├║cleos/RAM). Apaga los efectos de GPU m├ís costosos para que
-   la p├ígina sea fluida y r├ípida en hardware limitado. */
+/* ===== Modo bajo consumo: ONN Watch TV, Fire TV, Smart TV y mâ”œâ”‚viles gama baja =====
+   Se activa automâ”œÃ­ticamente con la clase .is-low-power (detectada en JS por
+   user-agent + nâ”œâ•‘cleos/RAM). Apaga los efectos de GPU mâ”œÃ­s costosos para que
+   la pâ”œÃ­gina sea fluida y râ”œÃ­pida en hardware limitado. */
 
-/* Sin blur ni rotaci├│n del fondo */
+/* Sin blur ni rotaciâ”œâ”‚n del fondo */
 .is-low-power .mesh-gradient {
     animation: none;
     filter: none;
 }
 
-/* Sin spotlight (adem├ís el JS no lo mueve en este modo) */
+/* Sin spotlight (ademâ”œÃ­s el JS no lo mueve en este modo) */
 .is-low-power .spotlight {
     display: none;
 }
@@ -2530,7 +2530,7 @@ body.tv-open .tv-modal {
     animation: none;
 }
 
-/* Bot├│n WhatsApp sin pulso ni onda */
+/* Botâ”œâ”‚n WhatsApp sin pulso ni onda */
 .is-low-power .whatsapp-float {
     animation: none;
 }
@@ -2547,7 +2547,7 @@ body.tv-open .tv-modal {
     animation: none;
 }
 
-/* Sin desenfoque de fondo (backdrop-filter) en toda la p├ígina */
+/* Sin desenfoque de fondo (backdrop-filter) en toda la pâ”œÃ­gina */
 .is-low-power * {
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
@@ -2569,7 +2569,7 @@ body.tv-open .tv-modal {
     margin: 0 auto;
     border-radius: 16px;
     overflow: hidden;
-    border: 2px solid rgba(168, 240, 0, 0.12);
+    border: 2px solid rgba(255, 255, 255, 0.12);
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
     background: #000;
 }
@@ -2584,8 +2584,8 @@ body.tv-open .tv-modal {
 
 /* Resaltado temporal de la tarjeta MASTER CRAZY TV al llegar desde el header */
 .tv-card.tv-card-flash {
-    border-color: #A8F000;
-    box-shadow: 0 0 0 3px rgba(168, 240, 0, 0.35), 0 0 35px rgba(168, 240, 0, 0.35);
+    border-color: #FFFFFF;
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.35), 0 0 35px rgba(255, 255, 255, 0.35);
     animation: tvCardFlash 1s ease-in-out;
 }
 
@@ -2595,7 +2595,7 @@ body.tv-open .tv-modal {
 }
 
 /* ===== Pantalla completa GARANTIZADA del reproductor TV en TODOS los
-   dispositivos (ONN Watch, Android TV, Fire TV, Smart TV, m├│vil, PC) ===== */
+   dispositivos (ONN Watch, Android TV, Fire TV, Smart TV, mâ”œâ”‚vil, PC) ===== */
 .tv-modal .modal-content {
     width: 100vw !important;
     height: 100vh !important;
@@ -2638,12 +2638,12 @@ body.tv-open .tv-modal {
     margin: 0 auto;
 }
 
-/* Dentro de la transmisi├│n de Master Crazy TV: sin t├¡tulo flotante en la parte alta */
+/* Dentro de la transmisiâ”œâ”‚n de Master Crazy TV: sin tâ”œÂ¡tulo flotante en la parte alta */
 .tv-modal.partido-mode #channel-name {
     display: none !important;
 }
 
-/* Aviso de reconexi├│n con conteo 3-2-1 GO (Master Crazy TV) */
+/* Aviso de reconexiâ”œâ”‚n con conteo 3-2-1 GO (Master Crazy TV) */
 .tv-reconnect-overlay {
     position: absolute;
     top: 0;
@@ -2663,8 +2663,8 @@ body.tv-open .tv-modal {
 .tv-reconnect-count {
     font-size: 8rem;
     font-weight: 900;
-    color: #A8F000;
-    text-shadow: 0 0 30px rgba(168, 240, 0, 0.7);
+    color: #FFFFFF;
+    text-shadow: 0 0 30px rgba(255, 255, 255, 0.7);
     line-height: 1;
 }
 
@@ -2682,8 +2682,8 @@ body.tv-open .tv-modal {
     text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
 }
 
-/* Overlay de activaci├│n de audio: el navegador bloquea el autoplay con sonido,
-   as├¡ que al abrir por link directo (#mctv) se pide un toque para desbloquearlo */
+/* Overlay de activaciâ”œâ”‚n de audio: el navegador bloquea el autoplay con sonido,
+   asâ”œÂ¡ que al abrir por link directo (#mctv) se pide un toque para desbloquearlo */
 .tv-audio-overlay {
     position: absolute;
     top: 0;
@@ -2708,7 +2708,7 @@ body.tv-open .tv-modal {
     text-align: center;
     padding: 30px 40px;
     border-radius: 24px;
-    border: 2px solid rgba(168, 240, 0, 0.5);
+    border: 2px solid rgba(255, 255, 255, 0.5);
     background: rgba(10, 14, 25, 0.55);
     backdrop-filter: blur(6px);
     -webkit-backdrop-filter: blur(6px);
@@ -2717,8 +2717,8 @@ body.tv-open .tv-modal {
 
 .tv-audio-overlay-inner i {
     font-size: 4rem;
-    color: #A8F000;
-    text-shadow: 0 0 25px rgba(168, 240, 0, 0.7);
+    color: #FFFFFF;
+    text-shadow: 0 0 25px rgba(255, 255, 255, 0.7);
 }
 
 .tv-audio-overlay-inner span {
@@ -2734,11 +2734,11 @@ body.tv-open .tv-modal {
 }
 
 @keyframes audioPulse {
-    0%, 100% { transform: scale(1); box-shadow: 0 0 30px rgba(168, 240, 0, 0.15); }
-    50% { transform: scale(1.03); box-shadow: 0 0 45px rgba(168, 240, 0, 0.35); }
+    0%, 100% { transform: scale(1); box-shadow: 0 0 30px rgba(255, 255, 255, 0.15); }
+    50% { transform: scale(1.03); box-shadow: 0 0 45px rgba(255, 255, 255, 0.35); }
 }
 
-/* En TV el overlay de audio tambi├®n funciona con el mando (focus) */
+/* En TV el overlay de audio tambiâ”œÂ®n funciona con el mando (focus) */
 .is-tv .tv-audio-overlay-inner {
     border-width: 3px;
     padding: 40px 60px;
@@ -2952,7 +2952,7 @@ body.tv-open .tv-modal {
     font-size: 1.1rem !important;
 }
 
-/* En landscape normal (sin rotar) los botones tambi├®n quedan fijos arriba */
+/* En landscape normal (sin rotar) los botones tambiâ”œÂ®n quedan fijos arriba */
 .tv-modal.deep-link-mode:not(.forced-landscape) .close-modal {
     top: 16px !important;
     right: 16px !important;
@@ -2966,7 +2966,7 @@ body.tv-open .tv-modal {
     bottom: auto !important;
 }
 
-/* ===== PIN de acceso ┬À Master Crazy TV ===== */
+/* ===== PIN de acceso â”¬Ã€ Master Crazy TV ===== */
 .pin-badge {
     display: inline-flex;
     align-items: center;
@@ -3012,7 +3012,7 @@ body.tv-open .tv-modal {
     background: linear-gradient(160deg, #170a2e, #090313);
     border: 2px solid var(--primary-neon);
     border-radius: 20px;
-    box-shadow: 0 0 45px rgba(168, 240, 0, .35), 0 20px 50px rgba(0, 0, 0, .65);
+    box-shadow: 0 0 45px rgba(255, 255, 255, .35), 0 20px 50px rgba(0, 0, 0, .65);
     animation: pinPop .25s ease;
 }
 
@@ -3070,7 +3070,7 @@ body.tv-open .tv-modal {
     font-weight: 700;
     color: #fff;
     background: rgba(255, 255, 255, .06);
-    border: 2px solid rgba(168, 240, 0, .5);
+    border: 2px solid rgba(255, 255, 255, .5);
     border-radius: 12px;
     outline: none;
     transition: border-color .2s, box-shadow .2s;
@@ -3078,7 +3078,7 @@ body.tv-open .tv-modal {
 
 .pin-digit:focus {
     border-color: var(--primary-neon);
-    box-shadow: 0 0 16px rgba(168, 240, 0, .6);
+    box-shadow: 0 0 16px rgba(255, 255, 255, .6);
 }
 
 .pin-error {
@@ -3296,9 +3296,9 @@ body.tv-open .tv-modal {
 
 /* Aviso visual: la radio espera el primer toque para poder sonar */
 @keyframes attentionPulse {
-    0%   { box-shadow: 0 0 0 0 rgba(168, 240, 0, 0.55); }
-    70%  { box-shadow: 0 0 0 16px rgba(168, 240, 0, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(168, 240, 0, 0); }
+    0%   { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.55); }
+    70%  { box-shadow: 0 0 0 16px rgba(255, 255, 255, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
 }
 
 .pulse-attention {
@@ -3843,4 +3843,41 @@ main > section {
 /* El aviso de activar audio siempre por encima de la zona de toque */
 .tv-modal .tv-audio-overlay {
     z-index: 20 !important;
+}
+
+/* ===== Letras tipo PNG: contorno negro alrededor de cada letra =====
+   El borde imita el recorte de un PNG y se funde con el fondo de la pagina. */
+h1, h2, h3, h4, h5, h6,
+.section-title,
+.neon-text,
+.hero-subtitle,
+.main-nav a,
+.header-play-btn,
+.pin-title,
+.pin-submit,
+.btn,
+button,
+.song-title,
+.artist-name,
+.country-name,
+.channel-name {
+    -webkit-text-stroke: 0.5px rgba(0, 0, 0, 0.85);
+    text-shadow:
+        1px 1px 0 rgba(0, 0, 0, 0.95),
+        -1px -1px 0 rgba(0, 0, 0, 0.95),
+        1px -1px 0 rgba(0, 0, 0, 0.95),
+        -1px 1px 0 rgba(0, 0, 0, 0.95),
+        2px 2px 0 rgba(0, 0, 0, 0.55),
+        0 3px 12px rgba(0, 0, 0, 0.65);
+}
+
+/* El texto normal tambien recibe un halo suave para que no flote sobre el rojo */
+p, li, span, small, strong, a, label {
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.55);
+}
+
+@media (pointer: coarse) {
+    h1, h2, h3, h4, h5, h6, .section-title, .neon-text {
+        -webkit-text-stroke: 0.7px rgba(0, 0, 0, 0.9);
+    }
 }
