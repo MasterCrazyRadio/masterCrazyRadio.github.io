@@ -1,4 +1,4 @@
-﻿@font-face {
+@font-face {
     font-family: 'Crash A Like';
     src: url('fonts/crash-a-like.ttf') format('truetype');
     font-weight: 400;
@@ -8,7 +8,7 @@
 
 :root {
     --bg-color: #4a0410;
-    --text-color: #7DF9FF;
+    --text-color: #FFFFFF;
     --primary-neon: #A870E0;
     /* Verde caÃ±a del logo */
     --secondary-neon: #A870E0;
@@ -280,7 +280,7 @@ body {
     font-size: 2.3rem;
     font-weight: 900;
     letter-spacing: 1px;
-    color: #7DF9FF;
+    color: #FFFFFF;
     position: relative;
     white-space: nowrap;
 }
@@ -292,8 +292,8 @@ body {
 }
 
 .brand-green {
-    color: #7DF9FF;
-    -webkit-text-fill-color: #7DF9FF;
+    color: #FFFFFF;
+    -webkit-text-fill-color: #FFFFFF;
     text-shadow: 0 0 15px rgba(168, 112, 224, 0.25);
 }
 
@@ -302,7 +302,7 @@ body {
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
-    color: #7DF9FF;
+    color: #FFFFFF;
     filter: drop-shadow(0 0 12px rgba(168, 112, 224, 0.25));
 }
 
@@ -370,7 +370,7 @@ body {
 
 .main-nav a:hover,
 .main-nav a.active {
-    color: #7DF9FF;
+    color: #FFFFFF;
     text-shadow: 0 0 5px rgba(168, 112, 224, 0.28);
 }
 
@@ -411,9 +411,9 @@ body {
     border-radius: 50%;
     background: conic-gradient(from 0deg,
         #A8F000 0deg,
-        #7DF9FF 90deg,
+        #FFFFFF 90deg,
         #A870E0 180deg,
-        #7DF9FF 270deg,
+        #FFFFFF 270deg,
         #A8F000 360deg);
     filter: blur(18px);
     opacity: 0.5;
@@ -430,7 +430,7 @@ body {
     border-radius: 50%;
     background: radial-gradient(circle,
         rgba(168, 240, 0, 0.18) 0%,
-        rgba(125, 249, 255, 0.12) 35%,
+        rgba(255, 255, 255, 0.12) 35%,
         rgba(168, 112, 224, 0.15) 65%,
         transparent 100%);
     filter: blur(12px);
@@ -733,7 +733,7 @@ body {
 
 #song-title {
     font-size: 1.1rem;
-    color: #7DF9FF;
+    color: #FFFFFF;
     text-shadow: 0 0 10px var(--secondary-neon);
     font-weight: 500;
 }
@@ -1014,7 +1014,7 @@ input[type="range"]::-webkit-slider-thumb:hover {
     border-radius: 50%;
     border: 1px solid rgba(168, 112, 224, 0.05);
     background: rgba(0, 0, 0, 0.45);
-    color: #7DF9FF;
+    color: #FFFFFF;
     font-size: 1rem;
     cursor: pointer;
     display: flex;
@@ -1403,7 +1403,7 @@ input[type="range"]::-webkit-slider-thumb:hover {
 .section-title {
     font-size: 3rem;
     margin-bottom: 50px;
-    color: #7DF9FF;
+    color: #FFFFFF;
     text-transform: uppercase;
     letter-spacing: 2px;
 }
@@ -1468,12 +1468,12 @@ input[type="range"]::-webkit-slider-thumb:hover {
 
 .tv-card h3 {
     font-size: 1.5rem;
-    color: #7DF9FF;
+    color: #FFFFFF;
 }
 
 .live-badge {
     background: #A870E0;
-    color: #7DF9FF;
+    color: #FFFFFF;
     padding: 5px 10px;
     border-radius: 5px;
     font-size: 0.8rem;
@@ -1517,7 +1517,7 @@ input[type="range"]::-webkit-slider-thumb:hover {
 
 .play-overlay i {
     font-size: 3rem;
-    color: #7DF9FF;
+    color: #FFFFFF;
     transform: scale(0.5);
     transition: transform 0.3s ease;
 }
@@ -1530,9 +1530,9 @@ input[type="range"]::-webkit-slider-thumb:hover {
     width: 38px;
     height: 38px;
     border-radius: 50%;
-    border: 2px solid rgba(125, 249, 255, 0.55);
+    border: 2px solid rgba(255, 255, 255, 0.55);
     background: rgba(0, 0, 0, 0.45);
-    color: #7DF9FF;
+    color: #FFFFFF;
     font-size: 0.95rem;
     cursor: pointer;
     display: flex;
@@ -1645,7 +1645,7 @@ input[type="range"]::-webkit-slider-thumb:hover {
     position: absolute;
     bottom: 14px;
     right: 14px;
-    color: #7DF9FF;
+    color: #FFFFFF;
     font-size: 2rem;
     cursor: pointer;
     transition: 0.3s;
@@ -1664,9 +1664,9 @@ input[type="range"]::-webkit-slider-thumb:hover {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    border: 2px solid #7DF9FF;
-    background: rgba(125, 249, 255, 0.08);
-    color: #7DF9FF;
+    border: 2px solid #FFFFFF;
+    background: rgba(255, 255, 255, 0.08);
+    color: #FFFFFF;
     font-size: 1rem;
     cursor: pointer;
     display: flex;
@@ -1708,7 +1708,7 @@ input[type="range"]::-webkit-slider-thumb:hover {
 }
 
 #channel-name {
-    color: #7DF9FF;
+    color: #FFFFFF;
     font-size: 1rem;
     text-align: center;
     padding: 10px 0 4px;
@@ -1988,23 +1988,23 @@ input[type="range"]::-webkit-slider-thumb:hover {
     font-weight: 800;
     min-width: 64px;
     text-align: center;
-    color: #7DF9FF;
+    color: #FFFFFF;
     text-shadow: 0 0 20px rgba(168, 112, 224, 0.25);
     font-style: italic;
 }
 
 .top5-item:nth-child(1) .top5-rank {
-    color: #7DF9FF;
+    color: #FFFFFF;
     text-shadow: 0 0 20px rgba(168, 112, 224, 0.18);
 }
 
 .top5-item:nth-child(2) .top5-rank {
-    color: #7DF9FF;
+    color: #FFFFFF;
     text-shadow: 0 0 20px rgba(168, 112, 224, 0.15);
 }
 
 .top5-item:nth-child(3) .top5-rank {
-    color: #7DF9FF;
+    color: #FFFFFF;
     text-shadow: 0 0 20px rgba(168, 112, 224, 0.15);
 }
 
@@ -2087,7 +2087,7 @@ input[type="range"]::-webkit-slider-thumb:hover {
 .top5-song {
     font-size: 1.25rem;
     font-weight: 700;
-    color: #7DF9FF;
+    color: #FFFFFF;
     margin-bottom: 4px;
     white-space: nowrap;
     overflow: hidden;
@@ -2159,7 +2159,7 @@ input[type="range"]::-webkit-slider-thumb:hover {
 }
 
 .news-tiktok-title {
-    color: #7DF9FF;
+    color: #FFFFFF;
     font-size: 1.2rem;
     margin: 0 0 20px;
     display: flex;
@@ -2228,7 +2228,7 @@ input[type="range"]::-webkit-slider-thumb:hover {
 }
 
 .news-card h3 {
-    color: #7DF9FF;
+    color: #FFFFFF;
     font-size: 1rem;
     font-weight: 500;
     margin: 0;
@@ -2323,7 +2323,7 @@ input[type="range"]::-webkit-slider-thumb:hover {
     background: rgba(168, 112, 224, 0.05);
     border: 1px solid rgba(168, 112, 224, 0.15);
     border-radius: 10px;
-    color: #7DF9FF;
+    color: #FFFFFF;
     font-size: 1rem;
     font-family: var(--font-main);
     transition: all 0.3s ease;
@@ -2349,7 +2349,7 @@ input[type="range"]::-webkit-slider-thumb:hover {
 
 .submit-btn {
     background: linear-gradient(135deg, var(--primary-neon), var(--secondary-neon));
-    color: #7DF9FF;
+    color: #FFFFFF;
     border: none;
     padding: 15px 40px;
     font-size: 1.1rem;
@@ -2669,17 +2669,17 @@ body.tv-open .tv-modal {
 }
 
 .tv-reconnect-count.go {
-    color: #7DF9FF;
-    text-shadow: 0 0 40px rgba(125, 249, 255, 0.8);
+    color: #FFFFFF;
+    text-shadow: 0 0 40px rgba(255, 255, 255, 0.8);
     font-size: 9rem;
 }
 
 .tv-reconnect-label {
     font-size: 1.2rem;
-    color: #7DF9FF;
+    color: #FFFFFF;
     letter-spacing: 3px;
     text-transform: uppercase;
-    text-shadow: 0 0 15px rgba(125, 249, 255, 0.5);
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
 }
 
 /* Overlay de activación de audio: el navegador bloquea el autoplay con sonido,
@@ -2724,7 +2724,7 @@ body.tv-open .tv-modal {
 .tv-audio-overlay-inner span {
     font-size: 1.5rem;
     font-weight: 700;
-    color: #7DF9FF;
+    color: #FFFFFF;
     letter-spacing: 1px;
 }
 
@@ -2923,8 +2923,8 @@ body.tv-open .tv-modal {
     position: fixed !important;
     z-index: 9999 !important;
     background: rgba(0, 0, 0, 0.6) !important;
-    border: 2px solid rgba(125, 249, 255, 0.7) !important;
-    color: #7DF9FF !important;
+    border: 2px solid rgba(255, 255, 255, 0.7) !important;
+    color: #FFFFFF !important;
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.6) !important;
 }
 
@@ -2977,7 +2977,7 @@ body.tv-open .tv-modal {
     font-weight: 700;
     letter-spacing: .5px;
     color: #0b0518;
-    background: #7DF9FF;
+    background: #FFFFFF;
     border-radius: 999px;
     vertical-align: middle;
 }
@@ -3098,7 +3098,7 @@ body.tv-open .tv-modal {
     font-size: 15px;
     font-weight: 700;
     color: #10061f;
-    background: linear-gradient(90deg, var(--primary-neon), #7DF9FF);
+    background: linear-gradient(90deg, var(--primary-neon), #FFFFFF);
 }
 
 .pin-submit:hover {
@@ -3109,7 +3109,7 @@ body.tv-open .tv-modal {
    el navegador conceda la pantalla completa). */
 .pin-submit.pin-listo {
     animation: pinListo 1s ease-in-out infinite;
-    box-shadow: 0 0 22px rgba(125, 249, 255, 0.85);
+    box-shadow: 0 0 22px rgba(255, 255, 255, 0.85);
 }
 
 @keyframes pinListo {
@@ -3218,8 +3218,8 @@ body.tv-open .tv-modal {
     align-items: center !important;
     justify-content: center !important;
     background: rgba(0, 0, 0, 0.6) !important;
-    border: 2px solid rgba(125, 249, 255, 0.7) !important;
-    color: #7DF9FF !important;
+    border: 2px solid rgba(255, 255, 255, 0.7) !important;
+    color: #FFFFFF !important;
     border-radius: 50% !important;
     font-size: 1.05rem !important;
     cursor: pointer !important;
@@ -3331,8 +3331,8 @@ body.tv-open .tv-modal {
     padding: 5px 10px;
     border-radius: 999px;
     background: rgba(0, 0, 0, 0.45);
-    border: 1px solid rgba(125, 249, 255, 0.28);
-    color: rgba(125, 249, 255, 0.75);
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    color: rgba(255, 255, 255, 0.75);
     font-size: 0.68rem;
     text-decoration: none;
     white-space: nowrap;
@@ -3522,18 +3522,18 @@ main > section {
     width: min(62vw, 260px);
     height: 9px;
     margin-top: 26px;
-    border: 2px solid rgba(125, 249, 255, 0.45);
+    border: 2px solid rgba(255, 255, 255, 0.45);
     border-radius: 5px;
     background: rgba(255, 255, 255, 0.06);
     overflow: hidden;
-    box-shadow: 0 0 14px rgba(125, 249, 255, 0.15);
+    box-shadow: 0 0 14px rgba(255, 255, 255, 0.15);
 }
 
 .tv-loading-bar {
     width: 0%;
     height: 100%;
-    background: #7DF9FF;
-    box-shadow: 0 0 14px rgba(125, 249, 255, 0.85);
+    background: #FFFFFF;
+    box-shadow: 0 0 14px rgba(255, 255, 255, 0.85);
     animation: psLoad 6s ease-in-out infinite;
 }
 
@@ -3627,10 +3627,10 @@ main > section {
     align-items: center;
     justify-content: center;
     padding: 26px 20px;
-    border: 2px solid rgba(125, 249, 255, 0.35);
+    border: 2px solid rgba(255, 255, 255, 0.35);
     border-radius: 20px;
     background: #000000;
-    box-shadow: 0 0 40px rgba(125, 249, 255, 0.15);
+    box-shadow: 0 0 40px rgba(255, 255, 255, 0.15);
     /* Recorrido tipo reposo de logo (screensaver): se pasea por toda la
        pantalla sin salirse, visitando las cuatro esquinas. */
     --tx: calc((100vw - 100%) / 2 - 12px);
@@ -3644,7 +3644,7 @@ main > section {
     font-size: clamp(3rem, 15vw, 5rem);
     line-height: 1;
     margin-bottom: 18px;
-    filter: drop-shadow(0 0 16px rgba(125, 249, 255, 0.45));
+    filter: drop-shadow(0 0 16px rgba(255, 255, 255, 0.45));
     animation: balonGira 6s ease-in-out infinite;
 }
 
@@ -3701,8 +3701,8 @@ main > section {
     font-size: clamp(1.6rem, 7vw, 3.4rem);
     line-height: 1.15;
     letter-spacing: 2px;
-    color: #7DF9FF;
-    text-shadow: 0 0 22px rgba(125, 249, 255, 0.55), 0 0 60px rgba(125, 249, 255, 0.25);
+    color: #FFFFFF;
+    text-shadow: 0 0 22px rgba(255, 255, 255, 0.55), 0 0 60px rgba(255, 255, 255, 0.25);
     animation: offlinePulse 3.4s ease-in-out infinite;
 }
 
@@ -3747,8 +3747,8 @@ main > section {
     aspect-ratio: 1 / 1;
     border-radius: 50%;
     object-fit: cover;
-    border: 3px solid rgba(125, 249, 255, 0.60);
-    box-shadow: 0 0 34px rgba(125, 249, 255, 0.45), 0 0 70px rgba(125, 249, 255, 0.22);
+    border: 3px solid rgba(255, 255, 255, 0.60);
+    box-shadow: 0 0 34px rgba(255, 255, 255, 0.45), 0 0 70px rgba(255, 255, 255, 0.22);
     animation: curtainBreath 60s ease-in-out infinite;
     transform-origin: center center;
 }
