@@ -1,4 +1,4 @@
-/* Service Worker - Master Crazy Radio PWA
+﻿/* Service Worker - Master Crazy Radio PWA
    Estrategia: red primero para TODO lo propio del sitio (asi los cambios llegan
    al instante) con la cache como respaldo cuando no hay conexion. */
 const CACHE_NAME = 'master-crazy-radio-v73';
@@ -26,7 +26,7 @@ self.addEventListener('install', (event) => {
   );
 });
 
-// Activar: limpiar cachés viejas
+// Activar: limpiar cachÃ©s viejas
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((keys) =>
@@ -37,7 +37,7 @@ self.addEventListener('activate', (event) => {
   );
 });
 
-// Fetch: servir de caché primero, actualizar en segundo plano
+// Fetch: servir de cachÃ© primero, actualizar en segundo plano
 self.addEventListener('fetch', (event) => {
   const request = event.request;
   if (request.method !== 'GET') return;
@@ -47,7 +47,7 @@ self.addEventListener('fetch', (event) => {
   if (url.hostname !== location.hostname) return;
   if (/\.(m3u8|mp4|webm|mp3|aac|ts|m4a)$/i.test(url.pathname)) return;
 
-  // Datos dinámicos: red primero (siempre frescos), caché como respaldo
+  // Datos dinÃ¡micos: red primero (siempre frescos), cachÃ© como respaldo
   if (/news\.json|status\.json/.test(url.pathname)) {
     event.respondWith(
       fetch(request)

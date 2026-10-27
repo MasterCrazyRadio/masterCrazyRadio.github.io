@@ -49,8 +49,8 @@ body {
     z-index: -1;
     overflow: hidden;
     background:
-        linear-gradient(rgba(5, 5, 16, 0.75), rgba(5, 5, 16, 0.75)),
-        url('radio_background.png') center/400px repeat,
+        linear-gradient(rgba(5, 5, 16, 0.42), rgba(5, 5, 16, 0.70)),
+        url('fondo-navidad-letras.png?v=81') center/430px auto repeat,
         radial-gradient(circle at 50% 50%, #1a1a2e 0%, #050510 100%);
 }
 
