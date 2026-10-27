@@ -8,7 +8,7 @@
   "display_override": ["standalone", "fullscreen"],
   "orientation": "any",
   "background_color": "#050510",
-  "theme_color": "#A870E0",
+  "theme_color": "#E8232F",
   "lang": "es",
   "categories": ["music", "entertainment", "sports"],
   "icons": [
