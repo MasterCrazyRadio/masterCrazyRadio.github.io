@@ -7,7 +7,7 @@
 }
 
 :root {
-    --bg-color: #2b0409;
+    --bg-color: #4a0410;
     --text-color: #7DF9FF;
     --primary-neon: #A870E0;
     /* Verde caÃ±a del logo */
@@ -48,7 +48,7 @@ body {
     height: 100%;
     z-index: -1;
     overflow: hidden;
-    background-color: #2b0409;
+    background-color: #4a0410;
 }
 
 /* Capa 1: degradado base opaco */
@@ -58,7 +58,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: radial-gradient(circle at 50% 50%, #7a0913 0%, #2b0409 100%);
+    background: radial-gradient(circle at 50% 50%, #D6001C 0%, #4a0410 100%);
 }
 
 /* Capa 2: mosaico de iconos animado por GPU (transform, sin repintar) */
@@ -86,7 +86,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(rgba(43, 4, 9, 0.18), rgba(20, 2, 6, 0.58));
+    background: linear-gradient(rgba(74, 4, 16, 0.12), rgba(30, 2, 6, 0.52));
 }
 
 /* Deriva continua del mosaico (ida y vuelta: sin saltos y sin huecos) */
