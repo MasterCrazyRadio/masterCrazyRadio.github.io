@@ -69,6 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Audio Player Logic
     const streamUrl = 'https://stream.zeno.fm/zadzh811p48uv';
     const audio = new Audio(streamUrl);
+    audio.volume = 0.5; // volumen al 50% por defecto (como se pidio)
     const playBtn = document.getElementById('play-btn');
     const headerPlayBtn = document.getElementById('header-play-btn');
     const heroLogo = document.getElementById('hero-logo');
@@ -347,10 +348,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (document.documentElement.classList.contains('is-tv') ||
                 document.body.classList.contains('is-tv')) return;
         } catch (e) { }
-
-        // La radio la reproduce ahora el reproductor de Muses (radio-player.html).
-        // La nativa queda desactivada: NUNCA deben sonar dos audios a la vez.
-        return;
 
         let arrancado = false;
 

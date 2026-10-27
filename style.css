@@ -3389,20 +3389,8 @@ main > section {
     object-fit: contain !important;
 }
 
-/* ===== Reproductor de Muses (ocupa el lugar del reproductor propio) ===== */
+/* (El reproductor de Muses queda desactivado: se volvio al reproductor propio) */
 .muses-frame {
-    display: block;
-    width: 200px;
-    height: 282px;
-    border: 0;
-    margin: 0 auto;
-    background: transparent;
-    position: relative;
-    z-index: 5;
-}
-
-/* Se oculta el reproductor propio: ahora manda el de Muses */
-.custom-player {
     display: none !important;
 }
 
