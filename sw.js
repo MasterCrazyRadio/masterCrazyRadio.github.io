@@ -1,7 +1,7 @@
 ﻿/* Service Worker - Master Crazy Radio PWA
    Estrategia: red primero para TODO lo propio del sitio (asi los cambios llegan
    al instante) con la cache como respaldo cuando no hay conexion. */
-const CACHE_NAME = 'master-crazy-radio-v128';
+const CACHE_NAME = 'master-crazy-radio-v129';
 const APP_SHELL = [
   './',
   './index.html',
