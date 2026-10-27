@@ -2348,10 +2348,10 @@ document.addEventListener('DOMContentLoaded', () => {
                        'px;animation-duration:' + dur.toFixed(2) + 's;animation-delay:' + delay.toFixed(2) + 's';
             if (bajo) {
                 // TV / gama baja: punto solido, sin texto ni sombra
-                var d = Math.round(3 + Math.random() * 4);
+                var d = Math.round(6 + Math.random() * 5);
                 html += '<i style="' + base + ';width:' + d + 'px;height:' + d + 'px"></i>';
             } else {
-                var tam = Math.round(8 + Math.random() * 14);
+                var tam = Math.round(15 + Math.random() * 16);
                 var copo = copos[Math.floor(Math.random() * copos.length)];
                 html += '<span style="' + base + ';font-size:' + tam + 'px">' + copo + '</span>';
             }
