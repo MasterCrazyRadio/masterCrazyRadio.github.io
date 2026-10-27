@@ -350,6 +350,10 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (e) { }
 
         let arrancado = false;
+        let reintentoId = null;
+
+        // Cualquier gesto, en cualquier parte de la pagina, sirve para arrancar
+        const EVENTOS_ARRANQUE = ['touchstart','touchend','pointerdown','pointerup','mousedown','mousemove','pointermove','click','keydown','keyup','wheel','scroll','focus','contextmenu'];
 
         function marcarAtencion(activo) {
             try {
@@ -364,9 +368,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         function quitarEscuchas() {
-            ['touchstart', 'click', 'keydown', 'scroll', 'pointerdown'].forEach(function (ev) {
+            EVENTOS_ARRANQUE.forEach(function (ev) {
                 document.removeEventListener(ev, intentar, true);
+                window.removeEventListener(ev, intentar, true);
             });
+            if (reintentoId) { clearInterval(reintentoId); reintentoId = null; }
         }
 
         function intentar() {
@@ -398,15 +404,41 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        // Intento inmediato al cargar
+        // 1) Intento inmediato, apenas carga la pagina
         intentar();
-        // Y en el primer gesto del usuario, en cualquier parte de la pagina
-        ['touchstart', 'click', 'keydown', 'scroll', 'pointerdown'].forEach(function (ev) {
+
+        // 2) Dejar el audio listo para sonar al instante en el primer gesto
+        try {
+            audio.preload = 'auto';
+            audio.setAttribute('playsinline', '');
+            audio.autoplay = true;
+            audio.load();
+        } catch (e) { }
+
+        // 3) Cualquier gesto en CUALQUIER parte de la pagina enciende la radio
+        EVENTOS_ARRANQUE.forEach(function (ev) {
             document.addEventListener(ev, intentar, true);
+            window.addEventListener(ev, intentar, true);
         });
-        // Reintentos cortos por si el navegador concede el permiso despues
-        setTimeout(intentar, 600);
-        setTimeout(intentar, 1800);
+
+        // 4) Reintentos programados: algunos navegadores conceden el permiso
+        //    unos segundos despues de cargar (sobre todo al recargar).
+        [300, 800, 1500, 2500, 4000, 6000, 9000, 13000, 18000, 25000, 32000, 40000].forEach(function (t) {
+            setTimeout(intentar, t);
+        });
+
+        // 5) Insistencia continua: cada 2 s durante el primer minuto
+        let vueltas = 0;
+        reintentoId = setInterval(function () {
+            vueltas++;
+            if (arrancado || isPlaying || vueltas > 30) { quitarEscuchas(); return; }
+            intentar();
+        }, 2000);
+
+        // 6) Al volver a la pestana, otro intento
+        document.addEventListener('visibilitychange', function () {
+            if (!document.hidden && !arrancado) intentar();
+        });
     })();
 
     // === Auto-reconexiÃ³n: si la conexiÃ³n se pierde o se vuelve inestable,
