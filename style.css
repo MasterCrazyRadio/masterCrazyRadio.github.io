@@ -4165,3 +4165,18 @@ main > section {
     border-color: #00A8E1 !important;
     box-shadow: 0 0 16px rgba(0, 168, 225, 0.55) !important;
 }
+/* ===== SOMBRA BLANCA en las letras azules =====
+   Sustituye la sombra negra de "Mas que radio!!", "En Vivo"/"Crazy",
+   nombres de canales y Play del Top. */
+.brand-sky,
+.section-title .highlight,
+.tv-card h3,
+.tv-card .tv-icon,
+.top5-play i {
+    text-shadow:
+        2px 2px 0 rgba(255, 255, 255, 0.95),
+        -1px -1px 0 rgba(255, 255, 255, 0.85),
+        1px -1px 0 rgba(255, 255, 255, 0.85),
+        -1px 1px 0 rgba(255, 255, 255, 0.85),
+        0 3px 10px rgba(255, 255, 255, 0.60) !important;
+}
