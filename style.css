@@ -50,7 +50,7 @@ body {
     overflow: hidden;
     background:
         linear-gradient(rgba(5, 5, 16, 0.18), rgba(5, 5, 16, 0.52)),
-        url('telegram-doodles.png?v=87') center/620px auto repeat,
+        url('telegram-doodles.png?v=88') center/620px auto repeat,
         radial-gradient(circle at 50% 50%, #1a1a2e 0%, #050510 100%);
     background-position: 0 0, 0 0, center center;
     animation: fondoDeriva 160s linear infinite;
