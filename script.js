@@ -1,11 +1,11 @@
-// DetecciÃ³n de dispositivo real: el viewport estÃ¡ forzado a 1024 en mÃ³viles,
-// asÃ­ que las media queries normales no se disparan. Usamos device-width / userAgent
-// (excluyendo TVs) para saber cuÃ¡ndo es un telÃ©fono real.
+// Detección de dispositivo real: el viewport está forzado a 1024 en móviles,
+// así que las media queries normales no se disparan. Usamos device-width / userAgent
+// (excluyendo TVs) para saber cuándo es un teléfono real.
 (function () {
     try {
         var ua = navigator.userAgent;
-        // DetecciÃ³n de TV real (Smart TV, TV boxes como ONN Watch TV, Google TV,
-        // Fire TV...): se detecta ANTES que mÃ³vil para que reciban el modo TV
+        // Detección de TV real (Smart TV, TV boxes como ONN Watch TV, Google TV,
+        // Fire TV...): se detecta ANTES que móvil para que reciban el modo TV
         // (modal ancho 16:9 y sin efectos pesados que congelan el video).
         var isTV = /(Tizen|Web0S|WebOS|SMART-TV|SmartTV|BRAVIA|Viera|Android TV|GoogleTV|Chromecast|AFT[A-Z]|ADT-|ONN|Roku|Xbox|PlayStation|Fire ?TV|MiBox|Mi ?TV|Hisense|Vestel|Philips TV|Panasonic)/i.test(ua);
         try {
@@ -23,9 +23,9 @@
         if (!isTV && (mqMobile || smallScreen || uaMobile)) {
             document.documentElement.classList.add('is-mobile');
         }
-        // Modo bajo consumo: TV boxes, Smart TV y mÃ³viles gama baja.
-        // Se apagan las animaciones/efectos pesados de GPU para que la pÃ¡gina
-        // sea fluida y rÃ¡pida en dispositivos con hardware limitado.
+        // Modo bajo consumo: TV boxes, Smart TV y móviles gama baja.
+        // Se apagan las animaciones/efectos pesados de GPU para que la página
+        // sea fluida y rápida en dispositivos con hardware limitado.
         var isLowPower = false;
         try {
             var cores = navigator.hardwareConcurrency || 8;
@@ -40,7 +40,7 @@
     } catch (e) { }
 })();
 
-// PWA: registrar el Service Worker para instalaciÃ³n y soporte offline
+// PWA: registrar el Service Worker para instalación y soporte offline
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', function () {
         navigator.serviceWorker.register('sw.js')
@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const headerIcon = headerPlayBtn ? headerPlayBtn.querySelector('i') : null;
     const songTitleElement = document.getElementById('song-title');
     let isPlaying = false;
-    // Modo bajo consumo activo (TV boxes, Smart TV, mÃ³viles gama baja):
+    // Modo bajo consumo activo (TV boxes, Smart TV, móviles gama baja):
     // se omiten los efectos que dependen del mouse y animaciones de GPU.
     const lowPowerMode = document.documentElement.classList.contains('is-low-power');
     // La radio se pausa mientras suena el video de noticias o un Top Crazy,
@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let reconnectTimer = null;
     let connectionLost = false;
     const RECONNECT_BASE_MS = 2000;   // primer reintento a los 2s
-    const RECONNECT_MAX_MS = 30000;   // mÃ¡ximo 30s entre intentos
+    const RECONNECT_MAX_MS = 30000;   // máximo 30s entre intentos
 
     function syncPlayState() {
         if (icon) {
@@ -104,8 +104,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // === La radio nunca se queda en silencio ===
-    // Guardamos el estado de reproducciÃ³n y, al volver a la pÃ¡gina (botÃ³n
-    // "atrÃ¡s" del telÃ©fono tras leer una noticia, cambio de pestaÃ±a, cierre
+    // Guardamos el estado de reproducción y, al volver a la página (botón
+    // "atrás" del teléfono tras leer una noticia, cambio de pestaña, cierre
     // de la TV o recarga tras navegar fuera), la radio se reanuda sola.
     const RADIO_STATE_KEY = 'mcr_radio_playing';
 
@@ -124,7 +124,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const tvM = document.getElementById('tv-modal');
             if (tvM && tvM.style.display === 'flex') return;
             if (sessionStorage.getItem(RADIO_STATE_KEY) !== '1') return;
-            if (!audio.paused) return; // ya estÃ¡ sonando
+            if (!audio.paused) return; // ya está sonando
             isPlaying = true;
             clearReconnect();
             const p = audio.play();
@@ -135,13 +135,13 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (e) { }
     }
 
-    // Al volver a esta pestaÃ±a (atrÃ¡s del telÃ©fono, cambio de pestaÃ±a, etc.)
+    // Al volver a esta pestaña (atrás del teléfono, cambio de pestaña, etc.)
     document.addEventListener('visibilitychange', function () {
         if (!document.hidden) {
             // NOTA: la radio NO se reanuda sola al volver a la pagina. Si otra
             // aplicacion esta sonando (YouTube, WhatsApp...), arrancarla aqui
             // provocaria que se mezclen los dos audios.
-            // Si se estaba viendo la transmisiÃ³n de Master Crazy TV (OK.ru),
+            // Si se estaba viendo la transmisión de Master Crazy TV (OK.ru),
             // reconectar: los navegadores congelan el iframe en segundo plano
             const modal = document.getElementById('tv-modal');
             if (modal && modal.style.display === 'flex' && tvIsPartido) {
@@ -441,8 +441,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     })();
 
-    // === Auto-reconexiÃ³n: si la conexiÃ³n se pierde o se vuelve inestable,
-    // el reproductor se reconecta solo para que el oyente nunca quede sin mÃºsica. ===
+    // === Auto-reconexión: si la conexión se pierde o se vuelve inestable,
+    // el reproductor se reconecta solo para que el oyente nunca quede sin música. ===
     function showReconnectStatus(show) {
         const el = document.getElementById('reconnect-status');
         if (el) el.style.display = show ? 'flex' : 'none';
@@ -490,7 +490,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Super Bass usa un elemento oculto aparte; la radio suena directa.
             audio.play().catch(error => {
                 console.error("Playback failed:", error);
-                // Prioridad: reconectarse automÃ¡ticamente en vez de solo alertar
+                // Prioridad: reconectarse automáticamente en vez de solo alertar
                 scheduleReconnect();
             });
         }
@@ -509,7 +509,7 @@ document.addEventListener('DOMContentLoaded', () => {
         showReconnectStatus(false);
     });
 
-    // ConexiÃ³n del navegador: al caer la red, avisar; al volver, reconectar ya
+    // Conexión del navegador: al caer la red, avisar; al volver, reconectar ya
     window.addEventListener('offline', function () {
         connectionLost = true;
         if (isPlaying) showReconnectStatus(true);
@@ -525,18 +525,18 @@ document.addEventListener('DOMContentLoaded', () => {
         headerPlayBtn.addEventListener('click', togglePlay);
     }
     // Al tocar el logo de la radio, la radio comienza a sonar
-    // con efecto punch (entra y sale como botÃ³n fÃ­sico)
+    // con efecto punch (entra y sale como botón físico)
     if (heroLogo) {
         heroLogo.addEventListener('click', function () {
             heroLogo.classList.remove('logo-punch');
-            void heroLogo.offsetWidth; // reinicia la animaciÃ³n
+            void heroLogo.offsetWidth; // reinicia la animación
             heroLogo.classList.add('logo-punch');
             togglePlay();
         });
     }
 
-    // Si la radio estaba sonando al salir de la pÃ¡gina (noticia, enlace externo),
-    // se reanuda automÃ¡ticamente al volver (incluye recargas tras "atrÃ¡s").
+    // Si la radio estaba sonando al salir de la página (noticia, enlace externo),
+    // se reanuda automáticamente al volver (incluye recargas tras "atrás").
     resumeRadioIfPaused();
 
     // Video de noticias deportivas: al reproducirse pausa la radio y al
@@ -650,7 +650,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Smooth scroll: la opciÃ³n TV del header lleva directo a la tarjeta
+    // Smooth scroll: la opción TV del header lleva directo a la tarjeta
     // MASTER CRAZY TV (centrada y con resaltado para que se ubique al instante)
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
@@ -662,7 +662,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     mctv.scrollIntoView({ behavior: 'smooth', block: 'center' });
                     // Resaltar brevemente la tarjeta para que se vea
                     mctv.classList.remove('tv-card-flash');
-                    void mctv.offsetWidth; // reinicia la animaciÃ³n
+                    void mctv.offsetWidth; // reinicia la animación
                     mctv.classList.add('tv-card-flash');
                     setTimeout(function () { mctv.classList.remove('tv-card-flash'); }, 2200);
                     return;
@@ -771,7 +771,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const iframeContainer = document.getElementById('tv-iframe-container');
         const title = document.getElementById('channel-name');
 
-        // Si habÃ­a un iframe del partido, ocultarlo y limpiarlo
+        // Si había un iframe del partido, ocultarlo y limpiarlo
         if (iframeContainer) {
             iframeContainer.style.display = 'none';
             const iframe = document.getElementById('tv-iframe');
@@ -842,9 +842,9 @@ document.addEventListener('DOMContentLoaded', () => {
             hls.loadSource(streamUrl);
             hls.attachMedia(video);
             hls.on(Hls.Events.MANIFEST_PARSED, function () {
-                // ReproducciÃ³n compatible con mÃ³vil: iOS bloquea play() con sonido
-                // en callbacks asÃ­ncronos, asÃ­ que iniciamos en silencio y desmutearnos
-                // cuando el video realmente estÃ© sonando.
+                // Reproducción compatible con móvil: iOS bloquea play() con sonido
+                // en callbacks asíncronos, así que iniciamos en silencio y desmutearnos
+                // cuando el video realmente esté sonando.
                 video.muted = true;
                 const playPromise = video.play();
                 if (playPromise !== undefined) {
@@ -884,10 +884,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Pantalla completa nativa (telÃ©fonos). Al tocar la tarjeta, el modal
-    // entra en fullscreen real (oculta la barra del navegador). La orientaciÃ³n
-    // queda LIBRE: si el usuario voltea el telÃ©fono, la transmisiÃ³n ocupa toda
-    // la pantalla en horizontal (ver listeners de orientaciÃ³n abajo).
+    // Pantalla completa nativa (teléfonos). Al tocar la tarjeta, el modal
+    // entra en fullscreen real (oculta la barra del navegador). La orientación
+    // queda LIBRE: si el usuario voltea el teléfono, la transmisión ocupa toda
+    // la pantalla en horizontal (ver listeners de orientación abajo).
     // --- Diagnostico en pantalla (para leer el estado desde una captura) ---
     const APP_VERSION = 'v15';
     function tvDebug(extra) {
@@ -913,34 +913,34 @@ document.addEventListener('DOMContentLoaded', () => {
                 tvDebug(p ? 'FS ok' : 'FS NO: sin API');
             }
         } catch (e) { }
-        // No bloquear la orientaciÃ³n: permite girar el telÃ©fono (giroscopio)
+        // No bloquear la orientación: permite girar el teléfono (giroscopio)
         // para que el video llene toda la pantalla en horizontal.
         try {
             if (screen.orientation && screen.orientation.unlock) screen.orientation.unlock();
         } catch (e) { }
     }
 
-    // Giro del telÃ©fono: al voltear a horizontal (landscape) mientras se ve un
-    // canal de TV, la transmisiÃ³n se expande a toda la pantalla.
+    // Giro del teléfono: al voltear a horizontal (landscape) mientras se ve un
+    // canal de TV, la transmisión se expande a toda la pantalla.
     function updateTvOrientationClass() {
-        if (isTvDevice()) return; // en TV la orientaciÃ³n es fija (horizontal)
+        if (isTvDevice()) return; // en TV la orientación es fija (horizontal)
         const modal = document.getElementById('tv-modal');
         if (!modal || modal.style.display !== 'flex') return;
         const landscape = window.innerWidth > window.innerHeight;
         modal.classList.toggle('is-landscape', landscape);
-        // La pantalla completa se mantiene en CUALQUIER orientaciÃ³n: vertical u
-        // horizontal se comportan igual. Si se perdiÃ³ (p. ej. al girar), se
+        // La pantalla completa se mantiene en CUALQUIER orientación: vertical u
+        // horizontal se comportan igual. Si se perdió (p. ej. al girar), se
         // vuelve a pedir.
         if (!document.fullscreenElement && !document.webkitFullscreenElement) {
             requestFullscreenVertical(document.documentElement);
         }
     }
 
-    // BotÃ³n "Ampliar pantalla": pantalla completa + modo horizontal (landscape)
+    // Botón "Ampliar pantalla": pantalla completa + modo horizontal (landscape)
     window.expandTvFullscreen = function () {
         const modal = document.getElementById('tv-modal');
         if (!modal || modal.style.display !== 'flex') return;
-        // Forzar orientaciÃ³n horizontal (solo funciona en fullscreen, Android/Chrome)
+        // Forzar orientación horizontal (solo funciona en fullscreen, Android/Chrome)
         try {
             if (screen.orientation && screen.orientation.lock) {
                 screen.orientation.lock('landscape').catch(function () { });
@@ -966,9 +966,9 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(updateTvOrientationClass, 250);
     });
 
-    // Giroscopio (deviceorientation) con permiso en iOS: refuerzo de la detecciÃ³n
+    // Giroscopio (deviceorientation) con permiso en iOS: refuerzo de la detección
     function enableGyroOrientation() {
-        if (isTvDevice()) return; // giroscopio solo aplica a telÃ©fonos
+        if (isTvDevice()) return; // giroscopio solo aplica a teléfonos
         try {
             window.addEventListener('deviceorientation', function () {
                 updateTvOrientationClass();
@@ -1011,8 +1011,8 @@ document.addEventListener('DOMContentLoaded', () => {
         return document.documentElement.classList.contains('is-tv');
     }
 
-    // NavegaciÃ³n: el botÃ³n "atrÃ¡s" del telÃ©fono cierra el reproductor
-    // y vuelve a la pÃ¡gina de inicio en vez de dejar pantalla negra.
+    // Navegación: el botón "atrás" del teléfono cierra el reproductor
+    // y vuelve a la página de inicio en vez de dejar pantalla negra.
     let tvModalHistoryPushed = false;
     // Momento en que se abrio el modal: evita que un fallo al pedir pantalla
     // completa cierre la transmision al instante (rebote a la pagina principal).
@@ -1023,7 +1023,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function openTvModal(modal) {
         modal.style.display = 'flex';
-        // Modo rendimiento: se apagan las animaciones pesadas de la pÃ¡gina
+        // Modo rendimiento: se apagan las animaciones pesadas de la página
         // mientras se ve TV para que el video no se congele (TV boxes, gama baja)
         document.body.classList.add('tv-open');
         // En TV (ONN Watch, Fire TV, Smart TV, Android TV): entrar directo a
@@ -1084,7 +1084,7 @@ document.addEventListener('DOMContentLoaded', () => {
         try { history.pushState({ tvModal: true }, ''); } catch (e) { }
     });
 
-    // Si el usuario sale del fullscreen nativo (gesto o atrÃ¡s en Android),
+    // Si el usuario sale del fullscreen nativo (gesto o atrás en Android),
     // cerrar el modal para no dejar pantalla negra
     document.addEventListener('fullscreenchange', function () {
         const modal = document.getElementById('tv-modal');
@@ -1097,13 +1097,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // === Auto-reconexiÃ³n de la transmisiÃ³n de Master Crazy TV (iframe de OK.ru) ===
+    // === Auto-reconexión de la transmisión de Master Crazy TV (iframe de OK.ru) ===
     // El iframe es cross-origin y OK.ru no expone eventos de pausa/error al padre,
-    // asÃ­ que un vigilante recarga el embed cuando la transmisiÃ³n se detiene/congela:
-    //  - recarga periÃ³dica MUY espaciada (30 min) como red de seguridad: el stream de
-    //    OBS ya se auto-reconecta solo, asÃ­ que recargas frecuentes solo causan
-    //    micro-pausas visibles en la pÃ¡gina,
-    //  - recarga al volver a la pestaÃ±a (los navegadores congelan el iframe),
+    // así que un vigilante recarga el embed cuando la transmisión se detiene/congela:
+    //  - recarga periódica MUY espaciada (30 min) como red de seguridad: el stream de
+    //    OBS ya se auto-reconecta solo, así que recargas frecuentes solo causan
+    //    micro-pausas visibles en la página,
+    //  - recarga al volver a la pestaña (los navegadores congelan el iframe),
     //  - recarga si el embed no termina de cargar en 45s.
     const TV_PARTIDO_EMBED = 'https://ok.ru/videoembed/13981676805705?autoplay=1&nochat=1';
     const TV_WATCHDOG_MS = 15000;
@@ -1136,7 +1136,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!countEl) return;
         countEl.textContent = text;
         countEl.classList.toggle('go', !!isGo);
-        // Reiniciar la animaciÃ³n pop en cada nÃºmero
+        // Reiniciar la animación pop en cada número
         countEl.style.animation = 'none';
         void countEl.offsetWidth;
         countEl.style.animation = 'reconnectPop 0.6s ease-in-out';
@@ -1181,7 +1181,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (tvIframeLoadTimer) clearTimeout(tvIframeLoadTimer);
         tvIframeLoadTimer = setTimeout(function () {
             tvIframeLoadTimer = null;
-            // El embed no cargÃ³ a tiempo: reintentar la reconexiÃ³n
+            // El embed no cargó a tiempo: reintentar la reconexión
             reloadTvIframe();
         }, TV_LOAD_TIMEOUT_MS);
     }
@@ -1192,7 +1192,7 @@ document.addEventListener('DOMContentLoaded', () => {
         tvWatchdogTimer = setInterval(function () {
             const modal = document.getElementById('tv-modal');
             if (!modal || modal.style.display !== 'flex' || !tvIsPartido) return;
-            if (document.hidden) return; // pestaÃ±a en segundo plano: no recargar
+            if (document.hidden) return; // pestaña en segundo plano: no recargar
             if (Date.now() - tvLastReload >= TV_RELOAD_INTERVAL_MS) {
                 reloadTvIframe();
             }
@@ -1205,7 +1205,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Al terminar de cargar el embed, se desarma el vigilante de carga
-    // y se oculta el aviso de reconexiÃ³n
+    // y se oculta el aviso de reconexión
     const tvIframeEl = document.getElementById('tv-iframe');
     if (tvIframeEl) {
         tvIframeEl.addEventListener('load', function () {
@@ -1250,7 +1250,7 @@ document.addEventListener('DOMContentLoaded', () => {
             radioWasPlayingBeforeTv = false;
         }
 
-        // Mostrar el iframe del partido en el modal (autoplay=1 para arrancar solo en mÃ³vil)
+        // Mostrar el iframe del partido en el modal (autoplay=1 para arrancar solo en móvil)
         if (iframeContainer) iframeContainer.style.display = 'block';
         if (iframe) {
             tvIsPartido = true;
@@ -1262,7 +1262,7 @@ document.addEventListener('DOMContentLoaded', () => {
             startTvWatchdog();
         }
         openTvModal(modal);
-        modal.classList.add('partido-mode'); // sin tÃ­tulo flotante dentro de la transmisiÃ³n
+        modal.classList.add('partido-mode'); // sin título flotante dentro de la transmisión
         // Pantalla completa en TODOS los dispositivos (moviles, TV boxes, Smart TV
         // y autoradios Android): el modal ocupa todo el viewport y la imagen se
         // ajusta SIN recortar, aunque la API Fullscreen no exista en el equipo.
@@ -1279,7 +1279,7 @@ document.addEventListener('DOMContentLoaded', () => {
         requestFullscreenVertical(modal);
     };
 
-    // Caracol TV (seÃ±al oficial YouTube - embed legal)
+    // Caracol TV (señal oficial YouTube - embed legal)
     window.playQuieroTv = function () {
         const modal = document.getElementById('tv-modal');
         const video = document.getElementById('tv-player');
@@ -1306,8 +1306,8 @@ document.addEventListener('DOMContentLoaded', () => {
             radioWasPlayingBeforeTv = false;
         }
 
-        // Cargar la seÃ±al en vivo del canal Quiero TV (YouTube embed)
-        tvIsPartido = false; // el watchdog de reconexiÃ³n es solo para la transmisiÃ³n de OK.ru
+        // Cargar la señal en vivo del canal Quiero TV (YouTube embed)
+        tvIsPartido = false; // el watchdog de reconexión es solo para la transmisión de OK.ru
         tvCanalActual = 'youtube';
         tvBloqueaRadio = true;
         detenerRadioParaTv();
@@ -1323,7 +1323,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (typeof applyTvFitMode === 'function') applyTvFitMode();
         // Vista horizontal automatica (igual que Master Crazy TV)
         vistaHorizontalAutomatica();
-        title.innerHTML = "Quiero <span style='color:#7DF9FF;'>TV</span> <br><span style='font-size:0.8rem; color:#aaa;'>SeÃ±al en vivo</span>";
+        title.innerHTML = "Quiero <span style='color:#7DF9FF;'>TV</span> <br><span style='font-size:0.8rem; color:#aaa;'>Señal en vivo</span>";
 
         // Pantalla completa nativa en cualquier dispositivo
         requestFullscreenVertical(modal);
@@ -1358,13 +1358,13 @@ document.addEventListener('DOMContentLoaded', () => {
         modal.classList.remove('forced-landscape');
         modal.classList.remove('tv-mini');
         tvModalHistoryPushed = false;
-        // Se reactivan las animaciones de la pÃ¡gina
+        // Se reactivan las animaciones de la página
         document.body.classList.remove('tv-open');
 
-        // Salir de pantalla completa nativa y desbloquear orientaciÃ³n
+        // Salir de pantalla completa nativa y desbloquear orientación
         exitFullscreen();
 
-        // Al cerrar la TV (atrÃ¡s, X o clic fuera), la radio vuelve a sonar
+        // Al cerrar la TV (atrás, X o clic fuera), la radio vuelve a sonar
         // La radio NO se reanuda sola al cerrar la TV: queda detenida hasta que
         // el usuario decida volver a escucharla (toca el boton de play).
         radioWasPlayingBeforeTv = false;
@@ -1381,10 +1381,10 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // Vigilancia del estado del Partido En Vivo (status.json lo actualiza el bot)
-    // Si la transmisiÃ³n de OK.ru estÃ¡ en pausa/caÃ­da, la tarjeta muestra el mensaje.
+    // Si la transmisión de OK.ru está en pausa/caída, la tarjeta muestra el mensaje.
     // IMPORTANTE: solo muestra "EN PAUSA" si status.json es RECIENTE (el bot lo
-    // actualiza) y dice offline. Si el archivo estÃ¡ viejo o no existe, se asume
-    // que la transmisiÃ³n estÃ¡ EN VIVO (evita avisos falsos de pausa).
+    // actualiza) y dice offline. Si el archivo está viejo o no existe, se asume
+    // que la transmisión está EN VIVO (evita avisos falsos de pausa).
     function refreshPartidoStatus() {
         fetch('https://cdn.jsdelivr.net/gh/MasterCrazyRadio/masterCrazyRadio.github.io@ia/status.json', { cache: 'no-store' })
             .then(function (r) { return r.json(); })
@@ -1392,7 +1392,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const badge = document.getElementById('partido-badge');
                 const statusMsg = document.getElementById('partido-status');
                 if (!badge) return;
-                // Â¿El archivo fue actualizado hace menos de 30 minutos?
+                // ¿El archivo fue actualizado hace menos de 30 minutos?
                 let esReciente = false;
                 if (data && data.updatedAt) {
                     const edad = Date.now() - new Date(data.updatedAt).getTime();
@@ -1406,11 +1406,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     badge.textContent = 'EN PAUSA';
                     badge.classList.add('offline');
                     if (statusMsg) {
-                        statusMsg.textContent = (data && data.message) ? data.message : 'TransmisiÃ³n en pausa â€” vuelve en un momento';
+                        statusMsg.textContent = (data && data.message) ? data.message : 'Transmisión en pausa â€” vuelve en un momento';
                         statusMsg.style.display = 'block';
                     }
                 } else {
-                    // Archivo viejo o ausente: asumir que estÃ¡ al aire
+                    // Archivo viejo o ausente: asumir que está al aire
                     badge.textContent = 'EN VIVO';
                     badge.classList.remove('offline');
                     if (statusMsg) statusMsg.style.display = 'none';
@@ -1437,7 +1437,7 @@ document.addEventListener('DOMContentLoaded', () => {
             };
 
             // Show success message
-            alert('Â¡Gracias por tu mensaje! Nos pondremos en contacto contigo pronto.');
+            alert('¡Gracias por tu mensaje! Nos pondremos en contacto contigo pronto.');
 
             // Reset form
             contactForm.reset();
@@ -1448,9 +1448,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // === Estados de WhatsApp en el espacio de video de Noticias Deportivas ===
     // Nota: los estados personales de WhatsApp no se pueden incrustar en una web
-    // (son privados, duran 24h y no tienen API pÃºblica). Lo que SÃ se incrusta de
-    // forma oficial es un CANAL de WhatsApp: todo lo que publiques ahÃ­ (fotos,
-    // videos, texto) aparece automÃ¡ticamente en la web. Pega el enlace de tu canal:
+    // (son privados, duran 24h y no tienen API pública). Lo que SÍ se incrusta de
+    // forma oficial es un CANAL de WhatsApp: todo lo que publiques ahí (fotos,
+    // videos, texto) aparece automáticamente en la web. Pega el enlace de tu canal:
     //   https://www.whatsapp.com/channel/<ID>
     const WHATSAPP_CHANNEL_URL = ''; // ej: 'https://www.whatsapp.com/channel/0029Va...'
 
@@ -1534,7 +1534,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (items.length > 0) {
                 renderNews(items);
             } else {
-                newsGrid.innerHTML = '<p class="news-error">No se pudieron cargar las noticias. Intenta de nuevo mÃ¡s tarde.</p>';
+                newsGrid.innerHTML = '<p class="news-error">No se pudieron cargar las noticias. Intenta de nuevo más tarde.</p>';
             }
         }
 
@@ -1601,7 +1601,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
             resetPlayIcons();
-            // La radio se pausa mientras suena la canciÃ³n del Top Crazy
+            // La radio se pausa mientras suena la canción del Top Crazy
             if (isPlaying) {
                 radioPausedForTop5 = true;
                 togglePlay();
@@ -1611,7 +1611,7 @@ document.addEventListener('DOMContentLoaded', () => {
             audio.src = src;
             audio.play().catch(err => {
                 console.error('Error al reproducir audio:', err);
-                // Si no pudo sonar la canciÃ³n, la radio vuelve de inmediato
+                // Si no pudo sonar la canción, la radio vuelve de inmediato
                 if (radioPausedForTop5) {
                     radioPausedForTop5 = false;
                     togglePlay();
@@ -1643,7 +1643,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const icon = currentItem.querySelector('.top5-play i');
                 if (icon) icon.className = 'fas fa-play';
             }
-            // Al pausar o terminar la canciÃ³n, la radio vuelve a sonar
+            // Al pausar o terminar la canción, la radio vuelve a sonar
             if (radioPausedForTop5) {
                 radioPausedForTop5 = false;
                 togglePlay();
@@ -1652,7 +1652,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ===== Compartir Master Crazy TV: enlace directo + toque sostenido =====
-    // Link directo: ...#mctv -> al abrir, entra directo a la transmisiÃ³n en vivo.
+    // Link directo: ...#mctv -> al abrir, entra directo a la transmisión en vivo.
     const MCTV_SHARE_HASH = '#mctv';
 
     function getMctvShareUrl() {
@@ -1689,10 +1689,10 @@ document.addEventListener('DOMContentLoaded', () => {
         shareToastTimer = setTimeout(function () { toast.classList.remove('show'); }, 2600);
     }
 
-    // Copia el enlace directo y muestra confirmaciÃ³n (toast inmediato, copia async)
+    // Copia el enlace directo y muestra confirmación (toast inmediato, copia async)
     window.shareMctv = function () {
         const url = getMctvShareUrl();
-        // ConfirmaciÃ³n visual inmediata (no depende del permiso de clipboard)
+        // Confirmación visual inmediata (no depende del permiso de clipboard)
         const btn = document.getElementById('mctv-share-btn');
         if (btn) {
             btn.classList.add('copied');
@@ -1710,7 +1710,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (document.hasFocus && document.hasFocus()) {
             doCopy();
         } else {
-            // Sin foco (toque sostenido en mÃ³vil): esperar un tick y copiar
+            // Sin foco (toque sostenido en móvil): esperar un tick y copiar
             setTimeout(doCopy, 50);
         }
     };
@@ -1757,7 +1757,7 @@ document.addEventListener('DOMContentLoaded', () => {
             cancelPress();
         });
 
-        // Si fue long-press, evitar el click que abrirÃ­a el video
+        // Si fue long-press, evitar el click que abriría el video
         card.addEventListener('click', function (e) {
             if (longPressFired) {
                 e.preventDefault();
@@ -1767,7 +1767,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     })();
 
-    // Deep-link: si la URL trae #mctv, ir directo a la tarjeta y abrir la transmisiÃ³n.
+    // Deep-link: si la URL trae #mctv, ir directo a la tarjeta y abrir la transmisión.
     function handleMctvDeepLink() {
         if (location.hash !== MCTV_SHARE_HASH) return;
         const card = document.getElementById('master-crazy-tv-card');
@@ -1777,7 +1777,7 @@ document.addEventListener('DOMContentLoaded', () => {
             void card.offsetWidth;
             card.classList.add('tv-card-flash');
             setTimeout(function () { card.classList.remove('tv-card-flash'); }, 2400);
-            // Abrir la transmisiÃ³n directamente (dentro del video)
+            // Abrir la transmisión directamente (dentro del video)
             setTimeout(function () {
                 if (typeof window.requestMctvAccess === 'function') {
                     window.requestMctvAccess();
@@ -1785,7 +1785,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     window.playPartido();
                 }
                 // Modo deep-link: el modal ocupa el 100% de la pantalla en cualquier
-                // dispositivo (CSS puro, no depende de la API fullscreen que los mÃ³viles
+                // dispositivo (CSS puro, no depende de la API fullscreen que los móviles
                 // bloquean sin gesto). El video se ve en zoom-crop: cero barras negras.
                 const m = document.getElementById('tv-modal');
                 if (m) m.classList.add('deep-link-mode');
@@ -1801,7 +1801,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Overlay de audio: el navegador bloquea el autoplay con sonido hasta que el
-    // usuario interactÃºa. Se muestra al entrar por link directo y un toque lo desbloquea.
+    // usuario interactúa. Se muestra al entrar por link directo y un toque lo desbloquea.
     function showTvAudioOverlay() {
         const ov = document.getElementById('tv-audio-overlay');
         if (ov) ov.style.display = 'flex';
@@ -1897,7 +1897,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // Cortina FIJA: logo + barra de carga, se queda en pantalla hasta que vuelva
-    // la seÃ±al (no se oculta sola).
+    // la señal (no se oculta sola).
     window.mostrarCortinaPermanente = function () {
         if (tvCurtainTimer) { clearTimeout(tvCurtainTimer); tvCurtainTimer = null; }
         if (tvReconnectTimer) { clearInterval(tvReconnectTimer); tvReconnectTimer = null; }
@@ -1938,7 +1938,7 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(vigilarEstadoEmision, offlineMostrando ? 3000 : 20000);
     })();
 
-    // IMPORTANTE: los navegadores CONGELAN los temporizadores cuando la pestaÃ±a
+    // IMPORTANTE: los navegadores CONGELAN los temporizadores cuando la pestaña
     // queda en segundo plano (por eso el aviso podia quedarse pegado). Al volver
     // a la pagina se comprueba el estado de inmediato.
     ['visibilitychange', 'focus', 'pageshow', 'online'].forEach(function (ev) {
@@ -1984,7 +1984,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('resize', function () { setTimeout(ajustarIframeCover, 250); });
     window.addEventListener('orientationchange', function () { setTimeout(ajustarIframeCover, 350); });
 
-    // El aviso "Â¿Pantalla negra? Abrir aquÃ­" se muestra SOLO en autorradios
+    // El aviso "¿Pantalla negra? Abrir aquí" se muestra SOLO en autorradios
     // Android (pantalla ancha, Android, sin identificarse como TV ni como movil).
     (function detectarAutorradio() {
         try {
@@ -2076,7 +2076,7 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(applyForcedLandscape, 350);
     });
     // ===== PIN de acceso Â· Master Crazy TV =====
-    // Gate de acceso a la transmisiÃ³n de la tarjeta "Master Crazy TV".
+    // Gate de acceso a la transmisión de la tarjeta "Master Crazy TV".
     // PIN correcto: 2468. Si el usuario no lo tiene, se le redirige a WhatsApp.
     (function () {
         const PIN_CORRECTO = '2468';
@@ -2116,14 +2116,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         let pinValido = false;
 
-        // auto = true cuando se dispara al completar los 4 dÃ­gitos (sin toque).
-        // En ese caso NO se abre la transmisiÃ³n: los navegadores solo permiten
+        // auto = true cuando se dispara al completar los 4 dígitos (sin toque).
+        // En ese caso NO se abre la transmisión: los navegadores solo permiten
         // pantalla completa con un toque real del usuario.
         function validarPin(auto) {
             const pin = inputs.map(function (i) { return i.value; }).join('');
             if (pin.length < 4) {
                 if (errorEl) {
-                    errorEl.textContent = 'Ingresa los 4 dÃ­gitos.';
+                    errorEl.textContent = 'Ingresa los 4 dígitos.';
                     errorEl.style.display = 'block';
                 }
                 return;
@@ -2139,14 +2139,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 pinValido = false;
                 if (errorEl) {
                     errorEl.style.color = '#ff6b81';
-                    errorEl.textContent = 'PIN incorrecto. Te llevamos a WhatsApp para solicitarloâ€¦';
+                    errorEl.textContent = 'PIN incorrecto. Te llevamos a WhatsApp para solicitarlo…';
                     errorEl.style.display = 'block';
                 }
                 setTimeout(redirigirAWhatsApp, 1600);
             }
         }
 
-        // Abre la transmisiÃ³n pidiendo la pantalla completa DENTRO del toque
+        // Abre la transmisión pidiendo la pantalla completa DENTRO del toque
         function abrirTransmision() {
             // Cerrar el teclado ANTES de pedir pantalla completa: con el teclado
             // abierto, el navegador sale de pantalla completa para mostrarlo.
@@ -2271,7 +2271,7 @@ document.addEventListener('DOMContentLoaded', () => {
         function ocultarControles() {
             const modal = getModal();
             if (!modal || modal.style.display !== 'flex') return;
-            // No ocultar mientras estÃ© visible el aviso de activar audio
+            // No ocultar mientras esté visible el aviso de activar audio
             const audio = document.getElementById('tv-audio-overlay');
             if (audio && audio.style.display !== 'none') {
                 hideTimer = setTimeout(ocultarControles, HIDE_MS);
@@ -2280,7 +2280,7 @@ document.addEventListener('DOMContentLoaded', () => {
             modal.classList.add('controls-hidden');
         }
 
-        // Cualquier interacciÃ³n reinicia la cuenta atrÃ¡s
+        // Cualquier interacción reinicia la cuenta atrás
         ['mousemove', 'touchstart', 'click', 'keydown'].forEach(function (ev) {
             document.addEventListener(ev, function () {
                 const modal = getModal();
@@ -2366,7 +2366,7 @@ document.addEventListener('DOMContentLoaded', () => {
     })();
 
     window.addEventListener('hashchange', handleMctvDeepLink);
-    // Al cargar la pÃ¡gina ya con #mctv (despuÃ©s del DOMContentLoaded)
+    // Al cargar la página ya con #mctv (después del DOMContentLoaded)
     setTimeout(handleMctvDeepLink, 1200);
 
 });
