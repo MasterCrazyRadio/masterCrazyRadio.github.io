@@ -2383,7 +2383,7 @@ document.addEventListener('DOMContentLoaded', () => {
         var raiz = document.documentElement;
         var bajo = false;
         try {
-            bajo = raiz.classList.contains('is-low-power') || raiz.classList.contains('is-tv');
+            if (raiz.classList.contains('is-tv')) return; bajo = raiz.classList.contains('is-low-power');
         } catch (e2) {}
 
         var ancho = window.innerWidth || 1024;

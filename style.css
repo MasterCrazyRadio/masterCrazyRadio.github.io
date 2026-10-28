@@ -4557,3 +4557,5 @@ main > section {
 /* El brillo del circulo se conserva pero sin rellenar */
 .play-btn { box-shadow: 0 0 18px rgba(0, 168, 225, 0.22) !important; }
 .header-play-btn { box-shadow: 0 0 14px rgba(0, 168, 225, 0.22) !important; }
+/* ===== Sin nieve en TV: solo computadores y telefonos ===== */
+.is-tv .snowfall { display: none !important; }
