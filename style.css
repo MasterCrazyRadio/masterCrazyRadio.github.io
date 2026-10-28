@@ -4792,3 +4792,31 @@ body {
 @media (max-width: 480px) {
     .hero-brand-text h2 { font-size: clamp(0.68rem, 4vw, 1.2rem) !important; }
 }
+/* ===== AHORRO: pantalla apagada y datos lentos ===== */
+/* Pantalla apagada / app en segundo plano: se PAUSAN las animaciones
+   (no se gasta bateria ni CPU) y el audio sigue sonando. */
+.pantalla-apagada .bg-doodles,
+.pantalla-apagada .snowfall,
+.pantalla-apagada .snowfall span,
+.pantalla-apagada .snowfall i,
+.pantalla-apagada .player-glow,
+.pantalla-apagada .play-btn::after,
+.pantalla-apagada .header-play-btn::after,
+.pantalla-apagada .mesh-gradient,
+.pantalla-apagada .hero-logo-aurora,
+.pantalla-apagada .visualizer-container .bar,
+.pantalla-apagada .top5-item.playing .top5-thumb,
+.pantalla-apagada .whatsapp-float {
+    animation-play-state: paused !important;
+}
+
+/* Datos lentos (2G/3G) o modo ahorro del navegador: sin nieve ni fondo animado */
+.modo-ahorro .snowfall { display: none !important; }
+.modo-ahorro .bg-doodles { animation: none !important; }
+.modo-ahorro .mesh-gradient { animation: none !important; filter: none !important; }
+.modo-ahorro .hero-logo-aurora { animation: none !important; filter: none !important; }
+.modo-ahorro .player-glow { animation: none !important; }
+.modo-ahorro .play-btn::after,
+.modo-ahorro .header-play-btn::after { animation: none !important; }
+.modo-ahorro .whatsapp-float { animation: none !important; }
+/* El ecualizador se queda: es barato y da sensacion de "en vivo" */

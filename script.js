@@ -2551,3 +2551,54 @@ document.addEventListener('DOMContentLoaded', () => {
     aplicar();
   }
 })();
+
+/* ===== Optimizacion final: red lenta y pantalla apagada =====
+   1) Con datos lentos o modo ahorro: apaga nieve, fondo animado y halos.
+   2) Con la pantalla apagada / pestana oculta: PAUSA las animaciones CSS
+      (no gasta bateria ni CPU) y el audio sigue sonando.
+   3) Al volver, todo se reanuda solo. */
+(function () {
+  var raiz = document.documentElement;
+
+  function conexion() {
+    try {
+      return navigator.connection || navigator.mozConnection || navigator.webkitConnection || null;
+    } catch (e) { return null; }
+  }
+
+  function esRedLenta() {
+    var c = conexion();
+    if (!c) return false;
+    if (c.saveData) return true;
+    var t = (c.effectiveType || '').toLowerCase();
+    return t === 'slow-2g' || t === '2g' || t === '3g';
+  }
+
+  function aplicarModo() {
+    if (esRedLenta()) raiz.classList.add('modo-ahorro');
+    else raiz.classList.remove('modo-ahorro');
+  }
+
+  aplicarModo();
+  try {
+    var c = conexion();
+    if (c && c.addEventListener) c.addEventListener('change', aplicarModo);
+  } catch (e) {}
+
+  // Pantalla apagada / app en segundo plano
+  function visibilidad() {
+    if (document.hidden) raiz.classList.add('pantalla-apagada');
+    else raiz.classList.remove('pantalla-apagada');
+  }
+  document.addEventListener('visibilitychange', visibilidad);
+  window.addEventListener('pagehide', function () { raiz.classList.add('pantalla-apagada'); });
+  window.addEventListener('pageshow', function () { raiz.classList.remove('pantalla-apagada'); });
+  visibilidad();
+
+  // Si el equipo pide menos movimiento, se respeta desde el inicio
+  try {
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      raiz.classList.add('modo-ahorro');
+    }
+  } catch (e) {}
+})();
