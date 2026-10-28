@@ -4631,3 +4631,30 @@ main > section {
         background-color: rgba(74, 4, 16, 0.90) !important;
     }
 }
+/* ===== Header con fondo ROJO MAS OSCURO que el de la pagina =====
+   Pagina: centro #E8112D / bordes #8A0B1A  ->  Header: #B00D22 (un paso mas oscuro) */
+.main-header {
+    background: #B00D22 !important;
+    background-color: #B00D22 !important;
+    background-image: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35) !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.25) !important;
+}
+/* Al hacer scroll se oscurece un poco mas, para mantenerlo legible y fijo */
+.main-header.header-scrolled {
+    background: #93091A !important;
+    background-color: #93091A !important;
+    box-shadow: 0 6px 26px rgba(0, 0, 0, 0.5) !important;
+}
+@media (max-width: 900px) {
+    .main-header {
+        background: #B00D22 !important;
+        background-color: #B00D22 !important;
+    }
+    .main-header.header-scrolled {
+        background: #93091A !important;
+        background-color: #93091A !important;
+    }
+}
