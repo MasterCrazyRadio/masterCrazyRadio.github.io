@@ -4509,3 +4509,23 @@ main > section {
     .hero-layout { gap: 40px !important; margin-top: 28px !important; }
     .player-wrapper, .flyer-wrapper { margin: 0 !important; }
 }
+/* ===== Separacion (cuarta vuelta: 105px / 220px) ===== */
+.hero-brand {
+    gap: 105px !important;
+    margin-bottom: 74px !important;
+}
+.hero-brand-text { margin-top: 26px !important; }
+.hero-layout {
+    gap: 220px !important;
+    max-width: 1460px !important;
+    margin-top: 74px !important;
+}
+.player-wrapper { margin-right: 24px !important; }
+.flyer-wrapper  { margin-left: 24px !important; }
+@media (max-width: 1500px) { .hero-layout { gap: 140px !important; max-width: 1280px !important; } }
+@media (max-width: 1200px) { .hero-layout { gap: 90px !important; } }
+@media (max-width: 900px) {
+    .hero-brand { gap: 50px !important; margin-bottom: 34px !important; }
+    .hero-layout { gap: 42px !important; margin-top: 30px !important; }
+    .player-wrapper, .flyer-wrapper { margin: 0 !important; }
+}
