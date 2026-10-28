@@ -4468,3 +4468,24 @@ main > section {
     .hero-layout { gap: 34px !important; margin-top: 22px !important; }
     .player-wrapper, .flyer-wrapper { margin: 0 !important; }
 }
+/* ===== MAS separacion (segunda vuelta) ===== */
+.hero-brand {
+    gap: 70px !important;
+    margin-bottom: 52px !important;
+}
+.hero-brand-text {
+    margin-top: 16px !important;
+}
+.hero-layout {
+    gap: 150px !important;
+    max-width: 1300px !important;
+    margin-top: 52px !important;
+}
+.player-wrapper { margin-right: 16px !important; }
+.flyer-wrapper  { margin-left: 16px !important; }
+@media (max-width: 1200px) { .hero-layout { gap: 90px !important; } }
+@media (max-width: 900px) {
+    .hero-brand { gap: 40px !important; margin-bottom: 30px !important; }
+    .hero-layout { gap: 40px !important; margin-top: 26px !important; }
+    .player-wrapper, .flyer-wrapper { margin: 0 !important; }
+}
