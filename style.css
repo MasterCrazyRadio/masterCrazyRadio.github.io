@@ -4732,3 +4732,35 @@ body {
 @media (max-width: 900px) {
     .hero-brand-text h2 { font-size: clamp(1.15rem, 5.2vw, 1.9rem) !important; max-width: 20ch; }
 }
+/* ===== Subtitulo en UNA SOLA LINEA horizontal =====
+   Se quita el corte en varias lineas y se ajusta el tamano por ancho de pantalla
+   para que "Master Crazy, La Casa Oficial de La Cumbiaaa" quepa en una fila. */
+.hero-brand-text {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow: visible !important;
+}
+.hero-brand-text h2 {
+    display: block !important;
+    width: 100% !important;
+    max-width: none !important;
+    white-space: nowrap !important;
+    word-break: keep-all !important;
+    overflow-wrap: normal !important;
+    text-wrap: nowrap !important;
+    line-height: 1.1 !important;
+    /* El tamano baja solo lo necesario para caber en una linea */
+    font-size: clamp(0.75rem, 2.45vw, 2rem) !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+.hero-brand-text h2 .brand-green,
+.hero-brand-text h2 .brand-sky {
+    white-space: nowrap !important;
+}
+@media (max-width: 900px) {
+    .hero-brand-text h2 { font-size: clamp(0.62rem, 3.4vw, 1.15rem) !important; }
+}
+@media (max-width: 480px) {
+    .hero-brand-text h2 { font-size: clamp(0.55rem, 3.9vw, 0.95rem) !important; }
+}
