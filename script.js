@@ -2517,3 +2517,37 @@ document.addEventListener('DOMContentLoaded', () => {
     iniciar();
   }
 })();
+
+/* ===== Header flotante permanente =====
+   El encabezado (Play + MASTER CRAZY + menu) queda fijo arriba y visible
+   en toda la pagina. Se compensa el alto para que no tape el contenido. */
+(function () {
+  function aplicar() {
+    var header = document.querySelector('.main-header');
+    if (!header) return;
+
+    function medir() {
+      var alto = Math.ceil(header.getBoundingClientRect().height) || 96;
+      document.documentElement.style.setProperty('--header-h', alto + 'px');
+      document.body.style.paddingTop = alto + 'px';
+    }
+
+    medir();
+    // Recalcular cuando cambie el tamano, la orientacion o carguen las fuentes
+    window.addEventListener('resize', medir, { passive: true });
+    window.addEventListener('orientationchange', function () { setTimeout(medir, 250); }, { passive: true });
+    window.addEventListener('load', medir);
+    setTimeout(medir, 400);
+    setTimeout(medir, 1200);
+
+    if (document.fonts && document.fonts.ready && document.fonts.ready.then) {
+      document.fonts.ready.then(medir).catch(function () {});
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', aplicar);
+  } else {
+    aplicar();
+  }
+})();
