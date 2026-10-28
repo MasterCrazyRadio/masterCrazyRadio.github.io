@@ -1,4 +1,4 @@
-﻿@font-face {
+@font-face {
     font-family: 'Crash A Like';
     src: url('fonts/crash-a-like.ttf') format('truetype');
     font-weight: 400;
@@ -2096,9 +2096,9 @@ input[type="range"]::-webkit-slider-thumb:hover {
 
 .top5-artist {
     font-size: 0.95rem;
-    color: #8E5FD8;
+    color: #00A8E1;
     font-weight: 500;
-    text-shadow: 0 0 8px rgba(142, 95, 216, 0.35);
+    text-shadow: 0 0 8px rgba(0, 168, 225, 0.35);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
