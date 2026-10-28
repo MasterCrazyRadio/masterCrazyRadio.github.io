@@ -2387,7 +2387,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (e2) {}
 
         var ancho = window.innerWidth || 1024;
-        var cantidad = bajo ? 18 : (ancho < 640 ? 26 : (ancho < 1200 ? 40 : 54));
+        var cantidad = bajo ? 26 : (ancho < 640 ? 34 : (ancho < 1200 ? 55 : 72));
         var copos = ['\u2744', '\u2745', '\u2746', '\u2022', '\u00b7', '*'];
         var html = '';
         for (var i = 0; i < cantidad; i++) {
