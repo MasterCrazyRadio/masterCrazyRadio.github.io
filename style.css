@@ -4321,37 +4321,3 @@ main > section {
 @media (max-width: 640px) {
     .pide-btn { right: 14px; bottom: 96px; padding: 10px 13px; font-size: 0.8rem; }
 }
-/* ===== TV (Android TV, ONN, Fire TV, Smart TV): portada desplazada hacia abajo =====
-   Objetivo: que se alcance a leer completa la linea "Master Crazy, Mas que radio!!"
-   sin que el logo ni el resto del contenido la tapen. */
-.is-tv .hero-section {
-    align-items: flex-start;
-    padding-top: 7vh;
-    padding-bottom: 2vh;
-    overflow: visible;
-}
-.is-tv .hero-content { overflow: visible; }
-.is-tv .hero-brand {
-    margin-top: 0;
-    margin-bottom: 12px;
-    gap: 10px;
-    transform: translateY(2vh);
-    overflow: visible;
-}
-.is-tv .hero-logo-wrap,
-.is-tv .hero-logo {
-    width: min(20vh, 170px);
-    height: min(20vh, 170px);
-}
-.is-tv .hero-brand-text h2 {
-    font-size: clamp(1.6rem, 4.2vw, 3rem);
-    line-height: 1.05;
-    margin-bottom: 6px;
-    overflow: visible;
-    white-space: normal;
-}
-/* Que quepa siempre en una linea sin cortarse */
-@media (max-aspect-ratio: 4/3) {
-    .is-tv .hero-brand-text h2 { font-size: clamp(1.3rem, 5vw, 2.2rem); }
-    .is-tv .hero-section { padding-top: 5vh; }
-}
