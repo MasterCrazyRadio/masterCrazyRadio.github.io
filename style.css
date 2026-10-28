@@ -4434,3 +4434,37 @@ main > section {
     .hero-logo-wrap, .hero-logo { width: 120px !important; height: 120px !important; }
     .section-title { margin-bottom: 34px !important; }
 }
+/* ===== Mas separacion: logo/subtitulo y reproductor/publicidad ===== */
+/* 1) Aire entre el logo principal y "Master Crazy, Mas que Radio!!" */
+.hero-brand {
+    gap: 52px !important;
+    margin-bottom: 40px !important;
+}
+.hero-brand-text {
+    margin-top: 10px !important;
+}
+.hero-brand-text h2 {
+    margin-top: 0 !important;
+    margin-bottom: 10px !important;
+}
+/* 2) Aire entre la seccion del reproductor y la publicidad (flyer) */
+.hero-layout {
+    gap: 110px !important;
+    max-width: 1240px !important;
+    margin-top: 40px !important;
+}
+.player-wrapper {
+    margin-right: 10px !important;
+}
+.flyer-wrapper {
+    margin-left: 10px !important;
+}
+/* En pantallas medianas y moviles se reduce para que no se desborde */
+@media (max-width: 1100px) {
+    .hero-layout { gap: 60px !important; }
+}
+@media (max-width: 900px) {
+    .hero-brand { gap: 30px !important; margin-bottom: 26px !important; }
+    .hero-layout { gap: 34px !important; margin-top: 22px !important; }
+    .player-wrapper, .flyer-wrapper { margin: 0 !important; }
+}
