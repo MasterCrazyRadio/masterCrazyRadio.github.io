@@ -4321,3 +4321,56 @@ main > section {
 @media (max-width: 640px) {
     .pide-btn { right: 14px; bottom: 96px; padding: 10px 13px; font-size: 0.8rem; }
 }
+/* ===== MODO COMPACTO: menos aire entre secciones y todo mas ajustado ===== */
+.hero-section,
+.tv-section,
+.top5-section,
+.news-section,
+.contact-section {
+    padding: 36px 16px !important;
+}
+.hero-brand {
+    margin-top: -8px !important;
+    margin-bottom: 14px !important;
+    gap: 10px !important;
+}
+.hero-logo-wrap,
+.hero-logo {
+    width: 108px !important;
+    height: 108px !important;
+}
+.hero-brand-text h2 {
+    font-size: clamp(1.8rem, 3.8vw, 3rem) !important;
+    margin-bottom: 6px !important;
+    line-height: 1.08 !important;
+}
+.section-title {
+    margin-bottom: 22px !important;
+    font-size: clamp(1.4rem, 2.4vw, 2rem) !important;
+}
+.tv-grid,
+.top5-container {
+    padding: 8px !important;
+}
+.tv-grid {
+    gap: 12px !important;
+}
+.top5-list {
+    gap: 9px !important;
+}
+.top5-item {
+    padding: 10px !important;
+}
+.player-wrapper {
+    margin: 8px auto !important;
+}
+.main-footer {
+    padding: 16px !important;
+    margin-top: 10px !important;
+}
+/* Que al saltar entre secciones no quede un hueco enorme */
+#tv-section,
+#top5-section,
+#contact {
+    scroll-margin-top: 64px;
+}
