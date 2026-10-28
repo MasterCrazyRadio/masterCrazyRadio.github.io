@@ -4764,3 +4764,18 @@ body {
 @media (max-width: 480px) {
     .hero-brand-text h2 { font-size: clamp(0.55rem, 3.9vw, 0.95rem) !important; }
 }
+/* ===== Subtitulo MAS GRANDE (sigue en una sola linea horizontal) =====
+   Se suben los topes de tamano; en pantallas chicas se reduce lo justo
+   para que la frase completa siga cabiendo en una fila. */
+.hero-brand-text h2 {
+    font-size: clamp(1rem, 3.2vw, 2.8rem) !important;
+}
+@media (max-width: 1200px) {
+    .hero-brand-text h2 { font-size: clamp(0.9rem, 3.6vw, 2.2rem) !important; }
+}
+@media (max-width: 900px) {
+    .hero-brand-text h2 { font-size: clamp(0.75rem, 4vw, 1.55rem) !important; }
+}
+@media (max-width: 480px) {
+    .hero-brand-text h2 { font-size: clamp(0.6rem, 3.7vw, 1.05rem) !important; }
+}
