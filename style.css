@@ -4529,3 +4529,31 @@ main > section {
     .hero-layout { gap: 42px !important; margin-top: 30px !important; }
     .player-wrapper, .flyer-wrapper { margin: 0 !important; }
 }
+/* ===== Boton de Play: SIN relleno, solo borde azul ===== */
+.play-btn,
+.header-play-btn {
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    border: 2px solid #00A8E1 !important;
+}
+/* Tambien transparente en hover, foco y al presionar */
+.play-btn:hover,
+.play-btn:active,
+.play-btn:focus,
+.header-play-btn:hover,
+.header-play-btn:active,
+.header-play-btn:focus {
+    background: transparent !important;
+    background-image: none !important;
+    border-color: #00A8E1 !important;
+}
+/* El icono se mantiene blanco para que se lea dentro del circulo vacio */
+.play-btn i,
+.header-play-btn i {
+    color: #FFFFFF !important;
+    -webkit-text-fill-color: #FFFFFF !important;
+}
+/* El brillo del circulo se conserva pero sin rellenar */
+.play-btn { box-shadow: 0 0 18px rgba(0, 168, 225, 0.22) !important; }
+.header-play-btn { box-shadow: 0 0 14px rgba(0, 168, 225, 0.22) !important; }
