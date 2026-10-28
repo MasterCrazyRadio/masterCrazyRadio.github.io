@@ -4696,3 +4696,21 @@ body {
     transform: none !important;
     will-change: auto;
 }
+/* ===== Subtitulo del hero con la MISMA tipografia del titular principal =====
+   El titular del header usa 'Crash A Like'. Se aplica igual a
+   "Master Crazy, Mas que radio!!" debajo del logo. */
+.hero-brand-text h2,
+.hero-brand-text h2 .brand-green,
+.hero-brand-text h2 .brand-sky {
+    font-family: 'Crash A Like', 'Outfit', sans-serif !important;
+    font-weight: 400 !important;
+    letter-spacing: 0.5px !important;
+}
+/* Ajuste de tamano para la fuente display (es mas ancha que Outfit) */
+.hero-brand-text h2 {
+    font-size: clamp(1.7rem, 3.8vw, 3.2rem) !important;
+    line-height: 1.12 !important;
+}
+@media (max-width: 900px) {
+    .hero-brand-text h2 { font-size: clamp(1.35rem, 6vw, 2.2rem) !important; }
+}
