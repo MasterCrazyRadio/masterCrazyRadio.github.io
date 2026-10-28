@@ -1698,7 +1698,7 @@ document.addEventListener('DOMContentLoaded', () => {
             btn.classList.add('copied');
             setTimeout(function () { btn.classList.remove('copied'); }, 1800);
         }
-        showShareToast('ðŸ”— Enlace copiado');
+        showShareToast('ð”— Enlace copiado');
         // Copia al portapapeles (con respaldo ejecCommand)
         const doCopy = function () {
             if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -2075,7 +2075,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('orientationchange', function () {
         setTimeout(applyForcedLandscape, 350);
     });
-    // ===== PIN de acceso Â· Master Crazy TV =====
+    // ===== PIN de acceso · Master Crazy TV =====
     // Gate de acceso a la transmisión de la tarjeta "Master Crazy TV".
     // PIN correcto: 2468. Si el usuario no lo tiene, se le redirige a WhatsApp.
     (function () {
