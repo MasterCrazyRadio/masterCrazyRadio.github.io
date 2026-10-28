@@ -4714,3 +4714,21 @@ body {
 @media (max-width: 900px) {
     .hero-brand-text h2 { font-size: clamp(1.35rem, 6vw, 2.2rem) !important; }
 }
+/* ===== Subtitulo largo: "La Casa Oficial de La Cumbiaaa" =====
+   Se ajusta el tamano y se permite partir en dos lineas sin cortar palabras. */
+.hero-brand-text h2 {
+    font-size: clamp(1.35rem, 3.1vw, 2.5rem) !important;
+    line-height: 1.16 !important;
+    white-space: normal !important;
+    text-wrap: balance;
+    max-width: 22ch;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+.hero-brand-text h2 .brand-sky {
+    display: inline;
+    white-space: normal !important;
+}
+@media (max-width: 900px) {
+    .hero-brand-text h2 { font-size: clamp(1.15rem, 5.2vw, 1.9rem) !important; max-width: 20ch; }
+}
