@@ -4581,3 +4581,26 @@ main > section {
 .is-low-power .bg-doodles {
     animation: fondoDerivaTV 300s ease-in-out infinite alternate !important;
 }
+/* ===== Header TRANSPARENTE: se ve el fondo rojo con Papa Noel, renos e iconos ===== */
+.main-header {
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    box-shadow: none !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.10) !important;
+}
+/* En pantallas pequenas se mantiene igual de transparente */
+@media (max-width: 900px) {
+    .main-header {
+        background: transparent !important;
+        background-color: transparent !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        box-shadow: none !important;
+    }
+}
+/* La barra de navegacion tampoco pinta fondo */
+.main-nav,
+.logo-container { background: transparent !important; }
