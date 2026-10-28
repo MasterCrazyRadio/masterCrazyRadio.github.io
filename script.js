@@ -2487,3 +2487,33 @@ document.addEventListener('DOMContentLoaded', () => {
     listo();
   }
 })();
+
+/* ===== Header fijo y legible al hacer scroll =====
+   Arriba queda transparente (se ve el fondo rojo con Papa Noel y renos);
+   al bajar aparece un velo rojo translucido para que el menu se lea siempre. */
+(function () {
+  function iniciar() {
+    var header = document.querySelector('.main-header');
+    if (!header) return;
+    var anterior = null;
+
+    function actualizar() {
+      var y = window.pageYOffset || document.documentElement.scrollTop || 0;
+      var pegado = y > 40;
+      if (pegado !== anterior) {
+        header.classList.toggle('header-scrolled', pegado);
+        anterior = pegado;
+      }
+    }
+
+    window.addEventListener('scroll', actualizar, { passive: true });
+    window.addEventListener('resize', actualizar, { passive: true });
+    actualizar();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', iniciar);
+  } else {
+    iniciar();
+  }
+})();

@@ -4604,3 +4604,30 @@ main > section {
 /* La barra de navegacion tampoco pinta fondo */
 .main-nav,
 .logo-container { background: transparent !important; }
+/* ===== Header fijo y legible al hacer scroll =====
+   Arriba: transparente (se ve el fondo). Al bajar: velo rojo translucido + desenfoque
+   para que el menu siga visual y funcional. */
+.main-header {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 100 !important;
+    transition: background-color 0.25s ease, box-shadow 0.25s ease, backdrop-filter 0.25s ease;
+}
+.main-header.header-scrolled {
+    background: rgba(74, 4, 16, 0.82) !important;
+    background-color: rgba(74, 4, 16, 0.82) !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    box-shadow: 0 6px 26px rgba(0, 0, 0, 0.45) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.18) !important;
+}
+/* El menu gana contraste cuando el header esta pegado */
+.main-header.header-scrolled .main-nav a {
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.9);
+}
+@media (max-width: 900px) {
+    .main-header.header-scrolled {
+        background: rgba(74, 4, 16, 0.90) !important;
+        background-color: rgba(74, 4, 16, 0.90) !important;
+    }
+}
