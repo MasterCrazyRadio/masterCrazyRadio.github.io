@@ -4779,3 +4779,16 @@ body {
 @media (max-width: 480px) {
     .hero-brand-text h2 { font-size: clamp(0.6rem, 3.7vw, 1.05rem) !important; }
 }
+/* ===== Subtitulo aun MAS GRANDE (sigue en una sola linea) ===== */
+.hero-brand-text h2 {
+    font-size: clamp(1.15rem, 3.8vw, 3.4rem) !important;
+}
+@media (max-width: 1200px) {
+    .hero-brand-text h2 { font-size: clamp(1rem, 4.1vw, 2.6rem) !important; }
+}
+@media (max-width: 900px) {
+    .hero-brand-text h2 { font-size: clamp(0.85rem, 4.4vw, 1.9rem) !important; }
+}
+@media (max-width: 480px) {
+    .hero-brand-text h2 { font-size: clamp(0.68rem, 4vw, 1.2rem) !important; }
+}
