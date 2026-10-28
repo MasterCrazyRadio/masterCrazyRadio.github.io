@@ -4559,3 +4559,25 @@ main > section {
 .header-play-btn { box-shadow: 0 0 14px rgba(0, 168, 225, 0.22) !important; }
 /* ===== Sin nieve en TV: solo computadores y telefonos ===== */
 .is-tv .snowfall { display: none !important; }
+/* ===== Fondo en movimiento CONTINUO por toda la pagina =====
+   El mosaico (Papa Noel, renos, estrellas, guirnaldas e iconos) viaja en diagonal
+   sin cortes: al desplazarse exactamente un mosaico, el dibujo calza y reinicia solo. */
+.bg-doodles {
+    top: -1000px !important;
+    left: -1000px !important;
+    width: calc(100% + 2000px) !important;
+    height: calc(100% + 2000px) !important;
+    animation: fondoDerivaViaje 240s linear infinite !important;
+    will-change: transform;
+    backface-visibility: hidden;
+}
+@keyframes fondoDerivaViaje {
+    from { transform: translate3d(0, 0, 0); }
+    to   { transform: translate3d(-1000px, -1000px, 0); }
+}
+/* En TV y equipos de bajo consumo se mantiene el recorrido corto (ida y vuelta),
+   para que no vuelva la latencia que ya corregimos. */
+.is-tv .bg-doodles,
+.is-low-power .bg-doodles {
+    animation: fondoDerivaTV 300s ease-in-out infinite alternate !important;
+}
