@@ -4557,3 +4557,31 @@ main > section {
 /* El brillo del circulo se conserva pero sin rellenar */
 .play-btn { box-shadow: 0 0 18px rgba(0, 168, 225, 0.22) !important; }
 .header-play-btn { box-shadow: 0 0 14px rgba(0, 168, 225, 0.22) !important; }
+/* ===== Papa Noel destacado: figura visible, fuera del logo ===== */
+.santa-destacado {
+    position: fixed;
+    left: 18px;
+    bottom: 22px;
+    width: 132px;
+    height: auto;
+    z-index: 60;
+    pointer-events: none;
+    user-select: none;
+    filter: drop-shadow(0 10px 22px rgba(0, 0, 0, 0.55));
+    animation: santaFlota 5s ease-in-out infinite;
+}
+@keyframes santaFlota {
+    0%, 100% { transform: translateY(0) rotate(-2deg); }
+    50%      { transform: translateY(-10px) rotate(2deg); }
+}
+@media (max-width: 900px) {
+    .santa-destacado { width: 104px; left: 10px; bottom: 14px; }
+}
+@media (max-width: 640px) {
+    .santa-destacado { width: 86px; left: 8px; bottom: 10px; }
+}
+/* En TV se deja mas discreto para no tapar contenido */
+.is-tv .santa-destacado { width: 96px; left: 14px; bottom: 34px; }
+@media (prefers-reduced-motion: reduce) {
+    .santa-destacado { animation: none; }
+}
