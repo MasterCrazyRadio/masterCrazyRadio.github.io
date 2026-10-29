@@ -4820,3 +4820,38 @@ body {
 .modo-ahorro .header-play-btn::after { animation: none !important; }
 .modo-ahorro .whatsapp-float { animation: none !important; }
 /* El ecualizador se queda: es barato y da sensacion de "en vivo" */
+/* ===== WhatsApp SIN verde: azul de la pagina y fondo transparente ===== */
+/* Boton flotante: solo borde e icono azul, todo lo demas transparente */
+.whatsapp-float {
+    background: transparent !important;
+    background-image: none !important;
+    background-color: transparent !important;
+    border: 2px solid #00A8E1 !important;
+    color: #00A8E1 !important;
+    box-shadow: 0 0 18px rgba(0, 168, 225, 0.35) !important;
+}
+.whatsapp-float i,
+.whatsapp-float .fab,
+.whatsapp-float .fa-whatsapp {
+    color: #00A8E1 !important;
+    -webkit-text-fill-color: #00A8E1 !important;
+}
+/* El halo que estaba en verde pasa a azul muy tenue (o desaparece) */
+.whatsapp-float::before {
+    background: radial-gradient(circle, rgba(0, 168, 225, 0.35) 0%, rgba(0, 168, 225, 0) 70%) !important;
+    background-image: radial-gradient(circle, rgba(0, 168, 225, 0.35) 0%, rgba(0, 168, 225, 0) 70%) !important;
+    opacity: 0.55 !important;
+}
+/* La onda tambien en azul */
+.whatsapp-float::after {
+    border: 2px solid rgba(0, 168, 225, 0.35) !important;
+}
+/* Boton "Enviar por WhatsApp" del panel de peticiones: azul en vez de verde */
+.pide-enviar {
+    background: #00A8E1 !important;
+    color: #04121a !important;
+}
+.pide-enviar:hover { background: #0090C4 !important; }
+/* Cualquier otro uso del verde de WhatsApp en el sitio */
+a[href*="wa.me"] i,
+a[href*="wa.me"] .fab { color: #00A8E1 !important; }
