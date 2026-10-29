@@ -1272,8 +1272,8 @@ input[type="range"]::-webkit-slider-thumb:hover {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg, #25D366, #128C7E);
-    box-shadow: 0 8px 30px rgba(37, 211, 102, 0.5);
+    background: linear-gradient(135deg, #00A8E1, #0089BA);
+    box-shadow: 0 8px 30px rgba(0, 168, 225, 0.5);
     transition: all 0.3s ease;
     z-index: 9999;
     /* Very high z-index to stay on top */
@@ -1299,7 +1299,7 @@ input[type="range"]::-webkit-slider-thumb:hover {
     width: 100%;
     height: 100%;
     border-radius: 50%;
-    background: linear-gradient(135deg, #25D366, #128C7E);
+    background: linear-gradient(135deg, #00A8E1, #0089BA);
     z-index: -1;
     filter: blur(15px);
     opacity: 0.6;
@@ -1311,7 +1311,7 @@ input[type="range"]::-webkit-slider-thumb:hover {
     width: 120%;
     height: 120%;
     border-radius: 50%;
-    border: 2px solid rgba(37, 211, 102, 0.3);
+    border: 2px solid rgba(0, 168, 225, 0.3);
     animation: whatsappRipple 1.5s infinite;
 }
 
@@ -1341,7 +1341,7 @@ input[type="range"]::-webkit-slider-thumb:hover {
 
 .whatsapp-float:hover {
     transform: translateY(-5px);
-    box-shadow: 0 12px 40px rgba(37, 211, 102, 0.7);
+    box-shadow: 0 12px 40px rgba(0, 168, 225, 0.7);
 }
 
 .whatsapp-float:active {
@@ -3121,7 +3121,7 @@ body.tv-open .tv-modal {
     display: inline-block;
     margin-top: 14px;
     font-size: 13px;
-    color: #25D366;
+    color: #00A8E1;
     text-decoration: none;
 }
 
@@ -4276,7 +4276,7 @@ main > section {
 .pide-aviso { color: #ffd1d1; font-size: 0.75rem; min-height: 14px; margin: 4px 0; }
 .pide-acciones { display: flex; gap: 8px; }
 .pide-enviar, .pide-telegram { flex: 1; padding: 9px 10px; border-radius: 10px; border: none; font-weight: 700; font-size: 0.82rem; cursor: pointer; }
-.pide-enviar { background: #25D366; color: #06210f; }
+.pide-enviar { background: #00A8E1; color: #06210f; }
 .pide-telegram { background: #00A8E1; color: #04121a; }
 @media (max-width: 640px) {
     .pide-btn { bottom: 96px; right: 14px; padding: 10px 13px; font-size: 0.8rem; }
