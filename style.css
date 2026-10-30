@@ -4973,14 +4973,7 @@ body.tv-open .tv-loading-bar {
     animation-duration: 1.6s !important;
 }
 /* El reproductor con su propia capa, aislado del resto */
-body.tv-open #tv-iframe-container,
-body.tv-open #tv-iframe,
-body.tv-open #tv-player {
-    contain: layout paint !important;
-    transform: translateZ(0) !important;
-    will-change: auto !important;
-    backface-visibility: hidden !important;
-}
+
 /* En TV se apaga tambien el pulso del logo del modal */
 body.tv-open .tv-modal,
 body.tv-open .tv-modal * {
@@ -5025,11 +5018,31 @@ body.tv-open .tv-modal * {
     contain: none !important;
 }
 /* El video tambien protegido frente a cualquier contencion */
-body.tv-open #tv-player,
-body.tv-open #tv-iframe,
-body.tv-open #tv-iframe-container {
+
+
+
+/* ===== RESCATE TV: el reproductor NUNCA se toca =====
+   Las optimizaciones anteriores anulaban el transform que el JS aplica para
+   escalar el iframe (ajustarIframeCover), por eso el video quedaba fuera de
+   cuadro: pantalla negra con audio. Aqui se restaura todo de forma explicita. */
+body.tv-open #tv-modal,
+body.tv-open #tv-modal * {
     content-visibility: visible !important;
     contain: none !important;
-    opacity: 1 !important;
     visibility: visible !important;
+    opacity: 1 !important;
 }
+body.tv-open #tv-iframe-container,
+body.tv-open #tv-iframe,
+body.tv-open #tv-player,
+body.tv-open .video-container {
+    content-visibility: visible !important;
+    contain: none !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+    will-change: auto !important;
+}
+/* El modal se muestra como siempre cuando esta abierto */
+body.tv-open .tv-modal { display: flex !important; }

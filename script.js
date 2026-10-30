@@ -1128,8 +1128,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const TV_ES_MODO_TV = (function () {
         try { return document.documentElement.classList.contains('is-tv'); } catch (e) { return false; }
     })();
-    const TV_CURTAIN_AFTER_LOAD_MS = 400;   // tras cargar el embed
-    const TV_CURTAIN_MAX_MS = 4000;         // tope si nunca carga
+    const TV_CURTAIN_AFTER_LOAD_MS = 2500;   // tras cargar el embed
+    const TV_CURTAIN_MAX_MS = 12000;         // tope si nunca carga
 
     function setReconnectNumber(text, isGo) {
         const countEl = document.getElementById('tv-reconnect-count');
