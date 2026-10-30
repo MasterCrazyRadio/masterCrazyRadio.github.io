@@ -1,0 +1,142 @@
+/* ==========================================================================
+   BLOQUEO DE PANTALLA EN TV - Master Crazy Radio
+   --------------------------------------------------------------------------
+   ORDEN DEL SER SUPERIOR (2026-10-30): en Android TV, ONN Watch, Fire TV y
+   Smart TV la pagina y la transmision deben ocupar TODA la pantalla, centradas
+   y sin desplazamientos. Este archivo tiene prioridad sobre style.css porque
+   se carga DESPUES.
+
+   *** NO MODIFICAR SIN ORDEN PUNTUAL DEL SER SUPERIOR ***
+   Si algo hay que cambiar aqui, se pide autorizacion explicita primero.
+   Verificar siempre con:  node verificar-tv.js
+   ========================================================================== */
+
+/* 1. La pagina completa: sin margenes, sin scroll lateral, 100% de ancho */
+html.is-tv,
+html.is-tv body {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    overflow-x: hidden !important;
+    box-sizing: border-box !important;
+}
+html.is-tv body {
+    position: relative !important;
+}
+
+/* 2. Secciones centradas y a todo el ancho */
+html.is-tv main,
+html.is-tv .hero-section,
+html.is-tv .tv-section,
+html.is-tv .top5-section,
+html.is-tv .news-section,
+html.is-tv .contact-section,
+html.is-tv .main-footer {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding-left: 3vw !important;
+    padding-right: 3vw !important;
+    box-sizing: border-box !important;
+}
+html.is-tv .hero-content,
+html.is-tv .hero-layout,
+html.is-tv .tv-grid,
+html.is-tv .top5-container,
+html.is-tv .top5-list,
+html.is-tv .contact-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    box-sizing: border-box !important;
+}
+
+/* 3. Header pegado a los bordes (sin desplazarlo) */
+html.is-tv .main-header {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+}
+
+/* 4. Modal de TV: exactamente la ventana, sin margen ni relleno */
+html.is-tv .tv-modal {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    height: 100dvh !important;
+    max-width: 100vw !important;
+    max-height: 100dvh !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+    box-sizing: border-box !important;
+    align-items: stretch !important;
+    justify-content: stretch !important;
+    overflow: hidden !important;
+}
+html.is-tv .tv-modal .modal-content {
+    width: 100vw !important;
+    height: 100vh !important;
+    height: 100dvh !important;
+    max-width: 100vw !important;
+    max-height: 100dvh !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+    position: relative !important;
+    box-sizing: border-box !important;
+    display: flex !important;
+}
+html.is-tv .tv-modal .video-container {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-width: none !important;
+    max-height: none !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+}
+/* El video y el iframe llenan el contenedor. SU TRANSFORM LO MANEJA EL JS
+   (ajustarIframeCover): no se toca aqui para no desplazar la imagen. */
+html.is-tv .tv-modal .video-container iframe,
+html.is-tv .tv-modal .video-container video {
+    width: 100% !important;
+    height: 100% !important;
+    max-width: none !important;
+    max-height: none !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-sizing: border-box !important;
+}
+
+/* 5. Nada debe sobresalir del ancho del televisor */
+html.is-tv .background-animation,
+html.is-tv .bg-doodles {
+    max-width: 100vw !important;
+    overflow: hidden !important;
+}
