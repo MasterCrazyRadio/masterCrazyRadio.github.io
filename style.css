@@ -4934,3 +4934,59 @@ html, body {
     gap: 2.5vh 1.6vw !important;
 }
 .is-tv .player-container { max-width: 46vw !important; }
+
+/* ===== TV ABIERTA: liberar GPU al maximo =====
+   Mientras se ve la transmision, TODO lo demas de la pagina deja de pintarse:
+   se evita el fondo animado, la nieve, los halos y los desenfoques que
+   competian con la decodificacion del video (causa del lag en TV y PC). */
+body.tv-open .main-header,
+body.tv-open .main-footer,
+body.tv-open .whatsapp-float,
+body.tv-open .pide-btn,
+body.tv-open .pide-panel {
+    content-visibility: hidden !important;
+    contain: strict !important;
+}
+/* Todo el contenido de <main>, salvo el modal de TV */
+body.tv-open main > *:not(#tv-modal) {
+    content-visibility: hidden !important;
+    contain: strict !important;
+}
+/* Fondo animado y nieve: fuera mientras hay video */
+body.tv-open .background-animation {
+    animation: none !important;
+}
+body.tv-open .bg-doodles,
+body.tv-open .snowfall {
+    display: none !important;
+    animation: none !important;
+    will-change: auto !important;
+}
+/* Ningun desenfoque de fondo consumiendo GPU */
+body.tv-open * {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+/* La cortina queda ligera: sin filtros ni animacion */
+body.tv-open .tv-curtain-logo {
+    filter: none !important;
+    animation: none !important;
+}
+body.tv-open .tv-loading-bar {
+    animation-duration: 1.6s !important;
+}
+/* El reproductor con su propia capa, aislado del resto */
+body.tv-open #tv-iframe-container,
+body.tv-open #tv-iframe,
+body.tv-open #tv-player {
+    contain: layout paint !important;
+    transform: translateZ(0) !important;
+    will-change: auto !important;
+    backface-visibility: hidden !important;
+}
+/* En TV se apaga tambien el pulso del logo del modal */
+body.tv-open .tv-modal,
+body.tv-open .tv-modal * {
+    animation-duration: 0.001s !important;
+    animation-iteration-count: 1 !important;
+}
