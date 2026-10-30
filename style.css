@@ -4990,3 +4990,18 @@ body.tv-open .tv-modal * {
     animation-duration: 0.001s !important;
     animation-iteration-count: 1 !important;
 }
+
+
+/* ===== TV abierta: TODO el recurso para el embed de OK.ru =====
+   Se congelan todas las animaciones CSS de la pagina mientras se reproduce
+   la transmision (solo se deja viva la barrita de carga). */
+body.tv-open *:not(.tv-loading-bar):not(.tv-loading-bar *) {
+    animation-play-state: paused !important;
+}
+body.tv-open .tv-loading-bar {
+    animation-play-state: running !important;
+}
+/* Nada de transiciones costosas durante el video */
+body.tv-open * {
+    transition-duration: 0s !important;
+}

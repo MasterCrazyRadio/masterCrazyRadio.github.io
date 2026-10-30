@@ -1106,7 +1106,7 @@ document.addEventListener('DOMContentLoaded', () => {
     //  - recarga al volver a la pestaña (los navegadores congelan el iframe),
     //  - recarga si el embed no termina de cargar en 45s.
     const TV_PARTIDO_EMBED = 'https://ok.ru/videoembed/13981676805705?autoplay=1&nochat=1';
-    const TV_WATCHDOG_MS = 15000;
+    const TV_WATCHDOG_MS = 30000;
     const TV_RELOAD_INTERVAL_MS = 3600000; // 60 min: red de seguridad, sin interrupciones
     const TV_LOAD_TIMEOUT_MS = 60000;
     let tvWatchdogTimer = null;
@@ -1128,8 +1128,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const TV_ES_MODO_TV = (function () {
         try { return document.documentElement.classList.contains('is-tv'); } catch (e) { return false; }
     })();
-    const TV_CURTAIN_AFTER_LOAD_MS = TV_ES_MODO_TV ? 14000 : 4000;   // tras cargar el embed
-    const TV_CURTAIN_MAX_MS = TV_ES_MODO_TV ? 40000 : 15000;         // tope si nunca carga
+    const TV_CURTAIN_AFTER_LOAD_MS = 400;   // tras cargar el embed
+    const TV_CURTAIN_MAX_MS = 4000;         // tope si nunca carga
 
     function setReconnectNumber(text, isGo) {
         const countEl = document.getElementById('tv-reconnect-count');
@@ -1420,7 +1420,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     refreshPartidoStatus();
-    setInterval(refreshPartidoStatus, 15000);
+    setInterval(refreshPartidoStatus, 60000);
 
     // Contact Form Handler
     const contactForm = document.getElementById('contactForm');
