@@ -4948,10 +4948,7 @@ body.tv-open .pide-panel {
     contain: strict !important;
 }
 /* Todo el contenido de <main>, salvo el modal de TV */
-body.tv-open main > *:not(#tv-modal) {
-    content-visibility: hidden !important;
-    contain: strict !important;
-}
+/* (regla retirada: ocultaba la seccion del modal y dejaba pantalla negra) */
 /* Fondo animado y nieve: fuera mientras hay video */
 body.tv-open .background-animation {
     animation: none !important;
@@ -5004,4 +5001,35 @@ body.tv-open .tv-loading-bar {
 /* Nada de transiciones costosas durante el video */
 body.tv-open * {
     transition-duration: 0s !important;
+}
+
+
+/* Se ocultan solo secciones que NO contienen el reproductor */
+body.tv-open .hero-section,
+body.tv-open .top5-section,
+body.tv-open .news-section,
+body.tv-open .contact-section {
+    content-visibility: hidden !important;
+    contain: strict !important;
+}
+/* Dentro de la seccion de TV solo se oculta la grilla de tarjetas */
+body.tv-open .tv-grid {
+    content-visibility: hidden !important;
+    contain: strict !important;
+}
+/* El modal jamas se oculta: siempre visible y sin restricciones */
+body.tv-open #tv-modal,
+body.tv-open .tv-modal,
+body.tv-open .tv-modal * {
+    content-visibility: visible !important;
+    contain: none !important;
+}
+/* El video tambien protegido frente a cualquier contencion */
+body.tv-open #tv-player,
+body.tv-open #tv-iframe,
+body.tv-open #tv-iframe-container {
+    content-visibility: visible !important;
+    contain: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
 }
