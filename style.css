@@ -4943,23 +4943,10 @@ body.tv-open .main-header,
 body.tv-open .main-footer,
 body.tv-open .whatsapp-float,
 body.tv-open .pide-btn,
-body.tv-open .pide-panel {
-    content-visibility: hidden !important;
-    contain: strict !important;
-}
-/* Todo el contenido de <main>, salvo el modal de TV */
-/* (regla retirada: ocultaba la seccion del modal y dejaba pantalla negra) */
-/* Fondo animado y nieve: fuera mientras hay video */
 body.tv-open .background-animation {
     animation: none !important;
 }
 body.tv-open .bg-doodles,
-body.tv-open .snowfall {
-    display: none !important;
-    animation: none !important;
-    will-change: auto !important;
-}
-/* Ningun desenfoque de fondo consumiendo GPU */
 body.tv-open * {
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
@@ -5001,48 +4988,33 @@ body.tv-open * {
 body.tv-open .hero-section,
 body.tv-open .top5-section,
 body.tv-open .news-section,
-body.tv-open .contact-section {
-    content-visibility: hidden !important;
-    contain: strict !important;
-}
-/* Dentro de la seccion de TV solo se oculta la grilla de tarjetas */
-body.tv-open .tv-grid {
-    content-visibility: hidden !important;
-    contain: strict !important;
-}
-/* El modal jamas se oculta: siempre visible y sin restricciones */
-body.tv-open #tv-modal,
-body.tv-open .tv-modal,
-body.tv-open .tv-modal * {
-    content-visibility: visible !important;
-    contain: none !important;
-}
-/* El video tambien protegido frente a cualquier contencion */
-
-
-
-/* ===== RESCATE TV: el reproductor NUNCA se toca =====
-   Las optimizaciones anteriores anulaban el transform que el JS aplica para
-   escalar el iframe (ajustarIframeCover), por eso el video quedaba fuera de
-   cuadro: pantalla negra con audio. Aqui se restaura todo de forma explicita. */
-body.tv-open #tv-modal,
-body.tv-open #tv-modal * {
-    content-visibility: visible !important;
-    contain: none !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-}
-body.tv-open #tv-iframe-container,
-body.tv-open #tv-iframe,
-body.tv-open #tv-player,
-body.tv-open .video-container {
-    content-visibility: visible !important;
-    contain: none !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-    transform: none !important;
-    filter: none !important;
-    will-change: auto !important;
-}
-/* El modal se muestra como siempre cuando esta abierto */
 body.tv-open .tv-modal { display: flex !important; }
+
+
+/* ===== TV abierta: ahorro SEGURO (no toca el layout ni el player) =====
+   Solo se pausan animaciones y se quitan desenfoques. El reproductor
+   mantiene su tamaño, su transform y su visibilidad intactos. */
+body.tv-open .bg-doodles,
+body.tv-open .snowfall,
+body.tv-open .snowfall span,
+body.tv-open .snowfall i,
+body.tv-open .player-glow,
+body.tv-open .mesh-gradient,
+body.tv-open .spotlight,
+body.tv-open .hero-logo-aurora,
+body.tv-open .flyer-shine,
+body.tv-open .flyer-glow,
+body.tv-open .visualizer-container .bar,
+body.tv-open .whatsapp-float::after {
+    animation-play-state: paused !important;
+}
+body.tv-open .bg-doodles,
+body.tv-open .snowfall {
+    display: none !important;
+}
+/* Solo se quita el desenfoque de fondo (no afecta al video) */
+body.tv-open .main-header,
+body.tv-open .tv-curtain-box {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
