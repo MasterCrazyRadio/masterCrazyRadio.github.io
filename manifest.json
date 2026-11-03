@@ -1,16 +1,27 @@
 {
-  "name": "Master Crazy Radio - Radio Colombia N\u00famero Uno en Cumbia",
+  "id": "/",
+  "name": "Master Crazy Radio - La Casa Oficial de La Cumbia",
   "short_name": "Master Crazy",
-  "description": "Radio Colombia N\u00famero Uno en Cumbia. M\u00fasica colombiana en vivo las 24 horas desde el Cauca, Colombia. Canales de TV en vivo y partidos.",
-  "start_url": "./",
+  "description": "Master Crazy Radio: la casa oficial de la cumbia. Radio y TV en vivo las 24 horas desde el Cauca, Colombia.",
+  "start_url": "./?modo=app",
   "scope": "./",
-  "display": "standalone",
-  "display_override": ["standalone", "fullscreen"],
+  "display": "fullscreen",
+  "display_override": [
+    "fullscreen",
+    "standalone",
+    "minimal-ui"
+  ],
   "orientation": "any",
-  "background_color": "#050510",
-  "theme_color": "#A870E0",
+  "background_color": "#D6001C",
+  "theme_color": "#D6001C",
   "lang": "es",
-  "categories": ["music", "entertainment", "sports"],
+  "dir": "ltr",
+  "categories": [
+    "music",
+    "entertainment",
+    "sports"
+  ],
+  "prefer_related_applications": false,
   "icons": [
     {
       "src": "icon-192.png",
@@ -29,20 +40,55 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
+    },
+    {
+      "src": "apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "screenshot-app.jpg",
+      "sizes": "1280x720",
+      "type": "image/jpeg",
+      "form_factor": "wide",
+      "label": "Master Crazy Radio en vivo"
     }
   ],
   "shortcuts": [
     {
-      "name": "Reproducir Radio",
+      "name": "Escuchar Radio",
       "short_name": "Radio",
-      "url": "./#home",
-      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+      "url": "./?modo=app#home",
+      "icons": [
+        {
+          "src": "icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
     },
     {
-      "name": "TV en Vivo",
+      "name": "Ver Master Crazy TV",
       "short_name": "TV",
-      "url": "./#tv-section",
-      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+      "url": "./?modo=app#tv-section",
+      "icons": [
+        {
+          "src": "icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Top Crazy",
+      "short_name": "Top",
+      "url": "./?modo=app#top5-section",
+      "icons": [
+        {
+          "src": "icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
     }
   ]
 }

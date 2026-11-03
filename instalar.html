@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Instalar la app - Master Crazy Radio</title>
+<meta name="theme-color" content="#D6001C">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="apple-touch-icon.png">
+<style>
+  :root { color-scheme: dark; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; min-height: 100vh; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    background: radial-gradient(circle at 50% 30%, #E8112D 0%, #8A0B1A 100%);
+    color: #fff; padding: 28px 18px 60px;
+  }
+  header { text-align: center; max-width: 780px; margin: 0 auto 26px; }
+  header img { width: 108px; height: 108px; border-radius: 50%; border: 3px solid rgba(255,255,255,.6); }
+  h1 { font-size: 1.6rem; margin: 14px 0 6px; }
+  .sub { color: #00A8E1; font-weight: 700; margin: 0 0 4px; }
+  .nota { color: rgba(255,255,255,.85); font-size: .9rem; }
+  .card {
+    max-width: 780px; margin: 0 auto 16px; background: rgba(0,0,0,.35);
+    border: 1px solid rgba(255,255,255,.18); border-radius: 16px; padding: 18px 20px;
+  }
+  .card h2 { font-size: 1.05rem; margin: 0 0 10px; color: #00A8E1; }
+  .card ol, .card ul { margin: 0; padding-left: 20px; line-height: 1.65; font-size: .95rem; }
+  .card li { margin-bottom: 6px; }
+  .btn {
+    display: block; width: 100%; max-width: 780px; margin: 22px auto 8px; padding: 16px;
+    border: none; border-radius: 14px; font-size: 1.05rem; font-weight: 800; cursor: pointer;
+    background: #00A8E1; color: #04121a;
+  }
+  .btn[disabled] { opacity: .55; cursor: default; }
+  .pie { text-align: center; color: rgba(255,255,255,.7); font-size: .82rem; margin-top: 22px; }
+  a { color: #fff; }
+  code { background: rgba(0,0,0,.4); padding: 2px 6px; border-radius: 6px; }
+</style>
+</head>
+<body>
+<header>
+  <img src="logo_circular.png" alt="Master Crazy Radio">
+  <h1>Instala Master Crazy Radio</h1>
+  <p class="sub">La Casa Oficial de La Cumbia!!</p>
+  <p class="nota">Queda como una app con su icono: abre a pantalla completa, sin barra del navegador.</p>
+</header>
+
+<button class="btn" id="instalar" disabled>Instalar app</button>
+
+<div class="card">
+  <h2>📱 Android (celular o tablet)</h2>
+  <ol>
+    <li>Toca <strong>Instalar app</strong> (si no aparece, usa el menú ⋮ de Chrome → <em>Instalar aplicación</em>).</li>
+    <li>Se crea el icono <strong>Master Crazy</strong> en tu pantalla de inicio.</li>
+    <li>Al abrirlo entra directo a la radio y a la TV, a pantalla completa.</li>
+  </ol>
+</div>
+
+<div class="card">
+  <h2>📺 Android TV / Google TV</h2>
+  <ol>
+    <li>Instala <strong>Downloader</strong> desde Play Store (o usa el navegador que trae el TV).</li>
+    <li>Abre <code>mastercrazyradio.github.io</code>.</li>
+    <li>Menú del navegador → <strong>Añadir a la pantalla de inicio</strong>.</li>
+    <li>Queda como app con icono en la fila de aplicaciones.</li>
+  </ol>
+</div>
+
+<div class="card">
+  <h2>🔥 Fire TV / Amazon</h2>
+  <ol>
+    <li>Instala <strong>Downloader</strong> (busca el APK en su tienda o sideload).</li>
+    <li>Abre <code>mastercrazyradio.github.io</code> desde el navegador Silk.</li>
+    <li>Menú de Silk → <strong>Agregar a la pantalla de inicio</strong>.</li>
+  </ol>
+</div>
+
+<div class="card">
+  <h2>⌚ ONN Watch / TV boxes</h2>
+  <ol>
+    <li>Abre el navegador del equipo (Chrome o el que traiga).</li>
+    <li>Entra a <code>mastercrazyradio.github.io</code>.</li>
+    <li>Menú → <strong>Instalar</strong> o <strong>Añadir a inicio</strong>.</li>
+  </ol>
+</div>
+
+<div class="card">
+  <h2>⬇️ APK propio (.apk)</h2>
+  <p class="nota" style="margin:0 0 8px">Para un archivo APK que se instale con un clic hace falta empaquetar el sitio. Dos caminos:</p>
+  <ul>
+    <li><strong>Rápido y gratis:</strong> PWABuilder (pwabuilder.com) toma la URL del sitio y genera el APK firmado en minutos.</li>
+    <li><strong>Compilado aquí:</strong> requiere instalar Android SDK + Gradle en el equipo donde trabajo (descarga de ~1 GB).</li>
+  </ul>
+</div>
+
+<p class="pie">Master Crazy Radio · <a href="./">Ir al sitio</a></p>
+
+<script>
+  let prompt = null;
+  const boton = document.getElementById('instalar');
+
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    prompt = e;
+    boton.disabled = false;
+    boton.textContent = 'Instalar app ahora';
+  });
+
+  boton.addEventListener('click', async () => {
+    if (!prompt) return;
+    prompt.prompt();
+    try { await prompt.userChoice; } catch (e) {}
+    prompt = null;
+    boton.disabled = true;
+    boton.textContent = 'App instalada';
+  });
+
+  window.addEventListener('appinstalled', () => {
+    boton.disabled = true;
+    boton.textContent = 'App instalada ✔';
+  });
+</script>
+</body>
+</html>
