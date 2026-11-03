@@ -5032,3 +5032,31 @@ body.tv-open .whatsapp-float,
 body.tv-open .santa-destacado {
     display: none !important;
 }
+
+
+/* ===== SIN RECORTE: la transmision se ve COMPLETA =====
+   La clase .tv-fit-cover forzaba object-fit: cover, que recorta la imagen
+   y deja ver solo una parte de la transmision. Aqui se neutraliza.
+   *** NO MODIFICAR SIN ORDEN PUNTUAL DEL SER SUPERIOR *** */
+.tv-modal .video-container video,
+.tv-modal.tv-fit-cover .video-container video,
+.tv-modal .video-container iframe,
+.tv-modal.tv-fit-cover .video-container iframe {
+    object-fit: contain !important;
+}
+/* El iframe llena el area sin zoom ni desplazamiento */
+.tv-modal .video-container iframe,
+.tv-modal.tv-fit-cover .video-container iframe {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-width: none !important;
+    max-height: none !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    transform: none !important;
+    border: none !important;
+    border-radius: 0 !important;
+}
