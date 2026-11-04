@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#0a0203">
+<title>Master Crazy TV</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    width: 100%; height: 100%;
+    background: #000;
+    overflow: hidden;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    -webkit-user-select: none; user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  #player {
+    position: fixed;
+    inset: 0;
+    background: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  #player iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
+    background: #000;
+  }
+
+  /* ---------- Aviso de carga ---------- */
+  #cargando {
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(circle at 50% 45%, #E8112D 0%, #8A0B1A 70%, #4a0410 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 22px;
+    z-index: 40;
+    transition: opacity .45s ease;
+  }
+  #cargando.oculto { opacity: 0; pointer-events: none; }
+  .spinner {
+    width: 62px; height: 62px;
+    border: 5px solid rgba(255,255,255,.22);
+    border-top-color: #A8F000;
+    border-radius: 50%;
+    animation: girar 1s linear infinite;
+  }
+  @keyframes girar { to { transform: rotate(360deg); } }
+  #cargando p {
+    color: #fff;
+    font-size: clamp(15px, 2.2vw, 22px);
+    font-weight: 700;
+    letter-spacing: .4px;
+    text-align: center;
+    padding: 0 24px;
+  }
+
+  /* ---------- PIN ---------- */
+  #pin {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 18px;
+    background: radial-gradient(circle at 50% 40%, #E8112D 0%, #8A0B1A 65%, #4a0410 100%);
+  }
+  #pin.abierto { display: flex; }
+  .pin-caja {
+    width: 100%;
+    max-width: 420px;
+    background: rgba(0,0,0,.42);
+    border: 2px solid rgba(255,255,255,.16);
+    border-radius: 22px;
+    padding: 26px 22px 22px;
+    text-align: center;
+    box-shadow: 0 26px 60px rgba(0,0,0,.55);
+  }
+  .pin-icono {
+    font-size: 30px;
+    margin-bottom: 8px;
+    line-height: 1;
+  }
+  .pin-titulo {
+    color: #fff;
+    font-size: clamp(19px, 3vw, 26px);
+    font-weight: 800;
+    margin-bottom: 6px;
+  }
+  .pin-titulo span { color: #00A8E1; }
+  .pin-sub {
+    color: rgba(255,255,255,.82);
+    font-size: clamp(12px, 1.7vw, 15px);
+    margin-bottom: 18px;
+  }
+  .pin-puntos {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+  .pin-punto {
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    border: 2px solid rgba(255,255,255,.55);
+    background: transparent;
+    transition: background .18s ease, transform .18s ease;
+  }
+  .pin-punto.lleno {
+    background: #A8F000;
+    border-color: #A8F000;
+    transform: scale(1.12);
+  }
+  #pin-error {
+    color: #ffd6d6;
+    font-size: 13px;
+    font-weight: 700;
+    min-height: 18px;
+    margin-bottom: 10px;
+    visibility: hidden;
+  }
+  #pin-error.visible { visibility: visible; }
+
+  .teclado {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-top: 4px;
+  }
+  .tecla {
+    appearance: none;
+    border: 2px solid rgba(255,255,255,.20);
+    background: rgba(255,255,255,.10);
+    color: #fff;
+    font-size: clamp(19px, 3vw, 24px);
+    font-weight: 800;
+    padding: 14px 0;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: background .15s ease, border-color .15s ease, transform .1s ease;
+  }
+  .tecla:focus, .tecla:hover {
+    background: rgba(0,168,225,.42);
+    border-color: #00A8E1;
+    outline: none;
+  }
+  .tecla:active { transform: scale(.95); }
+  .tecla.borrar { color: #ffb3b3; }
+  .tecla.entrar {
+    grid-column: span 3;
+    background: #00A8E1;
+    border-color: #00A8E1;
+    color: #04121A;
+  }
+  .tecla.entrar:focus, .tecla.entrar:hover {
+    background: #33bced;
+    border-color: #33bced;
+  }
+
+  /* ---------- Aviso sin transmision ---------- */
+  #aviso {
+    position: fixed;
+    inset: 0;
+    z-index: 55;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    background: radial-gradient(circle at 50% 45%, #1a0206 0%, #000 100%);
+    text-align: center;
+    padding: 26px;
+  }
+  #aviso.visible { display: flex; }
+  #aviso h2 { color: #fff; font-size: clamp(18px, 2.8vw, 26px); font-weight: 800; }
+  #aviso p { color: rgba(255,255,255,.75); font-size: clamp(13px, 1.9vw, 16px); max-width: 520px; }
+  #aviso button {
+    margin-top: 8px;
+    background: #00A8E1;
+    color: #04121A;
+    border: 0;
+    border-radius: 12px;
+    padding: 14px 30px;
+    font-size: 16px;
+    font-weight: 800;
+    cursor: pointer;
+  }
+  #aviso button:focus { outline: 3px solid #A8F000; }
+</style>
+</head>
+<body>
+
+<div id="player">
+  <iframe
+    id="tv-frame"
+    title="Master Crazy TV"
+    allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
+    allowfullscreen
+    referrerpolicy="no-referrer-when-downgrade"></iframe>
+</div>
+
+<div id="cargando">
+  <div class="spinner"></div>
+  <p>Conectando con Master Crazy TV…</p>
+</div>
+
+<div id="aviso">
+  <h2>No hay transmisi&oacute;n en este momento</h2>
+  <p>Master Crazy TV est&aacute; fuera del aire. Vuelve a intentarlo en unos minutos.</p>
+  <button type="button" id="btn-reintentar">Reintentar</button>
+</div>
+
+<div id="pin" role="dialog" aria-modal="true" aria-labelledby="pin-titulo">
+  <div class="pin-caja">
+    <div class="pin-icono">&#128274;</div>
+    <h1 class="pin-titulo" id="pin-titulo">Master <span>Crazy TV</span></h1>
+    <p class="pin-sub">Ingresa el PIN de 4 d&iacute;gitos</p>
+    <div class="pin-puntos" id="pin-puntos">
+      <div class="pin-punto"></div>
+      <div class="pin-punto"></div>
+      <div class="pin-punto"></div>
+      <div class="pin-punto"></div>
+    </div>
+    <p id="pin-error">&nbsp;</p>
+    <div class="teclado" id="teclado">
+      <button class="tecla" type="button" data-n="1">1</button>
+      <button class="tecla" type="button" data-n="2">2</button>
+      <button class="tecla" type="button" data-n="3">3</button>
+      <button class="tecla" type="button" data-n="4">4</button>
+      <button class="tecla" type="button" data-n="5">5</button>
+      <button class="tecla" type="button" data-n="6">6</button>
+      <button class="tecla" type="button" data-n="7">7</button>
+      <button class="tecla" type="button" data-n="8">8</button>
+      <button class="tecla" type="button" data-n="9">9</button>
+      <button class="tecla borrar" type="button" id="btn-borrar">&#9003;</button>
+      <button class="tecla" type="button" data-n="0">0</button>
+      <button class="tecla entrar" type="button" id="btn-entrar">VER TRANSMISI&Oacute;N</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  var EMBED = 'https://ok.ru/videoembed/13981676805705?autoplay=1&nochat=1';
+  var PIN_CORRECTO = '2468';
+  var CLAVE = 'mctv_pin_ok';
+
+  var frame = document.getElementById('tv-frame');
+  var capaCarga = document.getElementById('cargando');
+  var modalPin = document.getElementById('pin');
+  var puntos = Array.prototype.slice.call(document.querySelectorAll('.pin-punto'));
+  var errorEl = document.getElementById('pin-error');
+  var aviso = document.getElementById('aviso');
+
+  var escrito = '';
+  var reproduciendo = false;
+
+  function tieneAcceso() {
+    try { return localStorage.getItem(CLAVE) === '1'; } catch (e) { return false; }
+  }
+  function guardarAcceso() {
+    try { localStorage.setItem(CLAVE, '1'); } catch (e) {}
+  }
+
+  function pintarPuntos() {
+    for (var i = 0; i < puntos.length; i++) {
+      if (i < escrito.length) { puntos[i].classList.add('lleno'); }
+      else { puntos[i].classList.remove('lleno'); }
+    }
+  }
+
+  function avisoError(txt) {
+    errorEl.textContent = txt;
+    errorEl.classList.add('visible');
+  }
+  function limpiarError() {
+    errorEl.innerHTML = '&nbsp;';
+    errorEl.classList.remove('visible');
+  }
+
+  function cerrarPin() {
+    modalPin.classList.remove('abierto');
+    escrito = '';
+    pintarPuntos();
+    limpiarError();
+  }
+
+  function abrirPin() {
+    modalPin.classList.add('abierto');
+    escrito = '';
+    pintarPuntos();
+    limpiarError();
+    var primera = document.querySelector('.tecla[data-n="1"]');
+    if (primera) { try { primera.focus(); } catch (e) {} }
+  }
+
+  function arrancar() {
+    if (reproduciendo) { return; }
+    reproduciendo = true;
+    aviso.classList.remove('visible');
+    capaCarga.classList.remove('oculto');
+    frame.src = EMBED + '&t=' + Date.now();
+  }
+
+  function ocultarCarga() {
+    capaCarga.classList.add('oculto');
+  }
+
+  // El iframe es de otro dominio: no avisa cuando termina de cargar.
+  // Se oculta la cortina a los pocos segundos de arrancar.
+  frame.addEventListener('load', function () {
+    setTimeout(ocultarCarga, 1400);
+  });
+
+  function entrar() {
+    if (escrito === PIN_CORRECTO) {
+      guardarAcceso();
+      cerrarPin();
+      arrancar();
+    } else {
+      escrito = '';
+      pintarPuntos();
+      avisoError('PIN incorrecto. Intenta de nuevo.');
+    }
+  }
+
+  function pulsar(n) {
+    if (escrito.length >= 4) { return; }
+    escrito += String(n);
+    pintarPuntos();
+    limpiarError();
+    if (escrito.length === 4) {
+      setTimeout(entrar, 220);
+    }
+  }
+
+  // Teclado en pantalla (funciona con control remoto y con dedo)
+  var teclas = document.querySelectorAll('.tecla[data-n]');
+  for (var i = 0; i < teclas.length; i++) {
+    teclas[i].addEventListener('click', function () {
+      pulsar(this.getAttribute('data-n'));
+    });
+  }
+
+  document.getElementById('btn-borrar').addEventListener('click', function () {
+    escrito = escrito.slice(0, -1);
+    pintarPuntos();
+    limpiarError();
+  });
+
+  document.getElementById('btn-entrar').addEventListener('click', entrar);
+
+  // Teclado fisico / control remoto con numeros
+  document.addEventListener('keydown', function (e) {
+    if (!modalPin.classList.contains('abierto')) {
+      if (e.key === 'r' || e.key === 'R') { recargar(); }
+      return;
+    }
+    if (e.key >= '0' && e.key <= '9') { pulsar(e.key); e.preventDefault(); return; }
+    if (e.key === 'Backspace') {
+      escrito = escrito.slice(0, -1);
+      pintarPuntos();
+      limpiarError();
+      e.preventDefault();
+      return;
+    }
+    if (e.key === 'Enter' || e.key === ' ') { entrar(); e.preventDefault(); }
+  });
+
+  function recargar() {
+    aviso.classList.remove('visible');
+    reproduciendo = false;
+    capaCarga.classList.remove('oculto');
+    frame.src = 'about:blank';
+    setTimeout(arrancar, 350);
+  }
+
+  document.getElementById('btn-reintentar').addEventListener('click', recargar);
+
+  // Vigilante: si la transmision se cae, se reconecta sola cada 12 minutos
+  setInterval(function () {
+    if (!reproduciendo) { return; }
+    frame.src = EMBED + '&t=' + Date.now();
+  }, 12 * 60 * 1000);
+
+  // Comprobar si hay transmision antes de pedir el PIN
+  function comenzar() {
+    fetch('status.json?n=' + Date.now(), { cache: 'no-store' })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (estado) {
+        var offline = false;
+        if (estado) {
+          if (typeof estado.live === 'boolean') { offline = !estado.live; }
+          else if (typeof estado.enVivo === 'boolean') { offline = !estado.enVivo; }
+          else if (typeof estado.transmitiendo === 'boolean') { offline = !estado.transmitiendo; }
+          else if (typeof estado.online === 'boolean') { offline = !estado.online; }
+        }
+        if (offline) {
+          capaCarga.classList.add('oculto');
+          aviso.classList.add('visible');
+          try { document.getElementById('btn-reintentar').focus(); } catch (e) {}
+          return;
+        }
+        seguir();
+      })
+      .catch(function () { seguir(); });
+  }
+
+  function seguir() {
+    if (tieneAcceso()) { arrancar(); }
+    else { capaCarga.classList.add('oculto'); abrirPin(); }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', comenzar);
+  } else {
+    comenzar();
+  }
+})();
+</script>
+</body>
+</html>
