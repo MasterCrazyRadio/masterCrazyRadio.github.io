@@ -4,6 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#0a0203">
+<meta name="color-scheme" content="dark">
+<!-- Acelerar el arranque: abrir la conexion con OK.ru antes de pedir el video -->
+<link rel="preconnect" href="https://ok.ru" crossorigin>
+<link rel="dns-prefetch" href="https://ok.ru">
+<link rel="preconnect" href="https://okcdn.ru" crossorigin>
+<link rel="dns-prefetch" href="https://okcdn.ru">
+<link rel="preconnect" href="https://st.okcdn.ru" crossorigin>
+<link rel="dns-prefetch" href="https://st.okcdn.ru">
 <title>Master Crazy TV</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -22,6 +30,9 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    /* Aisla el reproductor del resto del documento: menos trabajo de
+       pintado en cada fotograma (clave en TV boxes). */
+    contain: strict;
   }
   #player iframe {
     width: 100%;
@@ -394,11 +405,13 @@
 
   document.getElementById('btn-reintentar').addEventListener('click', recargar);
 
-  // Vigilante: si la transmision se cae, se reconecta sola cada 12 minutos
+  // Mantenimiento: reconexion larga (30 min). Antes era cada 12 minutos y
+  // cortaba la reproduccion sin necesidad; ahora solo se refresca de vez en
+  // cuando para evitar que la transmision se quede congelada por horas.
   setInterval(function () {
     if (!reproduciendo) { return; }
     frame.src = EMBED + '&t=' + Date.now();
-  }, 12 * 60 * 1000);
+  }, 30 * 60 * 1000);
 
   // Comprobar si hay transmision antes de pedir el PIN
   function comenzar() {
