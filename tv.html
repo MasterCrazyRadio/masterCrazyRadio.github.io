@@ -255,6 +255,10 @@
   var PIN_CORRECTO = '2468';
   var CLAVE = 'mctv_pin_ok';
 
+  // Modo APP: la aplicacion abre tv.html?app=1 -> entra directo a reproducir,
+  // sin pedir PIN y sin esperas. El enlace normal (tv.html) SI sigue pidiendo PIN.
+  var MODO_APP = /(?:\?|&)app=1/.test(location.search) || location.hash === '#app';
+
   var frame = document.getElementById('tv-frame');
   var capaCarga = document.getElementById('cargando');
   var modalPin = document.getElementById('pin');
@@ -308,8 +312,11 @@
     if (reproduciendo) { return; }
     reproduciendo = true;
     aviso.classList.remove('visible');
+    modalPin.classList.remove('abierto');
     capaCarga.classList.remove('oculto');
     frame.src = EMBED + '&t=' + Date.now();
+    // Seguridad: la cortina nunca se queda pegada
+    setTimeout(ocultarCarga, 8000);
   }
 
   function ocultarCarga() {
@@ -395,6 +402,14 @@
 
   // Comprobar si hay transmision antes de pedir el PIN
   function comenzar() {
+    // En modo app se entra de una: PIN ya recordado y reproduccion inmediata.
+    if (MODO_APP) {
+      guardarAcceso();
+      modalPin.classList.remove('abierto');
+      arrancar();
+      return;
+    }
+
     fetch('status.json?n=' + Date.now(), { cache: 'no-store' })
       .then(function (r) { return r.ok ? r.json() : null; })
       .then(function (estado) {
