@@ -220,7 +220,7 @@
 
 <div id="cargando">
   <div class="spinner"></div>
-  <p>Conectando con Master Crazy TV…</p>
+  <p id="texto-carga">Conectando con Master Crazy TV…</p>
 </div>
 
 <div id="aviso">
@@ -279,6 +279,7 @@
 
   var escrito = '';
   var reproduciendo = false;
+  var pausado = false;        // status.json confirma que no hay transmision
 
   function tieneAcceso() {
     try { return localStorage.getItem(CLAVE) === '1'; } catch (e) { return false; }
@@ -319,9 +320,15 @@
     if (primera) { try { primera.focus(); } catch (e) {} }
   }
 
-  function arrancar() {
+  function textoCarga(t) {
+    var el = document.getElementById('texto-carga');
+    if (el) { el.textContent = t; }
+  }
+
+  function arrancar(mensaje) {
     if (reproduciendo) { return; }
     reproduciendo = true;
+    textoCarga(mensaje || 'Conectando con Master Crazy TV…');
     aviso.classList.remove('visible');
     modalPin.classList.remove('abierto');
     capaCarga.classList.remove('oculto');
@@ -397,21 +404,107 @@
 
   function recargar() {
     aviso.classList.remove('visible');
+    pausado = false;          // el boton Reintentar manda sobre el estado
     reproduciendo = false;
     capaCarga.classList.remove('oculto');
     frame.src = 'about:blank';
-    setTimeout(arrancar, 350);
+    setTimeout(function () { arrancar('Reconectando…'); }, 350);
   }
 
   document.getElementById('btn-reintentar').addEventListener('click', recargar);
 
-  // Mantenimiento: reconexion larga (30 min). Antes era cada 12 minutos y
-  // cortaba la reproduccion sin necesidad; ahora solo se refresca de vez en
-  // cuando para evitar que la transmision se quede congelada por horas.
+  // ===== Vigilancia de la transmision =====
+  // El reproductor de OK.ru es de otro dominio: la pagina no puede saber si se
+  // quedo en negro. Lo que SI se sabe es si OBS esta transmitiendo
+  // (status.json, lo escribe el vigilante). Con eso se evita la pantalla negra:
+  // si no hay transmision se muestra la marca, y en cuanto vuelve se reconecta
+  // sola sin que haya que tocar nada.
+  var ESTADO_LOCAL = 'status.json?ts=';
+  var ESTADO_CDN = 'https://cdn.jsdelivr.net/gh/MasterCrazyRadio/masterCrazyRadio.github.io@ia/status.json';
+
+  function leerEstado() {
+    var ts = Date.now();
+    function pedir(url) {
+      return fetch(url, { cache: 'no-store' }).then(function (r) {
+        return r.ok ? r.json() : null;
+      });
+    }
+    return pedir(ESTADO_LOCAL + ts)
+      .catch(function () { return null; })
+      .then(function (e) {
+        if (e) { return e; }
+        return pedir(ESTADO_CDN + '?ts=' + ts).catch(function () { return null; });
+      })
+      .catch(function () { return null; });
+  }
+
+  function enVivoSegun(e) {
+    if (typeof e.online === 'boolean') { return e.online; }
+    if (typeof e.live === 'boolean') { return e.live; }
+    if (typeof e.enVivo === 'boolean') { return e.enVivo; }
+    if (typeof e.transmitiendo === 'boolean') { return e.transmitiendo; }
+    return true;
+  }
+
+  function datoFresco(e) {
+    if (!e || !e.updatedAt) { return true; }
+    var t = Date.parse(e.updatedAt);
+    if (isNaN(t)) { return true; }
+    return (Date.now() - t) < 24 * 60 * 60 * 1000;
+  }
+
+  function pausar() {
+    if (pausado) { return; }
+    pausado = true;
+    reproduciendo = false;
+    frame.src = 'about:blank';
+    capaCarga.classList.add('oculto');
+    aviso.classList.add('visible');
+    try { document.getElementById('btn-reintentar').focus(); } catch (e) {}
+  }
+
+  function reanudar() {
+    if (!pausado) { return; }
+    pausado = false;
+    aviso.classList.remove('visible');
+    reproduciendo = false;
+    arrancar('La transmision volvio. Reconectando…');
+  }
+
+  function vigilar() {
+    leerEstado().then(function (e) {
+      if (!e) { return; }   // sin dato no se toca lo que ya esta funcionando
+      if (enVivoSegun(e) === false) {
+        if (datoFresco(e)) { pausar(); }
+        return;
+      }
+      if (pausado) { reanudar(); }
+    });
+  }
+
+  setInterval(vigilar, 20000);
+
+  // Refresco de mantenimiento: cada 60 minutos y con la marca cubriendo el
+  // cambio, para que nunca se vea el parpadeo negro del reproductor.
   setInterval(function () {
-    if (!reproduciendo) { return; }
-    frame.src = EMBED + '&t=' + Date.now();
-  }, 30 * 60 * 1000);
+    if (!reproduciendo || pausado) { return; }
+    reproduciendo = false;
+    arrancar('Actualizando la senal…');
+  }, 60 * 60 * 1000);
+
+  // Al volver a la app se comprueba de inmediato
+  document.addEventListener('visibilitychange', function () {
+    if (document.visibilityState !== 'visible') { return; }
+    vigilar();
+    if (!reproduciendo && !pausado) { arrancar('Reconectando…'); }
+  });
+
+  // Si el equipo recupera internet, reintentar sin esperar
+  window.addEventListener('online', function () {
+    if (pausado) { return; }
+    reproduciendo = false;
+    arrancar('Reconectando…');
+  });
 
   // Comprobar si hay transmision antes de pedir el PIN
   function comenzar() {
@@ -423,20 +516,19 @@
       return;
     }
 
-    fetch('status.json?n=' + Date.now(), { cache: 'no-store' })
-      .then(function (r) { return r.ok ? r.json() : null; })
+    leerEstado()
       .then(function (estado) {
         var offline = false;
+        var fresco = true;
         if (estado) {
           if (typeof estado.live === 'boolean') { offline = !estado.live; }
           else if (typeof estado.enVivo === 'boolean') { offline = !estado.enVivo; }
           else if (typeof estado.transmitiendo === 'boolean') { offline = !estado.transmitiendo; }
           else if (typeof estado.online === 'boolean') { offline = !estado.online; }
+          fresco = datoFresco(estado);
         }
-        if (offline) {
-          capaCarga.classList.add('oculto');
-          aviso.classList.add('visible');
-          try { document.getElementById('btn-reintentar').focus(); } catch (e) {}
+        if (offline && fresco) {
+          pausar();
           return;
         }
         seguir();
