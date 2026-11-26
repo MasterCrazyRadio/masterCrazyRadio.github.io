@@ -453,6 +453,17 @@
     return (Date.now() - t) < 24 * 60 * 60 * 1000;
   }
 
+  // Para dar la transmision por caida se exige un dato RECIENTE (45 min).
+  // Un status.json viejo o congelado no puede cortar el video.
+  function datoReciente(e) {
+    if (!e || !e.updatedAt) { return false; }
+    var t = Date.parse(e.updatedAt);
+    if (isNaN(t)) { return false; }
+    return (Date.now() - t) < 45 * 60 * 1000;
+  }
+
+  var seguidosApagado = 0;   // lecturas seguidas afirmando "sin transmision"
+
   function pausar() {
     if (pausado) { return; }
     pausado = true;
@@ -466,23 +477,40 @@
   function reanudar() {
     if (!pausado) { return; }
     pausado = false;
+    seguidosApagado = 0;
     aviso.classList.remove('visible');
     reproduciendo = false;
-    arrancar('La transmision volvio. Reconectando…');
+    arrancar('Reconectando…');
   }
 
+  // status.json es SOLO una pista. Antes bastaba una lectura para cortar el
+  // video y eso dejaba la pantalla de "fuera del aire" con la transmision
+  // andando. Ahora hacen falta 6 lecturas seguidas (3 minutos) y que el dato
+  // sea reciente: un archivo viejo o equivocado no puede tumbar la senal.
   function vigilar() {
     leerEstado().then(function (e) {
-      if (!e) { return; }   // sin dato no se toca lo que ya esta funcionando
-      if (enVivoSegun(e) === false) {
-        if (datoFresco(e)) { pausar(); }
+      if (!e) { return; }
+      if (enVivoSegun(e) === false && datoReciente(e)) {
+        seguidosApagado++;
+        if (seguidosApagado >= 6 && !pausado) { pausar(); }
         return;
       }
+      seguidosApagado = 0;
       if (pausado) { reanudar(); }
     });
   }
 
-  setInterval(vigilar, 20000);
+  setInterval(vigilar, 30000);
+
+  // Mientras el aviso este en pantalla se reintenta solo cada minuto: si el
+  // archivo de estado estaba equivocado, el video vuelve igual.
+  setInterval(function () {
+    if (!pausado) { return; }
+    pausado = false;
+    aviso.classList.remove('visible');
+    reproduciendo = false;
+    arrancar('Reintentando la senal…');
+  }, 60000);
 
   // Refresco de mantenimiento: cada 60 minutos y con la marca cubriendo el
   // cambio, para que nunca se vea el parpadeo negro del reproductor.
