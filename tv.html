@@ -43,6 +43,8 @@
     border: 0;
     display: block;
     background: #000;
+    /* el navegador no reserva trabajo de pintado fuera de pantalla */
+    content-visibility: auto;
   }
 
   /* ---------- Aviso de carga ---------- */
@@ -58,7 +60,15 @@
     z-index: 40;
     transition: opacity .45s ease;
   }
-  #cargando.oculto { opacity: 0; pointer-events: none; }
+  #cargando.oculto {
+    opacity: 0;
+    pointer-events: none;
+    /* se saca del compositor: no cuesta un pixel mientras hay video */
+    visibility: hidden;
+    transition: opacity .35s ease, visibility 0s linear .35s;
+  }
+  /* el spinner no sigue girando oculto (eso repintaba en cada fotograma) */
+  #cargando.oculto .spinner { animation: none; }
   .spinner {
     width: 62px; height: 62px;
     border: 5px solid rgba(255,255,255,.22);
