@@ -483,17 +483,15 @@
     arrancar('Reconectando…');
   }
 
-  // status.json es SOLO una pista. Antes bastaba una lectura para cortar el
-  // video y eso dejaba la pantalla de "fuera del aire" con la transmision
-  // andando. Ahora hacen falta 6 lecturas seguidas (3 minutos) y que el dato
-  // sea reciente: un archivo viejo o equivocado no puede tumbar la senal.
+  // status.json es SOLO informativo. NUNCA detiene la reproduccion: un
+  // archivo equivocado o viejo no puede cortar la senal. Si el video se cae,
+  // lo resuelve el reintento y la recarga, no este vigilante.
   function vigilar() {
     leerEstado().then(function (e) {
       if (!e) { return; }
       if (enVivoSegun(e) === false && datoReciente(e)) {
         seguidosApagado++;
-        if (seguidosApagado >= 6 && !pausado) { pausar(); }
-        return;
+        return;   // se anota, pero NO se toca el reproductor
       }
       seguidosApagado = 0;
       if (pausado) { reanudar(); }
